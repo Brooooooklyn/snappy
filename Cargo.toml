@@ -1,17 +1,18 @@
 [package]
 authors = ["LongYinan <lynweklm@gmail.com>"]
 edition = "2018"
-name = "napi-package-template"
+name = "napi-snappy"
 version = "0.1.0"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [lib]
 crate-type = ["cdylib"]
 
 [dependencies]
-napi = "1"
+encoding_rs = "0.8"
+napi = {version = "1", features = ["napi5"]}
 napi-derive = "1"
+snap = "1"
+tokio = {version = "1", features = ["full"]}
 
 [target.'cfg(all(unix, not(target_env = "musl"), not(target_arch = "aarch64"), not(target_arch = "arm")))'.dependencies]
 jemallocator = {version = "0.3", features = ["disable_initial_exec_tls"]}
