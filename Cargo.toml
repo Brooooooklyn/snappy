@@ -8,17 +8,9 @@ version = "0.1.0"
 crate-type = ["cdylib"]
 
 [dependencies]
-encoding_rs = "0.8"
 napi = {version = "1", features = ["napi5"]}
 napi-derive = "1"
 snap = "1"
-tokio = {version = "1", features = ["full"]}
-
-[target.'cfg(all(unix, not(target_env = "musl"), not(target_arch = "aarch64"), not(target_arch = "arm")))'.dependencies]
-jemallocator = {version = "0.3", features = ["disable_initial_exec_tls"]}
-
-[target.'cfg(all(windows, target_arch = "x86_64"))'.dependencies]
-mimalloc = {version = "0.1"}
 
 [build-dependencies]
 napi-build = "1"
