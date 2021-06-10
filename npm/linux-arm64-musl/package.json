@@ -1,10 +1,16 @@
 {
   "name": "@napi-rs/snappy-linux-arm64-musl",
-  "version": "1.0.0",
-  "os": ["linux"],
-  "cpu": ["arm64"],
+  "version": "1.0.1",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm64"
+  ],
   "main": "snappy.linux-arm64-musl.node",
-  "files": ["snappy.linux-arm64-musl.node"],
+  "files": [
+    "snappy.linux-arm64-musl.node"
+  ],
   "description": "Fastest Snappy compression library in Node.js",
   "keywords": [
     "snappy",
