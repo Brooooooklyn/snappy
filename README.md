@@ -44,16 +44,12 @@ export function uncompress(compressed: Buffer): Promise<Buffer>
 ### Hardware
 
 ```
-Model Name: MacBook Pro
-Model Identifier: MacBookPro15,1
-Processor Name: Intel Core i7
-Processor Speed: 2.6 GHz
-Number of Processors: 1
-Total Number of Cores: 6
-L2 Cache (per Core): 256 KB
-L3 Cache: 12 MB
-Hyper-Threading Technology: Enabled
-Memory: 16 GB
+OS: Windows 10 x86_64
+Host: Micro-Star International Co., Ltd. MS-7C35
+Kernel: 10.0.19043
+Terminal: Windows Terminal
+CPU: AMD Ryzen 9 5950X (32) @ 3.400GHz
+Memory: 15959MiB / 32688MiB
 ```
 
 ### Result
@@ -63,10 +59,10 @@ Running "Compress data" suite...
 Progress: 100%
 
   @napi-rs/snappy:
-    279 ops/s, ±7.86%   | fastest
+    333 ops/s, ±2.10%   | fastest
 
   snappy node:
-    235 ops/s, ±1.85%   | slowest, 15.77% slower
+    163 ops/s, ±1.44%   | slowest, 51.05% slower
 
 Finished 2 cases!
   Fastest: @napi-rs/snappy
@@ -75,10 +71,10 @@ Running "Uncompress data" suite...
 Progress: 100%
 
   @napi-rs/snappy:
-    379 ops/s, ±2.09%   | fastest
+    980 ops/s, ±1.85%   | fastest
 
   snappy node:
-    347 ops/s, ±1.93%   | slowest, 8.44% slower
+    256 ops/s, ±0.61%   | slowest, 73.88% slower
 
 Finished 2 cases!
   Fastest: @napi-rs/snappy
