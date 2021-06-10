@@ -7,6 +7,8 @@
 
 Fastest Snappy compression library in Node.js, powered by [napi-rs](https://napi.rs) and [rust-snappy](https://github.com/BurntSushi/rust-snappy).
 
+> For small size data, [snappyjs](https://github.com/zhipeng-jia/snappyjs) is faster, and it support browser. But it doesn't have async API, which is important for Node.js program.
+
 ## Install this package
 
 ```
@@ -79,4 +81,17 @@ Progress: 100%
 Finished 2 cases!
   Fastest: @napi-rs/snappy
   Slowest: snappy node
+
+Running "Small size sync compress" suite...
+Progress: 100%
+
+  @napi-rs/snappy:
+    505 211 ops/s, ±7.97%   | slowest, 47% slower
+
+  snappy js:
+    953 272 ops/s, ±0.37%   | fastest
+
+Finished 2 cases!
+  Fastest: snappy js
+  Slowest: @napi-rs/snappy
 ```

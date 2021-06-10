@@ -4,6 +4,8 @@ import { join } from 'path'
 
 import b from 'benny'
 import { compress as compressCpp, uncompress as uncompressCpp } from 'snappy'
+// @ts-expect-error
+import { compress as compressJs } from 'snappyjs'
 
 import { compress, uncompress, compressSync } from '../index'
 
@@ -11,6 +13,14 @@ const FIXTURE = readFileSync(join(__dirname, '..', 'yarn.lock'))
 const COMPRESSED_FIXTURE = Buffer.from(compressSync(FIXTURE))
 
 const THREADS = cpus().length
+
+function randomString(length: number) {
+  return Array.from({ length })
+    .map(() => String.fromCharCode(Math.floor(Math.random() * 256)))
+    .join('')
+}
+
+const SMALL_SIZE_FIXTURE = Buffer.from(randomString(100))
 
 async function run() {
   await b.suite(
@@ -63,6 +73,21 @@ async function run() {
             }),
         ),
       )
+    }),
+
+    b.cycle(),
+    b.complete(),
+  )
+
+  await b.suite(
+    'Small size sync compress',
+
+    b.add('@napi-rs/snappy', () => {
+      compressSync(SMALL_SIZE_FIXTURE)
+    }),
+
+    b.add('snappy js', () => {
+      compressJs(SMALL_SIZE_FIXTURE)
     }),
 
     b.cycle(),

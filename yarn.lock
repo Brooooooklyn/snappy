@@ -3519,6 +3519,11 @@ snappy@^6.3.5:
     nan "^2.14.1"
     prebuild-install "5.3.0"
 
+snappyjs@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.npmjs.org/snappyjs/-/snappyjs-0.6.0.tgz#2bd550e5767fb1bc28140bf8d53bf9590576a386"
+  integrity sha512-VTBBV4C9SHLuNEw8qrxw3EnkYmzwe8ml5VA8zS6XChr/yQ/CEDobofC6j4S25QJQR0htRGD68Oh4TZxv/mpf7w==
+
 source-map-support@^0.5.19:
   version "0.5.19"
   resolved "https://registry.npmjs.org/source-map-support/-/source-map-support-0.5.19.tgz#a98b62f86dcaf4f67399648c085291ab9e8fed61"
