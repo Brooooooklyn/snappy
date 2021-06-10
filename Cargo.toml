@@ -12,6 +12,9 @@ napi = {version = "1", features = ["napi5"]}
 napi-derive = "1"
 snap = "1"
 
+[target.'cfg(all(target_arch = "x86_64", not(target_env = "musl")))'.dependencies]
+mimalloc = {version = "0.1"}
+
 [build-dependencies]
 napi-build = "1"
 
