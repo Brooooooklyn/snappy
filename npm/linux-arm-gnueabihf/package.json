@@ -1,16 +1,10 @@
 {
   "name": "@napi-rs/snappy-linux-arm-gnueabihf",
-  "version": "1.0.1",
-  "os": [
-    "linux"
-  ],
-  "cpu": [
-    "arm"
-  ],
+  "version": "1.0.2",
+  "os": ["linux"],
+  "cpu": ["arm"],
   "main": "snappy.linux-arm-gnueabihf.node",
-  "files": [
-    "snappy.linux-arm-gnueabihf.node"
-  ],
+  "files": ["snappy.linux-arm-gnueabihf.node"],
   "description": "Fastest Snappy compression library in Node.js",
   "keywords": [
     "snappy",

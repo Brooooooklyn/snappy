@@ -1,16 +1,10 @@
 {
   "name": "@napi-rs/snappy-win32-ia32-msvc",
-  "version": "1.0.1",
-  "os": [
-    "win32"
-  ],
-  "cpu": [
-    "ia32"
-  ],
+  "version": "1.0.2",
+  "os": ["win32"],
+  "cpu": ["ia32"],
   "main": "snappy.win32-ia32-msvc.node",
-  "files": [
-    "snappy.win32-ia32-msvc.node"
-  ],
+  "files": ["snappy.win32-ia32-msvc.node"],
   "description": "Fastest Snappy compression library in Node.js",
   "keywords": [
     "snappy",

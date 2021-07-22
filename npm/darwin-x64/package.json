@@ -1,16 +1,10 @@
 {
   "name": "@napi-rs/snappy-darwin-x64",
-  "version": "1.0.1",
-  "os": [
-    "darwin"
-  ],
-  "cpu": [
-    "x64"
-  ],
+  "version": "1.0.2",
+  "os": ["darwin"],
+  "cpu": ["x64"],
   "main": "snappy.darwin-x64.node",
-  "files": [
-    "snappy.darwin-x64.node"
-  ],
+  "files": ["snappy.darwin-x64.node"],
   "description": "Fastest Snappy compression library in Node.js",
   "keywords": [
     "snappy",
