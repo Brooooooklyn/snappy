@@ -5,7 +5,7 @@ const {
   compress: _compress,
   uncompress,
   uncompressSync,
-} = loadBinding(__dirname, 'snappy', '@napi-rs/snappy')
+} = loadBinding(__dirname, 'snappy', 'snappy')
 
 module.exports = {
   compressSync: function compressSync(input) {
