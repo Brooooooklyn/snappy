@@ -1,3 +1,12 @@
+## [7.0.1](https://github.com/Brooooooklyn/snappy/compare/v7.0.0...v7.0.1) (2021-08-04)
+
+
+### Bug Fixes
+
+* native binding package name ([6dc09af](https://github.com/Brooooooklyn/snappy/commit/6dc09af844700875dd1594fb70ec3b3af37de78b))
+
+
+
 # [7.0.0](https://github.com/Brooooooklyn/snappy/compare/v1.0.2...v7.0.0) (2021-08-04)
 
 Change package name to `snappy` [#16](https://github.com/Brooooooklyn/snappy/issues/16) .
