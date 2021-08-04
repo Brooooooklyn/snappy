@@ -132,7 +132,7 @@
     "@napi-rs/snappy-win32-ia32-msvc": "^7.0.0",
     "@napi-rs/snappy-linux-arm-gnueabihf": "^7.0.0",
     "@napi-rs/snappy-darwin-arm64": "^7.0.0",
-    "@napi-rs/snappy-android-arm64": "^7.0.0",
+    "@napi-rs/snappy-android-arm64": "^1.0.2",
     "@napi-rs/snappy-freebsd-x64": "^7.0.0",
     "@napi-rs/snappy-linux-arm64-musl": "^7.0.0",
     "@napi-rs/snappy-win32-arm64-msvc": "^7.0.0"
