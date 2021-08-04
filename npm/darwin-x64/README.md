@@ -1,3 +1,3 @@
-# `@napi-rs/snappy-darwin-x64`
+# `snappy-darwin-x64`
 
-This is the **x86_64-apple-darwin** binary for `@napi-rs/snappy`
+This is the **x86_64-apple-darwin** binary for `snappy`

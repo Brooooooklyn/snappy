@@ -1,5 +1,5 @@
 {
-  "name": "@napi-rs/snappy-freebsd-x64",
+  "name": "snappy-freebsd-x64",
   "version": "1.0.2",
   "os": ["freebsd"],
   "cpu": ["x64"],

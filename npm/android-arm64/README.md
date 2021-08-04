@@ -1,3 +1,3 @@
-# `@napi-rs/snappy-android-arm64`
+# `snappy-android-arm64`
 
-This is the **aarch64-linux-android** binary for `@napi-rs/snappy`
+This is the **aarch64-linux-android** binary for `snappy`

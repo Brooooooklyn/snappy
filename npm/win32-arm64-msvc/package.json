@@ -1,5 +1,5 @@
 {
-  "name": "@napi-rs/snappy-win32-arm64-msvc",
+  "name": "snappy-win32-arm64-msvc",
   "version": "1.0.2",
   "os": ["win32"],
   "cpu": ["arm64"],

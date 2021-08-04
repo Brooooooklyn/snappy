@@ -1,50 +1,53 @@
 import { readFileSync } from 'fs'
-import { cpus } from 'os'
 import { join } from 'path'
+import { promisify } from 'util'
+import {
+  gzip,
+  deflate,
+  brotliCompress,
+  inflate,
+  brotliDecompress,
+  gzipSync,
+  deflateSync,
+  brotliCompressSync,
+  gunzip,
+} from 'zlib'
 
 import b from 'benny'
-import { compress as compressCpp, uncompress as uncompressCpp } from 'snappy'
-// @ts-expect-error
-import { compress as compressJs } from 'snappyjs'
 
 import { compress, uncompress, compressSync } from '../index'
 
+const gzipAsync = promisify(gzip)
+const brotliCompressAsync = promisify(brotliCompress)
+const deflateAsync = promisify(deflate)
+const gunzipAsync = promisify(gunzip)
+const inflateAsync = promisify(inflate)
+const brotliDecompressAsync = promisify(brotliDecompress)
+
 const FIXTURE = readFileSync(join(__dirname, '..', 'yarn.lock'))
-const COMPRESSED_FIXTURE = Buffer.from(compressSync(FIXTURE))
-
-const THREADS = cpus().length
-
-function randomString(length: number) {
-  return Array.from({ length })
-    .map(() => String.fromCharCode(Math.floor(Math.random() * 256)))
-    .join('')
-}
-
-const SMALL_SIZE_FIXTURE = Buffer.from(randomString(100))
+const SNAPPY_COMPRESSED_FIXTURE = Buffer.from(compressSync(FIXTURE))
+const GZIP_FIXTURE = gzipSync(FIXTURE)
+const DEFLATED_FIXTURE = deflateSync(FIXTURE)
+const BROTLI_COMPRESSED_FIXTURE = brotliCompressSync(FIXTURE)
 
 async function run() {
   await b.suite(
-    'Compress data',
+    'Compress',
 
-    b.add('@napi-rs/snappy', async () => {
-      await Promise.all(Array.from({ length: THREADS }).map(() => compress(FIXTURE)))
+    b.add('snappy', () => {
+      return compress(FIXTURE)
     }),
 
-    b.add('snappy node', async () => {
-      await Promise.all(
-        Array.from({ length: THREADS }).map(
-          () =>
-            new Promise((resolve, reject) => {
-              compressCpp(FIXTURE, (err, buffer) => {
-                if (err) {
-                  reject(err)
-                } else {
-                  resolve(buffer)
-                }
-              })
-            }),
-        ),
-      )
+    b.add('gzip', () => {
+      return gzipAsync(FIXTURE)
+    }),
+
+    b.add('deflate', () => {
+      return deflateAsync(FIXTURE)
+    }),
+
+    b.add('brotli', () => {
+      return brotliCompressAsync(FIXTURE)
     }),
 
     b.cycle(),
@@ -52,42 +55,22 @@ async function run() {
   )
 
   await b.suite(
-    'Uncompress data',
+    'Decompress',
 
-    b.add('@napi-rs/snappy', async () => {
-      await Promise.all(Array.from({ length: THREADS }).map(() => uncompress(COMPRESSED_FIXTURE)))
+    b.add('snappy', () => {
+      return uncompress(SNAPPY_COMPRESSED_FIXTURE)
     }),
 
-    b.add('snappy node', async () => {
-      await Promise.all(
-        Array.from({ length: THREADS }).map(
-          () =>
-            new Promise((resolve, reject) => {
-              uncompressCpp(COMPRESSED_FIXTURE, { asBuffer: true }, (err, buffer) => {
-                if (err) {
-                  reject(err)
-                } else {
-                  resolve(buffer)
-                }
-              })
-            }),
-        ),
-      )
+    b.add('gzip', () => {
+      return gunzipAsync(GZIP_FIXTURE)
     }),
 
-    b.cycle(),
-    b.complete(),
-  )
-
-  await b.suite(
-    'Small size sync compress',
-
-    b.add('@napi-rs/snappy', () => {
-      compressSync(SMALL_SIZE_FIXTURE)
+    b.add('deflate', () => {
+      return inflateAsync(DEFLATED_FIXTURE)
     }),
 
-    b.add('snappy js', () => {
-      compressJs(SMALL_SIZE_FIXTURE)
+    b.add('brotli', () => {
+      return brotliDecompressAsync(BROTLI_COMPRESSED_FIXTURE)
     }),
 
     b.cycle(),

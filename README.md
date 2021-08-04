@@ -1,7 +1,12 @@
-# `@napi-rs/snappy`
+# `snappy`
 
 ![https://github.com/Brooooooklyn/snappy/actions](https://github.com/Brooooooklyn/snappy/workflows/CI/badge.svg)
-![](https://img.shields.io/npm/dm/@napi-rs/snappy.svg?sanitize=true)
+![](https://img.shields.io/npm/dm/snappy.svg?sanitize=true)
+[![Install size](https://packagephobia.com/badge?p=snappy)](https://packagephobia.com/result?p=snappy)
+
+**!!! For `snappy@6.x` and below, please go to [`node-snappy`](https://github.com/kesla/node-snappy).**
+
+More background about the **6-7** changes, please read [this](https://github.com/Brooooooklyn/snappy/issues/16), Thanks [@kesla](https://github.com/kesla) .
 
 > 🚀 Help me to become a full-time open-source developer by [sponsoring me on Github](https://github.com/sponsors/Brooooooklyn)
 
@@ -12,7 +17,7 @@ Fastest Snappy compression library in Node.js, powered by [napi-rs](https://napi
 ## Install this package
 
 ```
-yarn add @napi-rs/snappy
+yarn add snappy
 ```
 
 ## Support matrix
@@ -46,52 +51,56 @@ export function uncompress(compressed: Buffer): Promise<Buffer>
 ### Hardware
 
 ```
-OS: Windows 10 x86_64
-Host: Micro-Star International Co., Ltd. MS-7C35
-Kernel: 10.0.19043
-Terminal: Windows Terminal
-CPU: AMD Ryzen 9 5950X (32) @ 3.400GHz
-Memory: 15959MiB / 32688MiB
+Model Name: MacBook Pro
+Model Identifier: MacBookPro15,1
+Processor Name: 6-Core Intel Core i7
+Processor Speed: 2.6 GHz
+Number of Processors: 1
+Total Number of Cores: 6
+L2 Cache (per Core): 256 KB
+L3 Cache: 12 MB
+Hyper-Threading Technology: Enabled
+Memory: 16 GB
 ```
 
 ### Result
 
 ```
-Running "Compress data" suite...
-Progress: 100%
+Running "Compress" suite...
+Progress: 25%
 
-  @napi-rs/snappy:
-    333 ops/s, ±2.10%   | fastest
+  snappy:
+    1 426 ops/s, ±2.26%
 
-  snappy node:
-    163 ops/s, ±1.44%   | slowest, 51.05% slower
+  gzip:
+    152 ops/s, ±1.54%
 
-Finished 2 cases!
-  Fastest: @napi-rs/snappy
-  Slowest: snappy node
-Running "Uncompress data" suite...
-Progress: 100%
+  deflate:
+    155 ops/s, ±2.14%
 
-  @napi-rs/snappy:
-    980 ops/s, ±1.85%   | fastest
+  brotli:
+    3 ops/s, ±3.43%       | slowest, 99.79% slower
 
-  snappy node:
-    256 ops/s, ±0.61%   | slowest, 73.88% slower
+Finished 4 cases!
+  Fastest: snappy
+  Slowest: brotli
 
-Finished 2 cases!
-  Fastest: @napi-rs/snappy
-  Slowest: snappy node
+Running "Decompress" suite...
+Progress: 25%
 
-Running "Small size sync compress" suite...
-Progress: 100%
+  snappy:
+    2 771 ops/s, ±1.13%
 
-  @napi-rs/snappy:
-    505 211 ops/s, ±7.97%   | slowest, 47% slower
+  gzip:
+    854 ops/s, ±6.99%
 
-  snappy js:
-    953 272 ops/s, ±0.37%   | fastest
+  deflate:
+    877 ops/s, ±3.19%
 
-Finished 2 cases!
-  Fastest: snappy js
-  Slowest: @napi-rs/snappy
+  brotli:
+    638 ops/s, ±2.31%     | slowest, 76.98% slower
+
+Finished 4 cases!
+  Fastest: snappy
+  Slowest: brotli
 ```
