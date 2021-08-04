@@ -1,3 +1,7 @@
+# [7.0.0](https://github.com/Brooooooklyn/snappy/compare/v1.0.2...v7.0.0) (2021-08-04)
+
+Change package name to `snappy` [#16](https://github.com/Brooooooklyn/snappy/issues/16) .
+
 ## [1.0.2](https://github.com/Brooooooklyn/snappy/compare/v1.0.1...v1.0.2) (2021-07-22)
 
 ### Bug Fixes
