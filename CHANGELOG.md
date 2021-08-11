@@ -1,3 +1,12 @@
+## [7.0.2](https://github.com/Brooooooklyn/snappy/compare/v7.0.1...v7.0.2) (2021-08-11)
+
+
+### Bug Fixes
+
+* missing asBuffer option in uncompress/uncompressSync ([ac573f8](https://github.com/Brooooooklyn/snappy/commit/ac573f8523abd7cd3642eb8557fc51f43acbc34c))
+
+
+
 ## [7.0.1](https://github.com/Brooooooklyn/snappy/compare/v7.0.0...v7.0.1) (2021-08-04)
 
 

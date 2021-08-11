@@ -1,6 +1,6 @@
 {
   "name": "@napi-rs/snappy-linux-x64-gnu",
-  "version": "7.0.1",
+  "version": "7.0.2",
   "os": [
     "linux"
   ],
