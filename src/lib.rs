@@ -3,7 +3,12 @@
 #[macro_use]
 extern crate napi_derive;
 
-use napi::{CallContext, Env, Error, JsBuffer, JsBufferValue, JsObject, Ref, Result, Status, Task};
+use std::ffi::CString;
+
+use napi::{
+  CallContext, Env, Error, JsBoolean, JsBuffer, JsBufferValue, JsObject, JsUnknown, Ref, Result,
+  Status, Task,
+};
 use snap::raw::{Decoder, Encoder};
 
 #[cfg(all(
@@ -48,11 +53,12 @@ impl Task for Enc {
 struct Dec {
   inner: Decoder,
   data: Ref<JsBufferValue>,
+  as_buffer: bool,
 }
 
 impl Task for Dec {
   type Output = Vec<u8>;
-  type JsValue = JsBuffer;
+  type JsValue = JsUnknown;
 
   fn compute(&mut self) -> Result<Self::Output> {
     let data_ref: &[u8] = &self.data;
@@ -63,7 +69,15 @@ impl Task for Dec {
   }
 
   fn resolve(self, env: Env, output: Self::Output) -> Result<Self::JsValue> {
-    env.create_buffer_with_data(output).map(|b| b.into_raw())
+    if self.as_buffer {
+      env
+        .create_buffer_with_data(output)
+        .map(|b| b.into_raw().into_unknown())
+    } else {
+      let len = output.len();
+      let c_string = CString::new(output)?;
+      unsafe { env.create_string_from_c_char(c_string.as_ptr(), len) }.map(|v| v.into_unknown())
+    }
   }
 }
 
@@ -89,24 +103,38 @@ fn compress(ctx: CallContext) -> Result<JsObject> {
   ctx.env.spawn(encoder).map(|v| v.promise_object())
 }
 
-#[js_function(1)]
-fn uncompress_sync(ctx: CallContext) -> Result<JsBuffer> {
+#[js_function(2)]
+fn uncompress_sync(ctx: CallContext) -> Result<JsUnknown> {
   let data = ctx.get::<JsBuffer>(0)?;
+  let as_buffer = ctx.get::<JsBoolean>(1)?.get_value()?;
   let mut dec = Decoder::new();
   dec
     .decompress_vec(&data.into_value()?)
     .map_err(|e| Error::new(napi::Status::GenericFailure, format!("{}", e)))
-    .and_then(|d| ctx.env.create_buffer_with_data(d))
-    .map(|b| b.into_raw())
+    .and_then(|d| {
+      if as_buffer {
+        ctx
+          .env
+          .create_buffer_with_data(d)
+          .map(|b| b.into_raw().into_unknown())
+      } else {
+        let len = d.len();
+        let c_string = CString::new(d)?;
+        unsafe { ctx.env.create_string_from_c_char(c_string.as_ptr(), len) }
+          .map(|v| v.into_unknown())
+      }
+    })
 }
 
-#[js_function(1)]
+#[js_function(2)]
 fn uncompress(ctx: CallContext) -> Result<JsObject> {
   let data = ctx.get::<JsBuffer>(0)?;
+  let as_buffer = ctx.get::<JsBoolean>(1)?.get_value()?;
   let dec = Decoder::new();
   let decoder = Dec {
     inner: dec,
     data: data.into_ref()?,
+    as_buffer,
   };
   ctx.env.spawn(decoder).map(|v| v.promise_object())
 }
