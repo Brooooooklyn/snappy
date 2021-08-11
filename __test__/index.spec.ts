@@ -12,12 +12,22 @@ test('compress should be async version of compressSync', async (t) => {
   t.deepEqual(await compress(fixture), compressSync(fixture))
 })
 
-test('should be able to decompress sync', (t) => {
+test('should be able to uncompress sync', (t) => {
   const fixture = 'hello world 😂 🎧 🚀'
   t.deepEqual(uncompressSync(compressSync(fixture)), Buffer.from(fixture))
 })
 
-test('should be able to decompress', async (t) => {
+test('should be able to uncompress sync into string', (t) => {
+  const fixture = 'hello world 😂 🎧 🚀'
+  t.deepEqual(uncompressSync(compressSync(fixture), { asBuffer: false }), fixture)
+})
+
+test('should be able to uncompress', async (t) => {
   const fixture = 'hello world 😂 🎧 🚀'
   t.deepEqual(await uncompress(await compress(fixture)), Buffer.from(fixture))
+})
+
+test('should be able to uncompress into string', async (t) => {
+  const fixture = 'hello world 😂 🎧 🚀'
+  t.deepEqual(await uncompress(await compress(fixture), { asBuffer: false }), fixture)
 })

@@ -3,8 +3,8 @@ const { loadBinding } = require('@node-rs/helper')
 const {
   compressSync: _compressSync,
   compress: _compress,
-  uncompress,
-  uncompressSync,
+  uncompress: _uncompress,
+  uncompressSync: _uncompressSync,
 } = loadBinding(__dirname, 'snappy', '@napi-rs/snappy')
 
 module.exports = {
@@ -14,6 +14,10 @@ module.exports = {
   compress: function compress(input) {
     return _compress(Buffer.from(input))
   },
-  uncompress,
-  uncompressSync,
+  uncompress: function uncompress(input, opt = { asBuffer: true }) {
+    return _uncompress(input, Boolean(opt.asBuffer))
+  },
+  uncompressSync: function uncompressSync(input, opt = { asBuffer: true }) {
+    return _uncompressSync(input, Boolean(opt.asBuffer))
+  },
 }
