@@ -6,8 +6,7 @@ extern crate napi_derive;
 use std::ffi::CString;
 
 use napi::{
-  CallContext, Env, Error, JsBoolean, JsBuffer, JsBufferValue, JsObject, JsUnknown, Ref, Result,
-  Status, Task,
+  CallContext, Env, Error, JsBoolean, JsBuffer, JsObject, JsUnknown, Result, Status, Task,
 };
 use snap::raw::{Decoder, Encoder};
 
@@ -30,7 +29,7 @@ fn init(mut exports: JsObject) -> Result<()> {
 
 struct Enc {
   inner: Encoder,
-  data: Ref<JsBufferValue>,
+  data: Vec<u8>,
 }
 
 impl Task for Enc {
@@ -52,7 +51,7 @@ impl Task for Enc {
 
 struct Dec {
   inner: Decoder,
-  data: Ref<JsBufferValue>,
+  data: Vec<u8>,
   as_buffer: bool,
 }
 
@@ -98,7 +97,7 @@ fn compress(ctx: CallContext) -> Result<JsObject> {
   let enc = Encoder::new();
   let encoder = Enc {
     inner: enc,
-    data: data.into_ref()?,
+    data: data.into_value()?.to_vec(),
   };
   ctx.env.spawn(encoder).map(|v| v.promise_object())
 }
@@ -133,7 +132,7 @@ fn uncompress(ctx: CallContext) -> Result<JsObject> {
   let dec = Decoder::new();
   let decoder = Dec {
     inner: dec,
-    data: data.into_ref()?,
+    data: data.into_value()?.to_vec(),
     as_buffer,
   };
   ctx.env.spawn(decoder).map(|v| v.promise_object())
