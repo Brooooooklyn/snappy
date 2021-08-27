@@ -1,3 +1,12 @@
+## [7.0.3](https://github.com/Brooooooklyn/snappy/compare/v7.0.2...v7.0.3) (2021-08-27)
+
+
+### Bug Fixes
+
+* remove Ref usage to avoid memory leak ([c89bb2e](https://github.com/Brooooooklyn/snappy/commit/c89bb2e278a1f9ad3a2e14c790e069bc699fe492))
+
+
+
 ## [7.0.2](https://github.com/Brooooooklyn/snappy/compare/v7.0.1...v7.0.2) (2021-08-11)
 
 

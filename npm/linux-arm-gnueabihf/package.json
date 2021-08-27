@@ -1,6 +1,6 @@
 {
   "name": "@napi-rs/snappy-linux-arm-gnueabihf",
-  "version": "7.0.2",
+  "version": "7.0.3",
   "os": [
     "linux"
   ],
