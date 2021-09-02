@@ -60,6 +60,7 @@
     "lint": "eslint -c ./.eslintrc.yml .",
     "prepublishOnly": "napi prepublish -t npm && node ./rename-optional-deps.js",
     "test": "ava",
+    "test:mem": "node ./memory-leak-detect.js",
     "version": "napi version && conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "devDependencies": {
@@ -80,6 +81,8 @@
     "lint-staged": "^11.1.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.3.2",
+    "pretty-bytes": "^5.6.0",
+    "table": "^6.7.1",
     "typescript": "^4.3.5"
   },
   "dependencies": {
