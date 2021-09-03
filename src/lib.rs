@@ -6,7 +6,8 @@ extern crate napi_derive;
 use std::ffi::CString;
 
 use napi::{
-  CallContext, Env, Error, JsBoolean, JsBuffer, JsObject, JsUnknown, Result, Status, Task,
+  CallContext, Env, Error, JsBoolean, JsBuffer, JsBufferValue, JsObject, JsUnknown, Ref, Result,
+  Status, Task,
 };
 use snap::raw::{Decoder, Encoder};
 
@@ -29,7 +30,7 @@ fn init(mut exports: JsObject) -> Result<()> {
 
 struct Enc {
   inner: Encoder,
-  data: Vec<u8>,
+  data: Ref<JsBufferValue>,
 }
 
 impl Task for Enc {
@@ -45,13 +46,19 @@ impl Task for Enc {
   }
 
   fn resolve(self, env: Env, output: Self::Output) -> Result<Self::JsValue> {
+    self.data.unref(env)?;
     env.create_buffer_with_data(output).map(|b| b.into_raw())
+  }
+
+  fn reject(self, env: Env, err: Error) -> Result<Self::JsValue> {
+    self.data.unref(env)?;
+    Err(err)
   }
 }
 
 struct Dec {
   inner: Decoder,
-  data: Vec<u8>,
+  data: Ref<JsBufferValue>,
   as_buffer: bool,
 }
 
@@ -68,6 +75,7 @@ impl Task for Dec {
   }
 
   fn resolve(self, env: Env, output: Self::Output) -> Result<Self::JsValue> {
+    self.data.unref(env)?;
     if self.as_buffer {
       env
         .create_buffer_with_data(output)
@@ -77,6 +85,11 @@ impl Task for Dec {
       let c_string = CString::new(output)?;
       unsafe { env.create_string_from_c_char(c_string.as_ptr(), len) }.map(|v| v.into_unknown())
     }
+  }
+
+  fn reject(self, env: Env, err: Error) -> Result<Self::JsValue> {
+    self.data.unref(env)?;
+    Err(err)
   }
 }
 
@@ -97,7 +110,7 @@ fn compress(ctx: CallContext) -> Result<JsObject> {
   let enc = Encoder::new();
   let encoder = Enc {
     inner: enc,
-    data: data.into_value()?.to_vec(),
+    data: data.into_ref()?,
   };
   ctx.env.spawn(encoder).map(|v| v.promise_object())
 }
@@ -132,7 +145,7 @@ fn uncompress(ctx: CallContext) -> Result<JsObject> {
   let dec = Decoder::new();
   let decoder = Dec {
     inner: dec,
-    data: data.into_value()?.to_vec(),
+    data: data.into_ref()?,
     as_buffer,
   };
   ctx.env.spawn(decoder).map(|v| v.promise_object())
