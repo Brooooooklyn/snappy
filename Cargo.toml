@@ -1,6 +1,6 @@
 [package]
 authors = ["LongYinan <lynweklm@gmail.com>"]
-edition = "2018"
+edition = "2021"
 name = "napi-snappy"
 version = "0.1.0"
 
@@ -19,4 +19,5 @@ mimalloc = {version = "0.1"}
 napi-build = "1"
 
 [profile.release]
+codgen-units = 1
 lto = true
