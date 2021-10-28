@@ -1,6 +1,6 @@
 {
   "name": "snappy",
-  "version": "7.0.3",
+  "version": "7.0.4",
   "description": "Fastest Snappy compression library in Node.js",
   "main": "index.js",
   "repository": "https://github.com/Brooooooklyn/snappy",

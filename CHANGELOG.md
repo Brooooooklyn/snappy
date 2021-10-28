@@ -1,3 +1,12 @@
+## [7.0.4](https://github.com/Brooooooklyn/snappy/compare/v7.0.3...v7.0.4) (2021-10-28)
+
+
+### Bug Fixes
+
+* avoid copy input buffer ([00cdd39](https://github.com/Brooooooklyn/snappy/commit/00cdd39a9576567620216ad01c8d063bac32ac77))
+
+
+
 ## [7.0.3](https://github.com/Brooooooklyn/snappy/compare/v7.0.2...v7.0.3) (2021-08-27)
 
 
