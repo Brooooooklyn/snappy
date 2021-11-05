@@ -16,9 +16,9 @@ module.exports.compressSync = function compressSync(input) {
 }
 
 module.exports.uncompress = function uncompress(input, opt = { asBuffer: true }) {
-  return _uncompress(input, Boolean(opt.asBuffer))
+  return _uncompress(Buffer.isBuffer(input) ? input : Buffer.from(input), Boolean(opt.asBuffer))
 }
 
 module.exports.uncompressSync = function uncompressSync(input, opt = { asBuffer: true }) {
-  return _uncompressSync(input, Boolean(opt.asBuffer))
+  return _uncompressSync(Buffer.isBuffer(input) ? input : Buffer.from(input), Boolean(opt.asBuffer))
 }
