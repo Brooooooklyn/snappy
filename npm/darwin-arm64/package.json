@@ -1,6 +1,6 @@
 {
   "name": "@napi-rs/snappy-darwin-arm64",
-  "version": "7.0.4",
+  "version": "7.0.5",
   "os": [
     "darwin"
   ],

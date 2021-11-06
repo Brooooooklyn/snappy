@@ -1,3 +1,12 @@
+## [7.0.5](https://github.com/Brooooooklyn/snappy/compare/v7.0.4...v7.0.5) (2021-11-06)
+
+
+### Bug Fixes
+
+* **decompress:** cast input to buffer ([9bdf8f3](https://github.com/Brooooooklyn/snappy/commit/9bdf8f39d4a6792798a3641b6a5b4d2d5dfe6b45)), closes [#38](https://github.com/Brooooooklyn/snappy/issues/38)
+
+
+
 ## [7.0.4](https://github.com/Brooooooklyn/snappy/compare/v7.0.3...v7.0.4) (2021-10-28)
 
 
