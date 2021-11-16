@@ -1,15 +1,15 @@
 {
-  "name": "snappy-linux-arm-gnueabihf",
+  "name": "snappy-android-arm-eabi",
   "version": "7.0.5",
   "os": [
-    "linux"
+    "android"
   ],
   "cpu": [
     "arm"
   ],
-  "main": "snappy.linux-arm-gnueabihf.node",
+  "main": "snappy.android-arm-eabi.node",
   "files": [
-    "snappy.linux-arm-gnueabihf.node"
+    "snappy.android-arm-eabi.node"
   ],
   "description": "Fastest Snappy compression library in Node.js",
   "keywords": [

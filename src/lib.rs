@@ -3,12 +3,7 @@
 #[macro_use]
 extern crate napi_derive;
 
-use std::ffi::CString;
-
-use napi::{
-  CallContext, Env, Error, JsBoolean, JsBuffer, JsBufferValue, JsObject, JsUnknown, Ref, Result,
-  Status, Task,
-};
+use napi::{bindgen_prelude::*, JsBuffer, JsBufferValue, Ref};
 use snap::raw::{Decoder, Encoder};
 
 #[cfg(all(
@@ -19,134 +14,165 @@ use snap::raw::{Decoder, Encoder};
 #[global_allocator]
 static ALLOC: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
-#[module_exports]
-fn init(mut exports: JsObject) -> Result<()> {
-  exports.create_named_method("compressSync", compress_sync)?;
-  exports.create_named_method("compress", compress)?;
-  exports.create_named_method("uncompressSync", uncompress_sync)?;
-  exports.create_named_method("uncompress", uncompress)?;
-  Ok(())
+pub enum Data {
+  Buffer(Ref<JsBufferValue>),
+  String(String),
+}
+
+#[napi(object)]
+pub struct Options {
+  pub as_buffer: Option<bool>,
+}
+
+impl TryFrom<Either<String, JsBuffer>> for Data {
+  type Error = Error;
+
+  fn try_from(value: Either<String, JsBuffer>) -> Result<Self> {
+    match value {
+      Either::A(s) => Ok(Data::String(s)),
+      Either::B(b) => Ok(Data::Buffer(b.into_ref()?)),
+    }
+  }
 }
 
 struct Enc {
   inner: Encoder,
-  data: Ref<JsBufferValue>,
+  data: Data,
 }
 
+#[napi]
 impl Task for Enc {
   type Output = Vec<u8>;
   type JsValue = JsBuffer;
 
   fn compute(&mut self) -> Result<Self::Output> {
-    let data_ref: &[u8] = &self.data;
     self
       .inner
-      .compress_vec(data_ref)
+      .compress_vec(match self.data {
+        Data::Buffer(ref b) => b.as_ref(),
+        Data::String(ref s) => s.as_bytes(),
+      })
       .map_err(|e| Error::new(Status::GenericFailure, format!("{}", e)))
   }
 
-  fn resolve(self, env: Env, output: Self::Output) -> Result<Self::JsValue> {
-    self.data.unref(env)?;
+  fn resolve(&mut self, env: Env, output: Self::Output) -> Result<Self::JsValue> {
     env.create_buffer_with_data(output).map(|b| b.into_raw())
   }
 
-  fn reject(self, env: Env, err: Error) -> Result<Self::JsValue> {
-    self.data.unref(env)?;
-    Err(err)
+  fn finally(&mut self, env: Env) -> Result<()> {
+    if let Data::Buffer(b) = &mut self.data {
+      b.unref(env)?;
+    }
+    Ok(())
   }
 }
 
 struct Dec {
   inner: Decoder,
-  data: Ref<JsBufferValue>,
+  data: Data,
   as_buffer: bool,
 }
 
+#[napi]
 impl Task for Dec {
   type Output = Vec<u8>;
-  type JsValue = JsUnknown;
+  type JsValue = Either<String, Buffer>;
 
   fn compute(&mut self) -> Result<Self::Output> {
-    let data_ref: &[u8] = &self.data;
     self
       .inner
-      .decompress_vec(data_ref)
+      .decompress_vec(match self.data {
+        Data::Buffer(ref b) => b.as_ref(),
+        Data::String(ref s) => s.as_bytes(),
+      })
       .map_err(|e| Error::new(Status::GenericFailure, format!("{}", e)))
   }
 
-  fn resolve(self, env: Env, output: Self::Output) -> Result<Self::JsValue> {
-    self.data.unref(env)?;
+  fn resolve(&mut self, _env: Env, output: Self::Output) -> Result<Self::JsValue> {
     if self.as_buffer {
-      env
-        .create_buffer_with_data(output)
-        .map(|b| b.into_raw().into_unknown())
+      Ok(Either::B(output.into()))
     } else {
-      let len = output.len();
-      let c_string = CString::new(output)?;
-      unsafe { env.create_string_from_c_char(c_string.as_ptr(), len) }.map(|v| v.into_unknown())
+      Ok(Either::A(String::from_utf8(output).map_err(|e| {
+        Error::new(Status::GenericFailure, format!("{}", e))
+      })?))
     }
   }
 
-  fn reject(self, env: Env, err: Error) -> Result<Self::JsValue> {
-    self.data.unref(env)?;
-    Err(err)
+  fn finally(&mut self, env: Env) -> Result<()> {
+    if let Data::Buffer(b) = &mut self.data {
+      b.unref(env)?;
+    }
+    Ok(())
   }
 }
 
-#[js_function(1)]
-fn compress_sync(ctx: CallContext) -> Result<JsBuffer> {
-  let data = ctx.get::<JsBuffer>(0)?;
+#[napi]
+pub fn compress_sync(input: Either<Buffer, String>) -> Result<Buffer> {
   let mut enc = Encoder::new();
   enc
-    .compress_vec(&data.into_value()?)
+    .compress_vec(match input {
+      Either::A(ref b) => b.as_ref(),
+      Either::B(ref s) => s.as_bytes(),
+    })
     .map_err(|e| Error::new(napi::Status::GenericFailure, format!("{}", e)))
-    .and_then(|d| ctx.env.create_buffer_with_data(d))
-    .map(|b| b.into_raw())
+    .map(|v| v.into())
 }
 
-#[js_function(1)]
-fn compress(ctx: CallContext) -> Result<JsObject> {
-  let data = ctx.get::<JsBuffer>(0)?;
+#[napi]
+fn compress(
+  input: Either<String, JsBuffer>,
+  signal: Option<AbortSignal>,
+) -> Result<AsyncTask<Enc>> {
   let enc = Encoder::new();
   let encoder = Enc {
     inner: enc,
-    data: data.into_ref()?,
+    data: Data::try_from(input)?,
   };
-  ctx.env.spawn(encoder).map(|v| v.promise_object())
+  match signal {
+    Some(s) => Ok(AsyncTask::with_signal(encoder, s)),
+    None => Ok(AsyncTask::new(encoder)),
+  }
 }
 
-#[js_function(2)]
-fn uncompress_sync(ctx: CallContext) -> Result<JsUnknown> {
-  let data = ctx.get::<JsBuffer>(0)?;
-  let as_buffer = ctx.get::<JsBoolean>(1)?.get_value()?;
+#[napi]
+fn uncompress_sync(
+  input: Either<String, Buffer>,
+  as_buffer: Option<Options>,
+) -> Result<Either<String, Buffer>> {
+  let as_buffer = as_buffer.and_then(|o| o.as_buffer).unwrap_or(true);
   let mut dec = Decoder::new();
   dec
-    .decompress_vec(&data.into_value()?)
+    .decompress_vec(match input {
+      Either::A(ref s) => s.as_bytes(),
+      Either::B(ref b) => b.as_ref(),
+    })
     .map_err(|e| Error::new(napi::Status::GenericFailure, format!("{}", e)))
     .and_then(|d| {
       if as_buffer {
-        ctx
-          .env
-          .create_buffer_with_data(d)
-          .map(|b| b.into_raw().into_unknown())
+        Ok(Either::B(d.into()))
       } else {
-        let len = d.len();
-        let c_string = CString::new(d)?;
-        unsafe { ctx.env.create_string_from_c_char(c_string.as_ptr(), len) }
-          .map(|v| v.into_unknown())
+        Ok(Either::A(String::from_utf8(d).map_err(|e| {
+          Error::new(Status::GenericFailure, format!("{}", e))
+        })?))
       }
     })
 }
 
-#[js_function(2)]
-fn uncompress(ctx: CallContext) -> Result<JsObject> {
-  let data = ctx.get::<JsBuffer>(0)?;
-  let as_buffer = ctx.get::<JsBoolean>(1)?.get_value()?;
+#[napi]
+fn uncompress(
+  input: Either<String, JsBuffer>,
+  options: Option<Options>,
+  signal: Option<AbortSignal>,
+) -> Result<AsyncTask<Dec>> {
+  let as_buffer = options.and_then(|o| o.as_buffer).unwrap_or(true);
   let dec = Decoder::new();
   let decoder = Dec {
     inner: dec,
-    data: data.into_ref()?,
+    data: Data::try_from(input)?,
     as_buffer,
   };
-  ctx.env.spawn(decoder).map(|v| v.promise_object())
+  match signal {
+    Some(s) => Ok(AsyncTask::with_signal(decoder, s)),
+    None => Ok(AsyncTask::new(decoder)),
+  }
 }

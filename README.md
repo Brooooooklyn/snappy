@@ -22,20 +22,21 @@ yarn add snappy
 
 ## Support matrix
 
-|                  | node12 | node14 | node16 |
-| ---------------- | ------ | ------ | ------ |
-| Windows x64      | ✓      | ✓      | ✓      |
-| Windows x32      | ✓      | ✓      | ✓      |
-| Windows arm64    | ✓      | ✓      | ✓      |
-| macOS x64        | ✓      | ✓      | ✓      |
-| macOS arm64      | ✓      | ✓      | ✓      |
-| Linux x64 gnu    | ✓      | ✓      | ✓      |
-| Linux x64 musl   | ✓      | ✓      | ✓      |
-| Linux arm gnu    | ✓      | ✓      | ✓      |
-| Linux arm64 gnu  | ✓      | ✓      | ✓      |
-| Linux arm64 musl | ✓      | ✓      | ✓      |
-| Android arm64    | ✓      | ✓      | ✓      |
-| FreeBSD x64      | ✓      | ✓      | ✓      |
+|                  | node12 | node14 | node16 | node17 |
+| ---------------- | ------ | ------ | ------ | ------ |
+| Windows x64      | ✓      | ✓      | ✓      | ✓      |
+| Windows x32      | ✓      | ✓      | ✓      | ✓      |
+| Windows arm64    | ✓      | ✓      | ✓      | ✓      |
+| macOS x64        | ✓      | ✓      | ✓      | ✓      |
+| macOS arm64      | ✓      | ✓      | ✓      | ✓      |
+| Linux x64 gnu    | ✓      | ✓      | ✓      | ✓      |
+| Linux x64 musl   | ✓      | ✓      | ✓      | ✓      |
+| Linux arm gnu    | ✓      | ✓      | ✓      | ✓      |
+| Linux arm64 gnu  | ✓      | ✓      | ✓      | ✓      |
+| Linux arm64 musl | ✓      | ✓      | ✓      | ✓      |
+| Android arm64    | ✓      | ✓      | ✓      | ✓      |
+| Android armv7    | ✓      | ✓      | ✓      | ✓      |
+| FreeBSD x64      | ✓      | ✓      | ✓      | ✓      |
 
 ## API
 
@@ -51,54 +52,50 @@ export function uncompress(compressed: Buffer): Promise<Buffer>
 ### Hardware
 
 ```
-Model Name: MacBook Pro
-Model Identifier: MacBookPro15,1
-Processor Name: 6-Core Intel Core i7
-Processor Speed: 2.6 GHz
-Number of Processors: 1
-Total Number of Cores: 6
-L2 Cache (per Core): 256 KB
-L3 Cache: 12 MB
-Hyper-Threading Technology: Enabled
-Memory: 16 GB
+OS: Windows 11 x86_64
+Host: Micro-Star International Co., Ltd. MS-7C35
+Kernel: 10.0.22000
+Terminal: Windows Terminal
+CPU: AMD Ryzen 9 5950X (32) @ 3.400GHz
+Memory: 32688MiB
 ```
 
 ### Result
 
 ```
 Running "Compress" suite...
-Progress: 25%
+Progress: 100%
 
   snappy:
-    1 426 ops/s, ±2.26%
+    4 690 ops/s, ±0.66%   | fastest
 
   gzip:
-    152 ops/s, ±1.54%
+    259 ops/s, ±0.85%     | 94.48% slower
 
   deflate:
-    155 ops/s, ±2.14%
+    262 ops/s, ±0.59%     | 94.41% slower
 
   brotli:
-    3 ops/s, ±3.43%       | slowest, 99.79% slower
+    7 ops/s, ±0.51%       | slowest, 99.85% slower
 
 Finished 4 cases!
   Fastest: snappy
   Slowest: brotli
 
 Running "Decompress" suite...
-Progress: 25%
+Progress: 100%
 
   snappy:
-    2 771 ops/s, ±1.13%
+    9 285 ops/s, ±6.18%   | fastest
 
   gzip:
-    854 ops/s, ±6.99%
+    1 511 ops/s, ±1.96%   | 83.73% slower
 
   deflate:
-    877 ops/s, ±3.19%
+    1 763 ops/s, ±1.36%   | 81.01% slower
 
   brotli:
-    638 ops/s, ±2.31%     | slowest, 76.98% slower
+    1 208 ops/s, ±1.50%   | slowest, 86.99% slower
 
 Finished 4 cases!
   Fastest: snappy

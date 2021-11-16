@@ -1,8 +1,8 @@
-const chalk = require('chalk')
-const prettyBytes = require('pretty-bytes')
-const { table } = require('table')
+import chalk from 'chalk'
+import prettyBytes from 'pretty-bytes'
+import { table } from 'table'
 
-module.exports.displayMemoryUsageFromNode = function displayMemoryUsageFromNode(initialMemoryUsage) {
+export function displayMemoryUsageFromNode(initialMemoryUsage) {
   const finalMemoryUsage = process.memoryUsage()
   const titles = Object.keys(initialMemoryUsage).map((k) => chalk.whiteBright(k))
   const tableData = [titles]
