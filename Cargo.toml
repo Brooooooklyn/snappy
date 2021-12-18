@@ -8,8 +8,8 @@ version = "0.1.0"
 crate-type = ["cdylib"]
 
 [dependencies]
-napi = {version = "1", features = ["napi5"]}
-napi-derive = "1"
+napi = {version = "2", features = ["napi5", "serde-json"]}
+napi-derive = {version = "2"}
 snap = "1"
 
 [target.'cfg(all(target_arch = "x86_64", not(target_env = "musl")))'.dependencies]
@@ -19,5 +19,5 @@ mimalloc = {version = "0.1"}
 napi-build = "1"
 
 [profile.release]
-codgen-units = 1
+codegen-units = 1
 lto = true

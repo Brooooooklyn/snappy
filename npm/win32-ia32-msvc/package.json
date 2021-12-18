@@ -1,5 +1,5 @@
 {
-  "name": "@napi-rs/snappy-win32-ia32-msvc",
+  "name": "snappy-win32-ia32-msvc",
   "version": "7.0.5",
   "os": [
     "win32"

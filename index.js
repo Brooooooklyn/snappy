@@ -1,24 +1,200 @@
-const { loadBinding } = require('@node-rs/helper')
+const { existsSync, readFileSync } = require('fs')
+const { join } = require('path')
 
-const {
-  compressSync: _compressSync,
-  compress: _compress,
-  uncompress: _uncompress,
-  uncompressSync: _uncompressSync,
-} = loadBinding(__dirname, 'snappy', '@napi-rs/snappy')
+const { platform, arch } = process
 
-module.exports.compress = function compress(input) {
-  return _compress(Buffer.isBuffer(input) ? input : Buffer.from(input))
+let nativeBinding = null
+let localFileExisted = false
+let isMusl = false
+let loadError = null
+
+switch (platform) {
+  case 'android':
+    if (arch !== 'arm64') {
+      throw new Error(`Unsupported architecture on Android ${arch}`)
+    }
+    localFileExisted = existsSync(join(__dirname, 'snappy.android-arm64.node'))
+    try {
+      if (localFileExisted) {
+        nativeBinding = require('./snappy.android-arm64.node')
+      } else {
+        nativeBinding = require('snappy-android-arm64')
+      }
+    } catch (e) {
+      loadError = e
+    }
+    break
+  case 'win32':
+    switch (arch) {
+      case 'x64':
+        localFileExisted = existsSync(join(__dirname, 'snappy.win32-x64-msvc.node'))
+        try {
+          if (localFileExisted) {
+            nativeBinding = require('./snappy.win32-x64-msvc.node')
+          } else {
+            nativeBinding = require('snappy-win32-x64-msvc')
+          }
+        } catch (e) {
+          loadError = e
+        }
+        break
+      case 'ia32':
+        localFileExisted = existsSync(join(__dirname, 'snappy.win32-ia32-msvc.node'))
+        try {
+          if (localFileExisted) {
+            nativeBinding = require('./snappy.win32-ia32-msvc.node')
+          } else {
+            nativeBinding = require('snappy-win32-ia32-msvc')
+          }
+        } catch (e) {
+          loadError = e
+        }
+        break
+      case 'arm64':
+        localFileExisted = existsSync(join(__dirname, 'snappy.win32-arm64-msvc.node'))
+        try {
+          if (localFileExisted) {
+            nativeBinding = require('./snappy.win32-arm64-msvc.node')
+          } else {
+            nativeBinding = require('snappy-win32-arm64-msvc')
+          }
+        } catch (e) {
+          loadError = e
+        }
+        break
+      default:
+        throw new Error(`Unsupported architecture on Windows: ${arch}`)
+    }
+    break
+  case 'darwin':
+    switch (arch) {
+      case 'x64':
+        localFileExisted = existsSync(join(__dirname, 'snappy.darwin-x64.node'))
+        try {
+          if (localFileExisted) {
+            nativeBinding = require('./snappy.darwin-x64.node')
+          } else {
+            nativeBinding = require('snappy-darwin-x64')
+          }
+        } catch (e) {
+          loadError = e
+        }
+        break
+      case 'arm64':
+        localFileExisted = existsSync(join(__dirname, 'snappy.darwin-arm64.node'))
+        try {
+          if (localFileExisted) {
+            nativeBinding = require('./snappy.darwin-arm64.node')
+          } else {
+            nativeBinding = require('snappy-darwin-arm64')
+          }
+        } catch (e) {
+          loadError = e
+        }
+        break
+      default:
+        throw new Error(`Unsupported architecture on macOS: ${arch}`)
+    }
+    break
+  case 'freebsd':
+    if (arch !== 'x64') {
+      throw new Error(`Unsupported architecture on FreeBSD: ${arch}`)
+    }
+    localFileExisted = existsSync(join(__dirname, 'snappy.freebsd-x64.node'))
+    try {
+      if (localFileExisted) {
+        nativeBinding = require('./snappy.freebsd-x64.node')
+      } else {
+        nativeBinding = require('snappy-freebsd-x64')
+      }
+    } catch (e) {
+      loadError = e
+    }
+    break
+  case 'linux':
+    switch (arch) {
+      case 'x64':
+        isMusl = readFileSync('/usr/bin/ldd', 'utf8').includes('musl')
+        if (isMusl) {
+          localFileExisted = existsSync(join(__dirname, 'snappy.linux-x64-musl.node'))
+          try {
+            if (localFileExisted) {
+              nativeBinding = require('./snappy.linux-x64-musl.node')
+            } else {
+              nativeBinding = require('snappy-linux-x64-musl')
+            }
+          } catch (e) {
+            loadError = e
+          }
+        } else {
+          localFileExisted = existsSync(join(__dirname, 'snappy.linux-x64-gnu.node'))
+          try {
+            if (localFileExisted) {
+              nativeBinding = require('./snappy.linux-x64-gnu.node')
+            } else {
+              nativeBinding = require('snappy-linux-x64-gnu')
+            }
+          } catch (e) {
+            loadError = e
+          }
+        }
+        break
+      case 'arm64':
+        isMusl = readFileSync('/usr/bin/ldd', 'utf8').includes('musl')
+        if (isMusl) {
+          localFileExisted = existsSync(join(__dirname, 'snappy.linux-arm64-musl.node'))
+          try {
+            if (localFileExisted) {
+              nativeBinding = require('./snappy.linux-arm64-musl.node')
+            } else {
+              nativeBinding = require('snappy-linux-arm64-musl')
+            }
+          } catch (e) {
+            loadError = e
+          }
+        } else {
+          localFileExisted = existsSync(join(__dirname, 'snappy.linux-arm64-gnu.node'))
+          try {
+            if (localFileExisted) {
+              nativeBinding = require('./snappy.linux-arm64-gnu.node')
+            } else {
+              nativeBinding = require('snappy-linux-arm64-gnu')
+            }
+          } catch (e) {
+            loadError = e
+          }
+        }
+        break
+      case 'arm':
+        localFileExisted = existsSync(join(__dirname, 'snappy.linux-arm-gnueabihf.node'))
+        try {
+          if (localFileExisted) {
+            nativeBinding = require('./snappy.linux-arm-gnueabihf.node')
+          } else {
+            nativeBinding = require('snappy-linux-arm-gnueabihf')
+          }
+        } catch (e) {
+          loadError = e
+        }
+        break
+      default:
+        throw new Error(`Unsupported architecture on Linux: ${arch}`)
+    }
+    break
+  default:
+    throw new Error(`Unsupported OS: ${platform}, architecture: ${arch}`)
 }
 
-module.exports.compressSync = function compressSync(input) {
-  return _compressSync(Buffer.isBuffer(input) ? input : Buffer.from(input))
+if (!nativeBinding) {
+  if (loadError) {
+    throw loadError
+  }
+  throw new Error(`Failed to load native binding`)
 }
 
-module.exports.uncompress = function uncompress(input, opt = { asBuffer: true }) {
-  return _uncompress(Buffer.isBuffer(input) ? input : Buffer.from(input), Boolean(opt.asBuffer))
-}
+const { compressSync, compress, uncompressSync, uncompress } = nativeBinding
 
-module.exports.uncompressSync = function uncompressSync(input, opt = { asBuffer: true }) {
-  return _uncompressSync(Buffer.isBuffer(input) ? input : Buffer.from(input), Boolean(opt.asBuffer))
-}
+module.exports.compressSync = compressSync
+module.exports.compress = compress
+module.exports.uncompressSync = uncompressSync
+module.exports.uncompress = uncompress
