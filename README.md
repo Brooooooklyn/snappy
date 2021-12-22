@@ -67,13 +67,16 @@ Running "Compress" suite...
 Progress: 100%
 
   snappy:
-    4 690 ops/s, ±0.66%   | fastest
+    4 220 ops/s, ±0.66%   | fastest
+
+  snappy-v6:
+    2 018 ops/s, ±0.84%   | 52.18% slower
 
   gzip:
-    259 ops/s, ±0.85%     | 94.48% slower
+    233 ops/s, ±0.52%     | slowest, 94.48% slower
 
   deflate:
-    262 ops/s, ±0.59%     | 94.41% slower
+    235 ops/s, ±0.45%     | 94.43% slower
 
   brotli:
     7 ops/s, ±0.51%       | slowest, 99.85% slower
@@ -86,13 +89,16 @@ Running "Decompress" suite...
 Progress: 100%
 
   snappy:
-    9 285 ops/s, ±6.18%   | fastest
+    8 528 ops/s, ±1.03%   | fastest
+
+  snappy-v6:
+    6 357 ops/s, ±1.76%   | 25.46% slower
 
   gzip:
-    1 511 ops/s, ±1.96%   | 83.73% slower
+    1 406 ops/s, ±1.80%   | slowest, 83.51% slower
 
   deflate:
-    1 763 ops/s, ±1.36%   | 81.01% slower
+    1 435 ops/s, ±1.88%   | 83.17% slower
 
   brotli:
     1 208 ops/s, ±1.50%   | slowest, 86.99% slower

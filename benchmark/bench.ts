@@ -14,6 +14,7 @@ import {
 } from 'zlib'
 
 import b from 'benny'
+import { compress as legacyCompress, uncompress as legacyUncompress } from 'legacy-snappy'
 
 import { compress, uncompress, compressSync } from '../index'
 
@@ -23,6 +24,8 @@ const deflateAsync = promisify(deflate)
 const gunzipAsync = promisify(gunzip)
 const inflateAsync = promisify(inflate)
 const brotliDecompressAsync = promisify(brotliDecompress)
+const compressV6 = promisify(legacyCompress)
+const uncompressV6 = promisify(legacyUncompress)
 
 const FIXTURE = readFileSync(join(__dirname, '..', 'yarn.lock'))
 const SNAPPY_COMPRESSED_FIXTURE = Buffer.from(compressSync(FIXTURE))
@@ -36,6 +39,10 @@ async function run() {
 
     b.add('snappy', () => {
       return compress(FIXTURE)
+    }),
+
+    b.add('snappy-v6', () => {
+      return compressV6(FIXTURE)
     }),
 
     b.add('gzip', () => {
@@ -59,6 +66,11 @@ async function run() {
 
     b.add('snappy', () => {
       return uncompress(SNAPPY_COMPRESSED_FIXTURE)
+    }),
+
+    b.add('snappy-v6', () => {
+      // @ts-expect-error
+      return uncompressV6(SNAPPY_COMPRESSED_FIXTURE)
     }),
 
     b.add('gzip', () => {
