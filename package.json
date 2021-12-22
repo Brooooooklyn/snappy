@@ -24,6 +24,9 @@
   ],
   "napi": {
     "name": "snappy",
+    "package": {
+      "name": "@napi-rs/snappy"
+    },
     "triples": {
       "defaults": true,
       "additional": [
@@ -56,13 +59,13 @@
     "format:rs": "cargo fmt",
     "format:source": "prettier --config ./package.json --write .",
     "lint": "eslint -c ./.eslintrc.yml .",
-    "prepublishOnly": "napi prepublish -t npm && node ./rename-optional-deps.js",
+    "prepublishOnly": "napi prepublish -t npm && node ./rename-optional-deps.js && esbuild --minify --outfile=index.js --allow-overwrite index.js",
     "test": "ava",
     "test:mem": "node ./memory-leak-detect.mjs",
     "version": "napi version && conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "devDependencies": {
-    "@napi-rs/cli": "^2.1.0",
+    "@napi-rs/cli": "^2.2.0",
     "@swc-node/register": "^1.4.2",
     "@types/node": "^17.0.2",
     "@typescript-eslint/eslint-plugin": "^5.8.0",
@@ -71,6 +74,7 @@
     "benny": "^3.7.1",
     "chalk": "^5.0.0",
     "conventional-changelog-cli": "^2.1.1",
+    "esbuild": "^0.14.7",
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.3",
