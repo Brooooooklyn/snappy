@@ -1,3 +1,3 @@
-# `snappy-linux-arm64-gnu`
+# `@napi-rs/snappy-linux-arm64-gnu`
 
-This is the **aarch64-unknown-linux-gnu** binary for `snappy`
+This is the **aarch64-unknown-linux-gnu** binary for `@napi-rs/snappy`

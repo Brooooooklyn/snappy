@@ -1,5 +1,5 @@
 {
-  "name": "snappy-linux-arm64-gnu",
+  "name": "@napi-rs/snappy-linux-arm64-gnu",
   "version": "7.0.5",
   "os": [
     "linux"

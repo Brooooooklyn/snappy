@@ -1,5 +1,5 @@
 {
-  "name": "snappy-linux-arm-gnueabihf",
+  "name": "@napi-rs/snappy-linux-arm-gnueabihf",
   "version": "7.0.5",
   "os": [
     "linux"

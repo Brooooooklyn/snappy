@@ -1,5 +1,5 @@
 {
-  "name": "snappy-darwin-x64",
+  "name": "@napi-rs/snappy-darwin-x64",
   "version": "7.0.5",
   "os": [
     "darwin"

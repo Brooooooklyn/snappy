@@ -1,3 +1,3 @@
-# `snappy-android-arm-eabi`
+# `@napi-rs/snappy-android-arm-eabi`
 
-This is the **arm-linux-androideabi** binary for `snappy`
+This is the **arm-linux-androideabi** binary for `@napi-rs/snappy`
