@@ -85,7 +85,7 @@
     "prettier": "^2.5.1",
     "pretty-bytes": "^5.6.0",
     "table": "^6.7.5",
-    "legacy-snappy": "npm:snappy@6",
+    "legacy-snappy": "npm:snappy@7",
     "typescript": "^4.5.4"
   },
   "dependencies": {},
