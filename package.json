@@ -59,7 +59,7 @@
     "format:rs": "cargo fmt",
     "format:source": "prettier --config ./package.json --write .",
     "lint": "eslint -c ./.eslintrc.yml .",
-    "prepublishOnly": "napi prepublish -t npm && node ./rename-optional-deps.js && esbuild --minify --outfile=index.js --allow-overwrite index.js",
+    "prepublishOnly": "napi prepublish -t npm && esbuild --minify --outfile=index.js --allow-overwrite index.js",
     "test": "ava",
     "test:mem": "node ./memory-leak-detect.mjs",
     "version": "napi version && conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
