@@ -1,6 +1,6 @@
 {
   "name": "@napi-rs/snappy-android-arm64",
-  "version": "7.0.5",
+  "version": "7.1.0",
   "os": [
     "android"
   ],

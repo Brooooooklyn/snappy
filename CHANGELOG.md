@@ -1,3 +1,9 @@
+# [7.1.0](https://github.com/Brooooooklyn/snappy/compare/v7.0.5...v7.1.0) (2021-12-22)
+
+### Features
+
+- upgrade to napi2 ([e6cc543](https://github.com/Brooooooklyn/snappy/commit/e6cc5433eb503987d7e6f09f4346c7d317a3fccf))
+
 ## [7.0.5](https://github.com/Brooooooklyn/snappy/compare/v7.0.4...v7.0.5) (2021-11-06)
 
 ### Bug Fixes
