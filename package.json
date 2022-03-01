@@ -65,28 +65,28 @@
     "version": "napi version && conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "devDependencies": {
-    "@napi-rs/cli": "^2.2.0",
+    "@napi-rs/cli": "^2.4.4",
     "@swc-node/register": "^1.4.2",
-    "@types/node": "^17.0.2",
-    "@typescript-eslint/eslint-plugin": "^5.8.0",
-    "@typescript-eslint/parser": "^5.8.0",
-    "ava": "^3.15.0",
+    "@types/node": "^17.0.21",
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.13.0",
+    "ava": "^4.0.1",
     "benny": "^3.7.1",
     "chalk": "^5.0.0",
-    "conventional-changelog-cli": "^2.1.1",
-    "esbuild": "^0.14.7",
-    "eslint": "^8.5.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.25.3",
+    "conventional-changelog-cli": "^2.2.2",
+    "esbuild": "^0.14.23",
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.4.0",
+    "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.4",
-    "lint-staged": "^12.1.3",
+    "lint-staged": "^12.3.4",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.5.1",
-    "pretty-bytes": "^5.6.0",
-    "table": "^6.7.5",
+    "pretty-bytes": "^6.0.0",
+    "table": "^6.8.0",
     "legacy-snappy": "npm:snappy@6",
-    "typescript": "^4.5.4"
+    "typescript": "^4.6.2"
   },
   "dependencies": {},
   "lint-staged": {
@@ -104,6 +104,7 @@
     "extensions": [
       "ts"
     ],
+    "workerThreads": false,
     "environmentVariables": {
       "TS_NODE_PROJECT": "./tsconfig.json"
     }
