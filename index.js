@@ -5,23 +5,51 @@ const { platform, arch } = process
 
 let nativeBinding = null
 let localFileExisted = false
-let isMusl = false
 let loadError = null
+
+function isMusl() {
+  // For Node 10
+  if (!process.report || typeof process.report.getReport !== 'function') {
+    try {
+      return readFileSync('/usr/bin/ldd', 'utf8').includes('musl')
+    } catch (e) {
+      return true
+    }
+  } else {
+    const { glibcVersionRuntime } = process.report.getReport().header
+    return !glibcVersionRuntime
+  }
+}
 
 switch (platform) {
   case 'android':
-    if (arch !== 'arm64') {
-      throw new Error(`Unsupported architecture on Android ${arch}`)
-    }
-    localFileExisted = existsSync(join(__dirname, 'snappy.android-arm64.node'))
-    try {
-      if (localFileExisted) {
-        nativeBinding = require('./snappy.android-arm64.node')
-      } else {
-        nativeBinding = require('@napi-rs/snappy-android-arm64')
-      }
-    } catch (e) {
-      loadError = e
+    switch (arch) {
+      case 'arm64':
+        localFileExisted = existsSync(join(__dirname, 'snappy.android-arm64.node'))
+        try {
+          if (localFileExisted) {
+            nativeBinding = require('./snappy.android-arm64.node')
+          } else {
+            nativeBinding = require('@napi-rs/snappy-android-arm64')
+          }
+        } catch (e) {
+          loadError = e
+        }
+        break
+      case 'arm':
+        localFileExisted = existsSync(join(__dirname, 'snappy.android-arm-eabi.node'))
+        try {
+          if (localFileExisted) {
+            nativeBinding = require('./snappy.android-arm-eabi.node')
+          } else {
+            nativeBinding = require('@napi-rs/snappy-android-arm-eabi')
+          }
+        } catch (e) {
+          loadError = e
+        }
+        break
+      default:
+        throw new Error(`Unsupported architecture on Android ${arch}`)
     }
     break
   case 'win32':
@@ -114,8 +142,7 @@ switch (platform) {
   case 'linux':
     switch (arch) {
       case 'x64':
-        isMusl = readFileSync('/usr/bin/ldd', 'utf8').includes('musl')
-        if (isMusl) {
+        if (isMusl()) {
           localFileExisted = existsSync(join(__dirname, 'snappy.linux-x64-musl.node'))
           try {
             if (localFileExisted) {
@@ -140,8 +167,7 @@ switch (platform) {
         }
         break
       case 'arm64':
-        isMusl = readFileSync('/usr/bin/ldd', 'utf8').includes('musl')
-        if (isMusl) {
+        if (isMusl()) {
           localFileExisted = existsSync(join(__dirname, 'snappy.linux-arm64-musl.node'))
           try {
             if (localFileExisted) {
