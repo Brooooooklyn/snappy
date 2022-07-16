@@ -1,11 +1,8 @@
 ## [7.1.1](https://github.com/Brooooooklyn/snappy/compare/v7.1.0...v7.1.1) (2021-12-22)
 
-
 ### Bug Fixes
 
-* override the package name in generated index.js ([42346fd](https://github.com/Brooooooklyn/snappy/commit/42346fdd78ad4aa91e65a5d0cd176ea716459f72))
-
-
+- override the package name in generated index.js ([42346fd](https://github.com/Brooooooklyn/snappy/commit/42346fdd78ad4aa91e65a5d0cd176ea716459f72))
 
 # [7.1.0](https://github.com/Brooooooklyn/snappy/compare/v7.0.5...v7.1.0) (2021-12-22)
 
