@@ -1,3 +1,12 @@
+## [7.1.2](https://github.com/Brooooooklyn/snappy/compare/v7.1.1...v7.1.2) (2022-08-09)
+
+
+### Bug Fixes
+
+* compatible issues with centos:7 and void Linux ([dbd61db](https://github.com/Brooooooklyn/snappy/commit/dbd61db3de57921bf6c6f6acd809093ba417ea26))
+
+
+
 ## [7.1.1](https://github.com/Brooooooklyn/snappy/compare/v7.1.0...v7.1.1) (2021-12-22)
 
 ### Bug Fixes

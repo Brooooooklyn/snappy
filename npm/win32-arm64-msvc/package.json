@@ -1,6 +1,6 @@
 {
   "name": "@napi-rs/snappy-win32-arm64-msvc",
-  "version": "7.1.1",
+  "version": "7.1.2",
   "os": [
     "win32"
   ],
