@@ -15,7 +15,7 @@ async function detect(job) {
       displayMemoryUsageFromNode(initial)
     }
 
-    if (process.memoryUsage().rss - initial.rss >= 1024 * 1024 * 100) {
+    if (process.memoryUsage().rss - initial.rss >= 1024 * 1024 * 200) {
       throw new Error('Memory limit reached')
     }
   }

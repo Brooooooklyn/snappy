@@ -19,8 +19,22 @@ pub enum Data {
 }
 
 #[napi(object)]
-pub struct Options {
+pub struct DecOptions {
   pub as_buffer: Option<bool>,
+  /// do not use `create_external_buffer` to create the output buffer \n
+  /// set this option to `true` will make the API slower \n
+  /// for compatibility with electron >= 21 \n
+  /// see https://www.electronjs.org/blog/v8-memory-cage and https://github.com/electron/electron/issues/35801#issuecomment-1261206333
+  pub copy_output_data: Option<bool>,
+}
+
+#[napi(object)]
+pub struct EncOptions {
+  /// do not use `create_external_buffer` to create the output buffer \n
+  /// for compatibility with electron >= 21 \n
+  /// set this option to `true` will make the API slower \n
+  /// see https://www.electronjs.org/blog/v8-memory-cage and https://github.com/electron/electron/issues/35801#issuecomment-1261206333
+  pub copy_output_data: Option<bool>,
 }
 
 impl TryFrom<Either<String, JsBuffer>> for Data {
@@ -34,9 +48,10 @@ impl TryFrom<Either<String, JsBuffer>> for Data {
   }
 }
 
-struct Enc {
+pub struct Enc {
   inner: Encoder,
   data: Data,
+  options: Option<EncOptions>,
 }
 
 #[napi]
@@ -55,7 +70,17 @@ impl Task for Enc {
   }
 
   fn resolve(&mut self, env: Env, output: Self::Output) -> Result<Self::JsValue> {
-    env.create_buffer_with_data(output).map(|b| b.into_raw())
+    if self
+      .options
+      .as_ref()
+      .and_then(|o| o.copy_output_data)
+      .unwrap_or(false)
+    {
+      env.create_buffer_copy(output)
+    } else {
+      env.create_buffer_with_data(output)
+    }
+    .map(|b| b.into_raw())
   }
 
   fn finally(&mut self, env: Env) -> Result<()> {
@@ -66,16 +91,16 @@ impl Task for Enc {
   }
 }
 
-struct Dec {
+pub struct Dec {
   inner: Decoder,
   data: Data,
-  as_buffer: bool,
+  options: Option<DecOptions>,
 }
 
 #[napi]
 impl Task for Dec {
   type Output = Vec<u8>;
-  type JsValue = Either<String, Buffer>;
+  type JsValue = Either<String, JsBuffer>;
 
   fn compute(&mut self) -> Result<Self::Output> {
     self
@@ -87,9 +112,18 @@ impl Task for Dec {
       .map_err(|e| Error::new(Status::GenericFailure, format!("{}", e)))
   }
 
-  fn resolve(&mut self, _env: Env, output: Self::Output) -> Result<Self::JsValue> {
-    if self.as_buffer {
-      Ok(Either::B(output.into()))
+  fn resolve(&mut self, env: Env, output: Self::Output) -> Result<Self::JsValue> {
+    let opt_ref = self.options.as_ref();
+    if opt_ref.and_then(|o| o.as_buffer).unwrap_or(true) {
+      if opt_ref.and_then(|o| o.copy_output_data).unwrap_or(false) {
+        Ok(Either::B(
+          env.create_buffer_copy(output).map(|o| o.into_raw())?,
+        ))
+      } else {
+        Ok(Either::B(
+          env.create_buffer_with_data(output).map(|o| o.into_raw())?,
+        ))
+      }
     } else {
       Ok(Either::A(String::from_utf8(output).map_err(|e| {
         Error::new(Status::GenericFailure, format!("{}", e))
@@ -106,26 +140,32 @@ impl Task for Dec {
 }
 
 #[napi]
-pub fn compress_sync(input: Either<Buffer, String>) -> Result<Buffer> {
-  let mut enc = Encoder::new();
-  enc
-    .compress_vec(match input {
-      Either::A(ref b) => b.as_ref(),
-      Either::B(ref s) => s.as_bytes(),
-    })
-    .map_err(|e| Error::new(napi::Status::GenericFailure, format!("{}", e)))
-    .map(|v| v.into())
+pub fn compress_sync(
+  env: Env,
+  input: Either<String, JsBuffer>,
+  options: Option<EncOptions>,
+) -> Result<JsBuffer> {
+  let enc = Encoder::new();
+  let mut encoder = Enc {
+    inner: enc,
+    data: Data::try_from(input)?,
+    options,
+  };
+  let output = encoder.compute()?;
+  encoder.resolve(env, output)
 }
 
 #[napi]
-fn compress(
+pub fn compress(
   input: Either<String, JsBuffer>,
+  options: Option<EncOptions>,
   signal: Option<AbortSignal>,
 ) -> Result<AsyncTask<Enc>> {
   let enc = Encoder::new();
   let encoder = Enc {
     inner: enc,
     data: Data::try_from(input)?,
+    options,
   };
   match signal {
     Some(s) => Ok(AsyncTask::with_signal(encoder, s)),
@@ -134,44 +174,32 @@ fn compress(
 }
 
 #[napi]
-fn uncompress_sync(
-  input: Either<String, Buffer>,
-  as_buffer: Option<Options>,
-) -> Result<Either<String, Buffer>> {
-  let as_buffer = as_buffer.and_then(|o| o.as_buffer).unwrap_or(true);
-  let mut dec = Decoder::new();
-  dec
-    .decompress_vec(match input {
-      Either::A(ref s) => s.as_bytes(),
-      Either::B(ref b) => b.as_ref(),
-    })
-    .map_err(|e| Error::new(napi::Status::GenericFailure, format!("{}", e)))
-    .and_then(|d| {
-      if as_buffer {
-        Ok(Either::B(d.into()))
-      } else {
-        Ok(Either::A(String::from_utf8(d).map_err(|e| {
-          Error::new(Status::GenericFailure, format!("{}", e))
-        })?))
-      }
-    })
+pub fn uncompress_sync(
+  env: Env,
+  input: Either<String, JsBuffer>,
+  options: Option<DecOptions>,
+) -> Result<Either<String, JsBuffer>> {
+  let dec = Decoder::new();
+  let mut decoder = Dec {
+    inner: dec,
+    data: Data::try_from(input)?,
+    options,
+  };
+  let output = decoder.compute()?;
+  decoder.resolve(env, output)
 }
 
 #[napi]
-fn uncompress(
+pub fn uncompress(
   input: Either<String, JsBuffer>,
-  options: Option<Options>,
+  options: Option<DecOptions>,
   signal: Option<AbortSignal>,
 ) -> Result<AsyncTask<Dec>> {
-  let as_buffer = options.and_then(|o| o.as_buffer).unwrap_or(true);
   let dec = Decoder::new();
   let decoder = Dec {
     inner: dec,
     data: Data::try_from(input)?,
-    as_buffer,
+    options,
   };
-  match signal {
-    Some(s) => Ok(AsyncTask::with_signal(decoder, s)),
-    None => Ok(AsyncTask::new(decoder)),
-  }
+  Ok(AsyncTask::with_optional_signal(decoder, signal))
 }
