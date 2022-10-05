@@ -1,3 +1,12 @@
+# [7.2.0](https://github.com/Brooooooklyn/snappy/compare/v7.1.2...v7.2.0) (2022-10-05)
+
+
+### Features
+
+* provide copyOutputData to compatible with electron >= 21 ([772abc9](https://github.com/Brooooooklyn/snappy/commit/772abc94264c212ea3abed5bea27891f0821f175))
+
+
+
 ## [7.1.2](https://github.com/Brooooooklyn/snappy/compare/v7.1.1...v7.1.2) (2022-08-09)
 
 
