@@ -7,9 +7,22 @@ test('should be able to compress Buffer', (t) => {
   t.deepEqual(compressSync(fixture), Buffer.from([11, 40, 104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]))
 })
 
+test('should be able to compress Buffer with copied option', (t) => {
+  const fixture = 'hello world'
+  t.deepEqual(
+    compressSync(fixture, { copyOutputData: true }),
+    Buffer.from([11, 40, 104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]),
+  )
+})
+
 test('compress should be async version of compressSync', async (t) => {
   const fixture = 'hello world 😂 🎧 🚀'
   t.deepEqual(await compress(fixture), compressSync(fixture))
+})
+
+test('should be able to compress with copyOutputData', async (t) => {
+  const fixture = 'hello world 😂 🎧 🚀'
+  t.deepEqual(await compress(fixture, { copyOutputData: true }), compressSync(fixture))
 })
 
 test('should be able to uncompress sync', (t) => {
