@@ -1,3 +1,12 @@
+## [7.2.1](https://github.com/Brooooooklyn/snappy/compare/v7.2.0...v7.2.1) (2022-10-23)
+
+
+### Bug Fixes
+
+* memory leak of sync api ([#100](https://github.com/Brooooooklyn/snappy/issues/100)) ([aaa1950](https://github.com/Brooooooklyn/snappy/commit/aaa19500a35582b633d956a32beadaaa9a769c14))
+
+
+
 # [7.2.0](https://github.com/Brooooooklyn/snappy/compare/v7.1.2...v7.2.0) (2022-10-05)
 
 
