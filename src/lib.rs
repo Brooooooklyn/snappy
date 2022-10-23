@@ -152,7 +152,9 @@ pub fn compress_sync(
     options,
   };
   let output = encoder.compute()?;
-  encoder.resolve(env, output)
+  let ret = encoder.resolve(env, output);
+  encoder.finally(env)?;
+  ret
 }
 
 #[napi]
@@ -186,7 +188,9 @@ pub fn uncompress_sync(
     options,
   };
   let output = decoder.compute()?;
-  decoder.resolve(env, output)
+  let ret = decoder.resolve(env, output);
+  decoder.finally(env)?;
+  ret
 }
 
 #[napi]
