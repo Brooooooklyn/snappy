@@ -1,3 +1,12 @@
+## [7.2.2](https://github.com/Brooooooklyn/snappy/compare/v7.2.1...v7.2.2) (2022-11-13)
+
+
+### Bug Fixes
+
+* unref buffer when compress/uncompress synchronously faild ([#105](https://github.com/Brooooooklyn/snappy/issues/105)) ([8cfc521](https://github.com/Brooooooklyn/snappy/commit/8cfc5215763b5f49d454aec342cb6602b4220de4))
+
+
+
 ## [7.2.1](https://github.com/Brooooooklyn/snappy/compare/v7.2.0...v7.2.1) (2022-10-23)
 
 
