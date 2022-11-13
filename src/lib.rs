@@ -151,10 +151,17 @@ pub fn compress_sync(
     data: Data::try_from(input)?,
     options,
   };
-  let output = encoder.compute()?;
-  let ret = encoder.resolve(env, output);
-  encoder.finally(env)?;
-  ret
+  match encoder.compute() {
+    Ok(output) => {
+      let ret = encoder.resolve(env, output);
+      encoder.finally(env)?;
+      ret
+    }
+    Err(err) => {
+      encoder.finally(env)?;
+      Err(err)
+    }
+  }
 }
 
 #[napi]
@@ -187,10 +194,17 @@ pub fn uncompress_sync(
     data: Data::try_from(input)?,
     options,
   };
-  let output = decoder.compute()?;
-  let ret = decoder.resolve(env, output);
-  decoder.finally(env)?;
-  ret
+  match decoder.compute() {
+    Ok(output) => {
+      let ret = decoder.resolve(env, output);
+      decoder.finally(env)?;
+      ret
+    }
+    Err(err) => {
+      decoder.finally(env)?;
+      Err(err)
+    }
+  }
 }
 
 #[napi]
