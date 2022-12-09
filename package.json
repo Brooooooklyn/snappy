@@ -74,7 +74,7 @@
     "benny": "^3.7.1",
     "chalk": "^5.0.1",
     "conventional-changelog-cli": "^2.2.2",
-    "esbuild": "^0.15.0",
+    "esbuild": "^0.16.0",
     "eslint": "^8.20.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
