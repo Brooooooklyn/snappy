@@ -146,12 +146,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@napi-rs/cli@npm:^2.10.3":
-  version: 2.11.4
-  resolution: "@napi-rs/cli@npm:2.11.4"
+"@napi-rs/cli@npm:^2.13.1":
+  version: 2.13.1
+  resolution: "@napi-rs/cli@npm:2.13.1"
   bin:
     napi: scripts/index.js
-  checksum: f9f1036520ba43685c782c4eafdd56176930d317ab31c6841c2f033e09f4cac7c9561ccdfeaefcb30c2ac5e64390fb308a5658eb47c373e8131e138ad38b98c1
+  checksum: 56e03c54eec63f65ebe9c680d091bd2c99787625d5d8b1d088de8be2f3654895be6402319edb169f942f4c0940d7d314a7a6728188e024adb25b4d6f07cc0c41
   languageName: node
   linkType: hard
 
@@ -5248,7 +5248,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "snappy@workspace:."
   dependencies:
-    "@napi-rs/cli": ^2.10.3
+    "@napi-rs/cli": ^2.13.1
     "@swc-node/register": ^1.5.1
     "@types/node": ^18.6.2
     "@typescript-eslint/eslint-plugin": ^5.31.0
