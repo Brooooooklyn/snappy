@@ -80,7 +80,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.1",
-    "legacy-snappy": "npm:snappy@6",
+    "legacy-snappy": "npm:snappy@7",
     "lint-staged": "^13.0.3",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
