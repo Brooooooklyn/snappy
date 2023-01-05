@@ -1,38 +1,26 @@
 ## [7.2.2](https://github.com/Brooooooklyn/snappy/compare/v7.2.1...v7.2.2) (2022-11-13)
 
-
 ### Bug Fixes
 
-* unref buffer when compress/uncompress synchronously faild ([#105](https://github.com/Brooooooklyn/snappy/issues/105)) ([8cfc521](https://github.com/Brooooooklyn/snappy/commit/8cfc5215763b5f49d454aec342cb6602b4220de4))
-
-
+- unref buffer when compress/uncompress synchronously faild ([#105](https://github.com/Brooooooklyn/snappy/issues/105)) ([8cfc521](https://github.com/Brooooooklyn/snappy/commit/8cfc5215763b5f49d454aec342cb6602b4220de4))
 
 ## [7.2.1](https://github.com/Brooooooklyn/snappy/compare/v7.2.0...v7.2.1) (2022-10-23)
 
-
 ### Bug Fixes
 
-* memory leak of sync api ([#100](https://github.com/Brooooooklyn/snappy/issues/100)) ([aaa1950](https://github.com/Brooooooklyn/snappy/commit/aaa19500a35582b633d956a32beadaaa9a769c14))
-
-
+- memory leak of sync api ([#100](https://github.com/Brooooooklyn/snappy/issues/100)) ([aaa1950](https://github.com/Brooooooklyn/snappy/commit/aaa19500a35582b633d956a32beadaaa9a769c14))
 
 # [7.2.0](https://github.com/Brooooooklyn/snappy/compare/v7.1.2...v7.2.0) (2022-10-05)
 
-
 ### Features
 
-* provide copyOutputData to compatible with electron >= 21 ([772abc9](https://github.com/Brooooooklyn/snappy/commit/772abc94264c212ea3abed5bea27891f0821f175))
-
-
+- provide copyOutputData to compatible with electron >= 21 ([772abc9](https://github.com/Brooooooklyn/snappy/commit/772abc94264c212ea3abed5bea27891f0821f175))
 
 ## [7.1.2](https://github.com/Brooooooklyn/snappy/compare/v7.1.1...v7.1.2) (2022-08-09)
 
-
 ### Bug Fixes
 
-* compatible issues with centos:7 and void Linux ([dbd61db](https://github.com/Brooooooklyn/snappy/commit/dbd61db3de57921bf6c6f6acd809093ba417ea26))
-
-
+- compatible issues with centos:7 and void Linux ([dbd61db](https://github.com/Brooooooklyn/snappy/commit/dbd61db3de57921bf6c6f6acd809093ba417ea26))
 
 ## [7.1.1](https://github.com/Brooooooklyn/snappy/compare/v7.1.0...v7.1.1) (2021-12-22)
 
