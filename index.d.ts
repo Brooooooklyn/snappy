@@ -29,6 +29,14 @@ export interface EncOptions {
   copyOutputData?: boolean
 }
 export function compressSync(input: string | Buffer, options?: EncOptions | undefined | null): Buffer
-export function compress(input: string | Buffer, options?: EncOptions | undefined | null, signal?: AbortSignal | undefined | null): Promise<Buffer>
+export function compress(
+  input: string | Buffer,
+  options?: EncOptions | undefined | null,
+  signal?: AbortSignal | undefined | null,
+): Promise<Buffer>
 export function uncompressSync(input: string | Buffer, options?: DecOptions | undefined | null): string | Buffer
-export function uncompress(input: string | Buffer, options?: DecOptions | undefined | null, signal?: AbortSignal | undefined | null): Promise<string | Buffer>
+export function uncompress(
+  input: string | Buffer,
+  options?: DecOptions | undefined | null,
+  signal?: AbortSignal | undefined | null,
+): Promise<string | Buffer>
