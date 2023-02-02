@@ -66,7 +66,7 @@ impl Task for Enc {
         Data::Buffer(ref b) => b.as_ref(),
         Data::String(ref s) => s.as_bytes(),
       })
-      .map_err(|e| Error::new(Status::GenericFailure, format!("{}", e)))
+      .map_err(|e| Error::new(Status::GenericFailure, format!("{e}")))
   }
 
   fn resolve(&mut self, env: Env, output: Self::Output) -> Result<Self::JsValue> {
@@ -109,7 +109,7 @@ impl Task for Dec {
         Data::Buffer(ref b) => b.as_ref(),
         Data::String(ref s) => s.as_bytes(),
       })
-      .map_err(|e| Error::new(Status::GenericFailure, format!("{}", e)))
+      .map_err(|e| Error::new(Status::GenericFailure, format!("{e}")))
   }
 
   fn resolve(&mut self, env: Env, output: Self::Output) -> Result<Self::JsValue> {
@@ -126,7 +126,7 @@ impl Task for Dec {
       }
     } else {
       Ok(Either::A(String::from_utf8(output).map_err(|e| {
-        Error::new(Status::GenericFailure, format!("{}", e))
+        Error::new(Status::GenericFailure, format!("{e}"))
       })?))
     }
   }
