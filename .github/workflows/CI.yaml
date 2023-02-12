@@ -309,11 +309,6 @@ jobs:
           node-version: ${{ matrix.node }}
           check-latest: true
           cache: yarn
-      - name: Cache NPM dependencies
-        uses: actions/cache@v3
-        with:
-          path: .yarn/cache
-          key: npm-cache-test-x86_64-unknown-linux-musl-${{ matrix.node }}
       - name: Install dependencies
         run: |
           yarn config set supportedArchitectures.libc "musl"
