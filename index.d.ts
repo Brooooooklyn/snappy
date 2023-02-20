@@ -7,11 +7,11 @@ export interface DecOptions {
   asBuffer?: boolean
   /**
    * do not use `create_external_buffer` to create the output buffer
-  
+
    * set this option to `true` will make the API slower
-  
+
    * for compatibility with electron >= 21
-  
+
    * see https://www.electronjs.org/blog/v8-memory-cage and https://github.com/electron/electron/issues/35801#issuecomment-1261206333
    */
   copyOutputData?: boolean
@@ -19,11 +19,11 @@ export interface DecOptions {
 export interface EncOptions {
   /**
    * do not use `create_external_buffer` to create the output buffer
-  
+
    * for compatibility with electron >= 21
-  
+
    * set this option to `true` will make the API slower
-  
+
    * see https://www.electronjs.org/blog/v8-memory-cage and https://github.com/electron/electron/issues/35801#issuecomment-1261206333
    */
   copyOutputData?: boolean
@@ -34,9 +34,9 @@ export function compress(
   options?: EncOptions | undefined | null,
   signal?: AbortSignal | undefined | null,
 ): Promise<Buffer>
-export function uncompressSync(input: string | Buffer, options?: DecOptions | undefined | null): string | Buffer
-export function uncompress(
+export function uncompressSync<T extends DecOptions>(input: string | Buffer, options?: T | undefined | null): T extends { asBuffer: false } ? string : Buffer
+export function uncompress<T extends DecOptions>(
   input: string | Buffer,
-  options?: DecOptions | undefined | null,
+  options?: T | undefined | null,
   signal?: AbortSignal | undefined | null,
-): Promise<string | Buffer>
+): Promise<T extends { asBuffer: false } ? string : Buffer>
