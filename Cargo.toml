@@ -1,16 +1,16 @@
 [package]
 authors = ["LongYinan <lynweklm@gmail.com>"]
 edition = "2021"
-name = "napi-snappy"
+name    = "napi-snappy"
 version = "0.1.0"
 
 [lib]
 crate-type = ["cdylib"]
 
 [dependencies]
-napi = { version = "2", features = ["napi5", "serde-json"] }
+napi        = { version = "2", features = ["napi5", "serde-json"] }
 napi-derive = { version = "2" }
-snap = "1"
+snap        = "1"
 
 [target.'cfg(not(target_os = "linux"))'.dependencies]
 mimalloc-rust = "0.2"
@@ -23,4 +23,4 @@ napi-build = "2"
 
 [profile.release]
 codegen-units = 1
-lto = true
+lto           = true
