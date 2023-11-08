@@ -6,12 +6,9 @@ extern crate napi_derive;
 use napi::{bindgen_prelude::*, JsBuffer, JsBufferValue, Ref};
 use snap::raw::{Decoder, Encoder};
 
-#[cfg(all(
-  not(all(target_os = "linux", target_env = "musl", target_arch = "aarch64")),
-  not(debug_assertions)
-))]
+#[cfg(not(all(target_os = "linux", target_env = "musl", target_arch = "aarch64")))]
 #[global_allocator]
-static ALLOC: mimalloc_rust::GlobalMiMalloc = mimalloc_rust::GlobalMiMalloc;
+static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
 pub enum Data {
   Buffer(Ref<JsBufferValue>),

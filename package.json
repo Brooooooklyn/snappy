@@ -23,7 +23,7 @@
     "index.js"
   ],
   "napi": {
-    "name": "snappy",
+    "binaryName": "snappy",
     "package": {
       "name": "@napi-rs/snappy"
     },
@@ -51,9 +51,9 @@
     "access": "public"
   },
   "scripts": {
-    "artifacts": "napi artifacts",
+    "artifacts": "napi artifacts --output-dir artifacts --npm-dir ./npm",
     "bench": "node -r @swc-node/register benchmark/bench.ts",
-    "build": "napi build --platform --release --pipe \"prettier --log-level silent -w\"",
+    "build": "napi build --platform --release",
     "build:debug": "napi build --platform",
     "format": "run-p format:source format:rs format:toml",
     "format:toml": "taplo format",
@@ -66,29 +66,29 @@
     "version": "napi version && conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "devDependencies": {
-    "@napi-rs/cli": "^2.16.2",
-    "@swc-node/register": "^1.6.6",
-    "@swc/core": "^1.3.72",
+    "@napi-rs/cli": "^3.0.0-alpha.7",
+    "@swc-node/register": "^1.6.8",
+    "@swc/core": "^1.3.96",
     "@taplo/cli": "^0.5.2",
-    "@types/node": "^20.4.5",
-    "@typescript-eslint/eslint-plugin": "^6.2.0",
-    "@typescript-eslint/parser": "^6.2.0",
+    "@types/node": "^20.8.10",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
     "ava": "^5.3.1",
     "benny": "^3.7.1",
     "chalk": "^5.3.0",
-    "conventional-changelog-cli": "^4.0.0",
-    "esbuild": "^0.19.0",
-    "eslint": "^8.46.0",
+    "conventional-changelog-cli": "^4.1.0",
+    "esbuild": "^0.19.5",
+    "eslint": "^8.53.0",
     "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-import": "^2.28.0",
+    "eslint-plugin-import": "^2.29.0",
     "husky": "^8.0.3",
     "legacy-snappy": "npm:snappy@6",
-    "lint-staged": "^15.0.0",
+    "lint-staged": "^15.0.2",
     "npm-run-all": "^4.1.5",
-    "prettier": "^3.0.0",
+    "prettier": "^3.0.3",
     "pretty-bytes": "^6.1.1",
     "table": "^6.8.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.2.2"
   },
   "lint-staged": {
     "*.@(js|ts|tsx)": [
@@ -122,5 +122,5 @@
     "type": "github",
     "url": "https://github.com/sponsors/Brooooooklyn"
   },
-  "packageManager": "yarn@3.6.4"
+  "packageManager": "yarn@4.0.1"
 }
