@@ -75,7 +75,7 @@
     "benny": "^3.7.1",
     "chalk": "^5.3.0",
     "conventional-changelog-cli": "^4.1.0",
-    "esbuild": "^0.20.0",
+    "esbuild": "^0.21.0",
     "husky": "^9.0.0",
     "legacy-snappy": "npm:snappy@6",
     "lint-staged": "^15.0.2",
