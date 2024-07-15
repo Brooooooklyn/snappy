@@ -8,8 +8,8 @@ version = "0.1.0"
 crate-type = ["cdylib"]
 
 [dependencies]
-napi        = { version = "2", features = ["napi5", "serde-json"] }
-napi-derive = { version = "2" }
+napi        = { version = "3.0.0-alpha.7", features = ["napi5", "serde-json"] }
+napi-derive = { version = "3.0.0-alpha.5" }
 snap        = "1"
 
 [target.'cfg(not(target_os = "linux"))'.dependencies]
