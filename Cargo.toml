@@ -8,7 +8,7 @@ version = "0.1.0"
 crate-type = ["cdylib"]
 
 [dependencies]
-napi        = { version = "3.0.0-alpha.7", features = ["napi5", "serde-json"] }
+napi        = { version = "3.0.0-alpha", features = ["napi5", "serde-json"] }
 napi-derive = { version = "3.0.0-alpha" }
 snap        = "1"
 
