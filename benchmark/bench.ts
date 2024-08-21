@@ -1,6 +1,6 @@
-import { readFileSync } from 'fs'
-import { join } from 'path'
-import { promisify } from 'util'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { promisify } from 'node:util'
 import {
   gzip,
   deflate,
@@ -11,12 +11,13 @@ import {
   deflateSync,
   brotliCompressSync,
   gunzip,
-} from 'zlib'
+} from 'node:zlib'
 
-import b from 'benny'
+import { Bench, hrtimeNow } from 'tinybench'
 import { compress as legacyCompress, uncompress as legacyUncompress } from 'legacy-snappy'
 
-import { compress, uncompress, compressSync } from '../index'
+import { compress, uncompress, compressSync } from '../index.js'
+import { fileURLToPath } from 'node:url'
 
 const gzipAsync = promisify(gzip)
 const brotliCompressAsync = promisify(brotliCompress)
@@ -27,69 +28,61 @@ const brotliDecompressAsync = promisify(brotliDecompress)
 const compressV6 = promisify(legacyCompress)
 const uncompressV6 = promisify(legacyUncompress)
 
-const FIXTURE = readFileSync(join(__dirname, '..', 'yarn.lock'))
+const FIXTURE = readFileSync(join(fileURLToPath(import.meta.url), '..', '..', 'yarn.lock'))
 const SNAPPY_COMPRESSED_FIXTURE = Buffer.from(compressSync(FIXTURE))
 const GZIP_FIXTURE = gzipSync(FIXTURE)
 const DEFLATED_FIXTURE = deflateSync(FIXTURE)
 const BROTLI_COMPRESSED_FIXTURE = brotliCompressSync(FIXTURE)
 
-async function run() {
-  await b.suite(
-    'Compress',
-
-    b.add('snappy', () => {
-      return compress(FIXTURE)
-    }),
-
-    b.add('snappy-v6', () => {
-      return compressV6(FIXTURE)
-    }),
-
-    b.add('gzip', () => {
-      return gzipAsync(FIXTURE)
-    }),
-
-    b.add('deflate', () => {
-      return deflateAsync(FIXTURE)
-    }),
-
-    b.add('brotli', () => {
-      return brotliCompressAsync(FIXTURE)
-    }),
-
-    b.cycle(),
-    b.complete(),
-  )
-
-  await b.suite(
-    'Decompress',
-
-    b.add('snappy', () => {
-      return uncompress(SNAPPY_COMPRESSED_FIXTURE)
-    }),
-
-    b.add('snappy-v6', () => {
-      // @ts-expect-error
-      return uncompressV6(SNAPPY_COMPRESSED_FIXTURE)
-    }),
-
-    b.add('gzip', () => {
-      return gunzipAsync(GZIP_FIXTURE)
-    }),
-
-    b.add('deflate', () => {
-      return inflateAsync(DEFLATED_FIXTURE)
-    }),
-
-    b.add('brotli', () => {
-      return brotliDecompressAsync(BROTLI_COMPRESSED_FIXTURE)
-    }),
-
-    b.cycle(),
-    b.complete(),
-  )
-}
-
-run().catch((e) => {
-  console.error(e)
+const b = new Bench({
+  now: hrtimeNow,
 })
+
+b.add('snappy', () => {
+  return compress(FIXTURE)
+})
+
+b.add('snappy-v6', () => {
+  return compressV6(FIXTURE)
+})
+
+b.add('gzip', () => {
+  return gzipAsync(FIXTURE)
+})
+
+b.add('deflate', () => {
+  return deflateAsync(FIXTURE)
+})
+
+b.add('brotli', () => {
+  return brotliCompressAsync(FIXTURE)
+})
+
+await b.run()
+
+console.table(b.table())
+
+b.add('snappy', () => {
+  return uncompress(SNAPPY_COMPRESSED_FIXTURE)
+})
+
+b.add('snappy-v6', () => {
+  // @ts-expect-error
+  return uncompressV6(SNAPPY_COMPRESSED_FIXTURE)
+})
+
+b.add('gzip', () => {
+  return gunzipAsync(GZIP_FIXTURE)
+})
+
+b.add('deflate', () => {
+  return inflateAsync(DEFLATED_FIXTURE)
+})
+
+b.add('brotli', () => {
+  return brotliDecompressAsync(BROTLI_COMPRESSED_FIXTURE)
+})
+
+await b.run()
+
+console.table(b.table())

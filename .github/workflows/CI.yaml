@@ -38,49 +38,31 @@ jobs:
             target: i686-pc-windows-msvc
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
-            build: |-
-              set -e &&
-              yarn build --target x86_64-unknown-linux-gnu &&
-              chmod 777 -R target
+            build: CC=clang yarn build --target x86_64-unknown-linux-gnu --use-napi-cross
           - host: ubuntu-latest
             target: x86_64-unknown-linux-musl
-            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-            build: yarn build --target x86_64-unknown-linux-musl
+            build: yarn build -x --target x86_64-unknown-linux-musl
           - host: macos-latest
             target: aarch64-apple-darwin
             build: yarn build --target aarch64-apple-darwin
           - host: ubuntu-latest
             target: aarch64-unknown-linux-gnu
-            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
-            build: |-
-              set -e &&
-              yarn build --target aarch64-unknown-linux-gnu
-              chmod 777 -R target
+            build: CC=clang yarn build --target aarch64-unknown-linux-gnu --use-napi-cross
           - host: ubuntu-latest
             target: armv7-unknown-linux-gnueabihf
             setup: |
               sudo apt-get update
               sudo apt-get install gcc-arm-linux-gnueabihf -y
-            build: |
-              yarn build -x --target armv7-unknown-linux-gnueabihf
+            build: yarn build --target armv7-unknown-linux-gnueabihf --use-napi-cross
           - host: ubuntu-latest
             target: aarch64-linux-android
-            build: |
-              yarn build --target aarch64-linux-android
+            build: yarn build --target aarch64-linux-android
           - host: ubuntu-latest
             target: armv7-linux-androideabi
-            build: |
-              yarn build --target armv7-linux-androideabi
+            build: yarn build --target armv7-linux-androideabi
           - host: ubuntu-latest
             target: aarch64-unknown-linux-musl
-            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-alpine
-            build: |-
-              set -e &&
-              rustup target add aarch64-unknown-linux-musl &&
-              yarn build --target aarch64-unknown-linux-musl &&
-              /aarch64-linux-musl-cross/bin/aarch64-linux-musl-strip *.node &&
-              chmod 777 -R target
+            build: yarn build --target aarch64-unknown-linux-musl -x
           - host: windows-latest
             target: aarch64-pc-windows-msvc
             build: yarn build --target aarch64-pc-windows-msvc
@@ -96,7 +78,6 @@ jobs:
           cache: yarn
       - name: Install
         uses: dtolnay/rust-toolchain@stable
-        if: ${{ !matrix.settings.docker }}
         with:
           toolchain: stable
           targets: ${{ matrix.settings.target }}
@@ -104,16 +85,23 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
+            ~/.cargo/registry
             ~/.cargo/git/db/
             .cargo-cache
+            ~/.napi-rs
             target/
           key: ${{ matrix.settings.target }}-cargo-${{ matrix.settings.host }}
       - uses: goto-bus-stop/setup-zig@v2
-        if: ${{ matrix.settings.target == 'armv7-unknown-linux-gnueabihf' }}
+        if: ${{ contains(matrix.settings.target, 'musl') }}
         with:
           version: 0.13.0
+      - name: Install cargo-zigbuild
+        uses: taiki-e/install-action@v2
+        if: ${{ contains(matrix.settings.target, 'musl') }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          tool: cargo-zigbuild
       - name: Setup toolchain
         run: ${{ matrix.settings.setup }}
         if: ${{ matrix.settings.setup }}
@@ -131,16 +119,8 @@ jobs:
           node-version: 20
           cache: yarn
           architecture: x86
-      - name: Build in docker
-        uses: addnab/docker-run-action@v3
-        if: ${{ matrix.settings.docker }}
-        with:
-          image: ${{ matrix.settings.docker }}
-          options: '--user 0:0 -v ${{ github.workspace }}/.cargo-cache/git/db:/usr/local/cargo/git/db -v ${{ github.workspace }}/.cargo/registry/cache:/usr/local/cargo/registry/cache -v ${{ github.workspace }}/.cargo/registry/index:/usr/local/cargo/registry/index -v ${{ github.workspace }}:/build -w /build'
-          run: ${{ matrix.settings.build }}
       - name: Build
         run: ${{ matrix.settings.build }}
-        if: ${{ !matrix.settings.docker }}
         shell: bash
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -163,7 +143,7 @@ jobs:
           RUSTUP_IO_THREADS: 1
         with:
           operating_system: freebsd
-          version: '14.0'
+          version: '14.1'
           memory: 8G
           cpu_count: 3
           environment_variables: 'DEBUG RUSTUP_IO_THREADS'
