@@ -31,6 +31,9 @@
       "x86_64-unknown-linux-gnu",
       "x86_64-apple-darwin",
       "x86_64-pc-windows-msvc",
+      "x86_64-apple-darwin",
+      "x86_64-pc-windows-msvc",
+      "x86_64-unknown-linux-gnu",
       "x86_64-unknown-linux-musl",
       "aarch64-unknown-linux-gnu",
       "i686-pc-windows-msvc",
@@ -52,7 +55,7 @@
   },
   "scripts": {
     "artifacts": "napi artifacts --output-dir artifacts --npm-dir ./npm",
-    "bench": "node -r @swc-node/register benchmark/bench.ts",
+    "bench": "node --import @swc-node/register/esm-register benchmark/bench.ts",
     "build": "napi build --platform --release",
     "build:debug": "napi build --platform",
     "format": "run-p format:source format:rs format:toml",
@@ -66,25 +69,25 @@
     "version": "napi version && conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "devDependencies": {
-    "@napi-rs/cli": "^3.0.0-alpha.58",
-    "@swc-node/register": "^1.10.7",
-    "@swc/core": "^1.6.13",
+    "@napi-rs/cli": "^3.0.0-alpha.62",
+    "@oxc-node/core": "^0.0.14",
     "@taplo/cli": "^0.7.0",
-    "@types/node": "^20.14.10",
+    "@types/node": "^22.4.2",
     "ava": "^6.1.3",
     "benny": "^3.7.1",
     "chalk": "^5.3.0",
     "conventional-changelog-cli": "^5.0.0",
-    "esbuild": "^0.23.0",
-    "husky": "^9.0.11",
+    "esbuild": "^0.23.1",
+    "husky": "^9.1.5",
     "legacy-snappy": "npm:snappy@6",
-    "lint-staged": "^15.2.7",
+    "lint-staged": "^15.2.9",
     "npm-run-all2": "^6.2.2",
-    "oxlint": "^0.7.0",
+    "oxlint": "^0.7.2",
     "prettier": "^3.3.3",
     "pretty-bytes": "^6.1.1",
     "table": "^6.8.2",
-    "typescript": "^5.5.3"
+    "tinybench": "^2.9.0",
+    "typescript": "^5.5.4"
   },
   "lint-staged": {
     "*.@(js|ts|tsx)": [
@@ -95,11 +98,12 @@
     ]
   },
   "ava": {
-    "require": [
-      "@swc-node/register"
-    ],
-    "extensions": [
-      "ts"
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--import",
+      "@oxc-node/core/register"
     ],
     "timeout": "2m",
     "workerThreads": false,
@@ -118,5 +122,11 @@
     "type": "github",
     "url": "https://github.com/sponsors/Brooooooklyn"
   },
-  "packageManager": "yarn@4.4.0"
+  "packageManager": "yarn@4.4.0",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "require": "./index.js"
+    }
+  }
 }
