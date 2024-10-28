@@ -4822,7 +4822,7 @@ __metadata:
     prettier: "npm:^3.3.3"
     pretty-bytes: "npm:^6.1.1"
     table: "npm:^6.8.2"
-    tinybench: "npm:^2.9.0"
+    tinybench: "npm:^3.0.0"
     typescript: "npm:^5.5.4"
   languageName: unknown
   linkType: soft
@@ -5129,10 +5129,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinybench@npm:^2.9.0":
-  version: 2.9.0
-  resolution: "tinybench@npm:2.9.0"
-  checksum: 10c0/c3500b0f60d2eb8db65250afe750b66d51623057ee88720b7f064894a6cb7eb93360ca824a60a31ab16dab30c7b1f06efe0795b352e37914a9d4bad86386a20c
+"tinybench@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "tinybench@npm:3.0.0"
+  checksum: 10c0/47d5f532b12be9e7898a7a9048428ba88fd8e1a2ceb3ddd46a297cfc1e90130b18866c3deacd423778d53a8de7267d0e80acdf964c5490891b78d31e06742821
   languageName: node
   linkType: hard
 
