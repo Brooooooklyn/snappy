@@ -70,7 +70,7 @@
   },
   "devDependencies": {
     "@napi-rs/cli": "^3.0.0-alpha.62",
-    "@oxc-node/core": "^0.0.17",
+    "@oxc-node/core": "^0.0.19",
     "@taplo/cli": "^0.7.0",
     "@types/node": "^22.4.2",
     "ava": "^6.1.3",
