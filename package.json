@@ -86,7 +86,7 @@
     "prettier": "^3.3.3",
     "pretty-bytes": "^6.1.1",
     "table": "^6.8.2",
-    "tinybench": "^3.0.0",
+    "tinybench": "^4.0.0",
     "typescript": "^5.5.4"
   },
   "lint-staged": {
