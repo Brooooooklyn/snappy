@@ -1489,58 +1489,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oxlint/darwin-arm64@npm:0.16.9":
-  version: 0.16.9
-  resolution: "@oxlint/darwin-arm64@npm:0.16.9"
+"@oxlint/darwin-arm64@npm:0.17.0":
+  version: 0.17.0
+  resolution: "@oxlint/darwin-arm64@npm:0.17.0"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxlint/darwin-x64@npm:0.16.9":
-  version: 0.16.9
-  resolution: "@oxlint/darwin-x64@npm:0.16.9"
+"@oxlint/darwin-x64@npm:0.17.0":
+  version: 0.17.0
+  resolution: "@oxlint/darwin-x64@npm:0.17.0"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@oxlint/linux-arm64-gnu@npm:0.16.9":
-  version: 0.16.9
-  resolution: "@oxlint/linux-arm64-gnu@npm:0.16.9"
+"@oxlint/linux-arm64-gnu@npm:0.17.0":
+  version: 0.17.0
+  resolution: "@oxlint/linux-arm64-gnu@npm:0.17.0"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxlint/linux-arm64-musl@npm:0.16.9":
-  version: 0.16.9
-  resolution: "@oxlint/linux-arm64-musl@npm:0.16.9"
+"@oxlint/linux-arm64-musl@npm:0.17.0":
+  version: 0.17.0
+  resolution: "@oxlint/linux-arm64-musl@npm:0.17.0"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@oxlint/linux-x64-gnu@npm:0.16.9":
-  version: 0.16.9
-  resolution: "@oxlint/linux-x64-gnu@npm:0.16.9"
+"@oxlint/linux-x64-gnu@npm:0.17.0":
+  version: 0.17.0
+  resolution: "@oxlint/linux-x64-gnu@npm:0.17.0"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxlint/linux-x64-musl@npm:0.16.9":
-  version: 0.16.9
-  resolution: "@oxlint/linux-x64-musl@npm:0.16.9"
+"@oxlint/linux-x64-musl@npm:0.17.0":
+  version: 0.17.0
+  resolution: "@oxlint/linux-x64-musl@npm:0.17.0"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@oxlint/win32-arm64@npm:0.16.9":
-  version: 0.16.9
-  resolution: "@oxlint/win32-arm64@npm:0.16.9"
+"@oxlint/win32-arm64@npm:0.17.0":
+  version: 0.17.0
+  resolution: "@oxlint/win32-arm64@npm:0.17.0"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxlint/win32-x64@npm:0.16.9":
-  version: 0.16.9
-  resolution: "@oxlint/win32-x64@npm:0.16.9"
+"@oxlint/win32-x64@npm:0.17.0":
+  version: 0.17.0
+  resolution: "@oxlint/win32-x64@npm:0.17.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -3941,18 +3941,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oxlint@npm:^0.16.0":
-  version: 0.16.9
-  resolution: "oxlint@npm:0.16.9"
+"oxlint@npm:^0.17.0":
+  version: 0.17.0
+  resolution: "oxlint@npm:0.17.0"
   dependencies:
-    "@oxlint/darwin-arm64": "npm:0.16.9"
-    "@oxlint/darwin-x64": "npm:0.16.9"
-    "@oxlint/linux-arm64-gnu": "npm:0.16.9"
-    "@oxlint/linux-arm64-musl": "npm:0.16.9"
-    "@oxlint/linux-x64-gnu": "npm:0.16.9"
-    "@oxlint/linux-x64-musl": "npm:0.16.9"
-    "@oxlint/win32-arm64": "npm:0.16.9"
-    "@oxlint/win32-x64": "npm:0.16.9"
+    "@oxlint/darwin-arm64": "npm:0.17.0"
+    "@oxlint/darwin-x64": "npm:0.17.0"
+    "@oxlint/linux-arm64-gnu": "npm:0.17.0"
+    "@oxlint/linux-arm64-musl": "npm:0.17.0"
+    "@oxlint/linux-x64-gnu": "npm:0.17.0"
+    "@oxlint/linux-x64-musl": "npm:0.17.0"
+    "@oxlint/win32-arm64": "npm:0.17.0"
+    "@oxlint/win32-x64": "npm:0.17.0"
   dependenciesMeta:
     "@oxlint/darwin-arm64":
       optional: true
@@ -3973,7 +3973,7 @@ __metadata:
   bin:
     oxc_language_server: bin/oxc_language_server
     oxlint: bin/oxlint
-  checksum: 10c0/c48d016253a6b6c20ae4581e5d1ebd17872545205beb87217775eecdad86ac939e130542e09564f2da0b69eeffa33c310a0670678833cb4b4e1e6e7690f49ae1
+  checksum: 10c0/9278abfd6eed6c09919f9cf8f30f60f264a6e370f16f8b155ea83994c5b3bd4b2be831873a7ade47cc351d7fd0220454d6919dad2668d250b370654f7bd2c890
   languageName: node
   linkType: hard
 
@@ -4513,7 +4513,7 @@ __metadata:
     legacy-snappy: "npm:snappy@6"
     lint-staged: "npm:^16.0.0"
     npm-run-all2: "npm:^8.0.0"
-    oxlint: "npm:^0.16.0"
+    oxlint: "npm:^0.17.0"
     prettier: "npm:^3.3.3"
     pretty-bytes: "npm:^7.0.0"
     table: "npm:^6.8.2"
