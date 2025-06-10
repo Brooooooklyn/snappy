@@ -82,7 +82,7 @@
     "legacy-snappy": "npm:snappy@6",
     "lint-staged": "^16.0.0",
     "npm-run-all2": "^8.0.0",
-    "oxlint": "^0.18.0",
+    "oxlint": "^1.0.0",
     "prettier": "^3.3.3",
     "pretty-bytes": "^7.0.0",
     "table": "^6.8.2",
