@@ -12,11 +12,11 @@ napi        = { version = "3.0.0-alpha", features = ["napi5", "serde-json"] }
 napi-derive = { version = "3.0.0-alpha" }
 snap        = "1"
 
-[target.'cfg(not(target_os = "linux"))'.dependencies]
-mimalloc = { version = "0.1" }
+[target.'cfg(all(not(target_os = "linux"), not(target_family = "wasm")))'.dependencies]
+mimalloc-safe = { version = "0.1", features = ["skip_collect_on_exit"] }
 
-[target.'cfg(all(target_os = "linux", not(target_arch = "arm")))'.dependencies]
-mimalloc = { version = "0.1", features = ["local_dynamic_tls"] }
+[target.'cfg(target_os = "linux")'.dependencies]
+mimalloc-safe = { version = "0.1", features = ["local_dynamic_tls", "skip_collect_on_exit"] }
 
 [build-dependencies]
 napi-build = "2"

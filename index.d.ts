@@ -34,4 +34,3 @@ export interface EncOptions {
 export declare function uncompress(input: string | Uint8Array, options?: DecOptions | undefined | null, signal?: AbortSignal | undefined | null): Promise<string | Buffer>
 
 export declare function uncompressSync(input: string | Uint8Array, options?: DecOptions | undefined | null): string | Buffer
-
