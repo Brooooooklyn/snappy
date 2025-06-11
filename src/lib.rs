@@ -6,9 +6,9 @@ extern crate napi_derive;
 use napi::bindgen_prelude::*;
 use snap::raw::{Decoder, Encoder};
 
-#[cfg(not(all(target_os = "linux", target_arch = "arm")))]
+#[cfg(not(target_family = "wasm"))]
 #[global_allocator]
-static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
+static GLOBAL: mimalloc_safe::MiMalloc = mimalloc_safe::MiMalloc;
 
 #[napi(object)]
 pub struct DecOptions {
@@ -137,17 +137,14 @@ pub fn compress(
   input: Either<String, Uint8Array>,
   options: Option<EncOptions>,
   signal: Option<AbortSignal>,
-) -> Result<AsyncTask<Enc>> {
+) -> AsyncTask<Enc> {
   let enc = Encoder::new();
   let encoder = Enc {
     inner: enc,
     data: input,
     options,
   };
-  match signal {
-    Some(s) => Ok(AsyncTask::with_signal(encoder, s)),
-    None => Ok(AsyncTask::new(encoder)),
-  }
+  AsyncTask::with_optional_signal(encoder, signal)
 }
 
 #[napi]
@@ -187,12 +184,12 @@ pub fn uncompress(
   input: Either<String, Uint8Array>,
   options: Option<DecOptions>,
   signal: Option<AbortSignal>,
-) -> Result<AsyncTask<Dec>> {
+) -> AsyncTask<Dec> {
   let dec = Decoder::new();
   let decoder = Dec {
     inner: dec,
     data: input,
     options,
   };
-  Ok(AsyncTask::with_optional_signal(decoder, signal))
+  AsyncTask::with_optional_signal(decoder, signal)
 }

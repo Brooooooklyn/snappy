@@ -560,9 +560,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@napi-rs/cli@npm:^3.0.0-alpha.62":
-  version: 3.0.0-alpha.81
-  resolution: "@napi-rs/cli@npm:3.0.0-alpha.81"
+"@napi-rs/cli@npm:^3.0.0-alpha.88":
+  version: 3.0.0-alpha.88
+  resolution: "@napi-rs/cli@npm:3.0.0-alpha.88"
   dependencies:
     "@inquirer/prompts": "npm:^7.4.0"
     "@napi-rs/cross-toolchain": "npm:^0.0.19"
@@ -589,7 +589,7 @@ __metadata:
   bin:
     napi: ./dist/cli.js
     napi-raw: ./cli.mjs
-  checksum: 10c0/d81a4f84b208623480b111c1950247403ddc8900fb77a096d9bd5d21cf2953806f6161593e09d79e229ceff968c5f1fadecbb3a0fb36de80d5cf1b74fbac0435
+  checksum: 10c0/3723c5aaef5064a313f5cc0cd0b04cf55c6345fff4b5b5e4669536f35850a498106c200c27522fb0260a76ef34a4dbc10ca564ebf914b59d697958d651a5b25f
   languageName: node
   linkType: hard
 
@@ -1484,58 +1484,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oxlint/darwin-arm64@npm:0.18.0":
-  version: 0.18.0
-  resolution: "@oxlint/darwin-arm64@npm:0.18.0"
+"@oxlint/darwin-arm64@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@oxlint/darwin-arm64@npm:1.0.0"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxlint/darwin-x64@npm:0.18.0":
-  version: 0.18.0
-  resolution: "@oxlint/darwin-x64@npm:0.18.0"
+"@oxlint/darwin-x64@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@oxlint/darwin-x64@npm:1.0.0"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@oxlint/linux-arm64-gnu@npm:0.18.0":
-  version: 0.18.0
-  resolution: "@oxlint/linux-arm64-gnu@npm:0.18.0"
+"@oxlint/linux-arm64-gnu@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@oxlint/linux-arm64-gnu@npm:1.0.0"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxlint/linux-arm64-musl@npm:0.18.0":
-  version: 0.18.0
-  resolution: "@oxlint/linux-arm64-musl@npm:0.18.0"
+"@oxlint/linux-arm64-musl@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@oxlint/linux-arm64-musl@npm:1.0.0"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@oxlint/linux-x64-gnu@npm:0.18.0":
-  version: 0.18.0
-  resolution: "@oxlint/linux-x64-gnu@npm:0.18.0"
+"@oxlint/linux-x64-gnu@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@oxlint/linux-x64-gnu@npm:1.0.0"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@oxlint/linux-x64-musl@npm:0.18.0":
-  version: 0.18.0
-  resolution: "@oxlint/linux-x64-musl@npm:0.18.0"
+"@oxlint/linux-x64-musl@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@oxlint/linux-x64-musl@npm:1.0.0"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@oxlint/win32-arm64@npm:0.18.0":
-  version: 0.18.0
-  resolution: "@oxlint/win32-arm64@npm:0.18.0"
+"@oxlint/win32-arm64@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@oxlint/win32-arm64@npm:1.0.0"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxlint/win32-x64@npm:0.18.0":
-  version: 0.18.0
-  resolution: "@oxlint/win32-x64@npm:0.18.0"
+"@oxlint/win32-x64@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@oxlint/win32-x64@npm:1.0.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -1595,12 +1595,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.4.2":
-  version: 22.15.29
-  resolution: "@types/node@npm:22.15.29"
+"@types/node@npm:^24.0.1":
+  version: 24.0.1
+  resolution: "@types/node@npm:24.0.1"
   dependencies:
-    undici-types: "npm:~6.21.0"
-  checksum: 10c0/602cc88c6150780cd9b5b44604754e0ce13983ae876a538861d6ecfb1511dff289e5576fffd26c841cde2142418d4bb76e2a72a382b81c04557ccb17cff29e1d
+    undici-types: "npm:~7.8.0"
+  checksum: 10c0/91cd50d1ac32a2172cbc67b65c78391fbd469b24743e3665427aa60bebaf4620cb9ac2e91c09a8081a78d08855c00faca659c287c1725ce8ca5e80ece3a20520
   languageName: node
   linkType: hard
 
@@ -1618,7 +1618,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/nft@npm:^0.29.2":
+"@vercel/nft@npm:^0.29.4":
   version: 0.29.4
   resolution: "@vercel/nft@npm:0.29.4"
   dependencies:
@@ -1830,11 +1830,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ava@npm:^6.1.3":
-  version: 6.3.0
-  resolution: "ava@npm:6.3.0"
+"ava@npm:^6.4.0":
+  version: 6.4.0
+  resolution: "ava@npm:6.4.0"
   dependencies:
-    "@vercel/nft": "npm:^0.29.2"
+    "@vercel/nft": "npm:^0.29.4"
     acorn: "npm:^8.14.1"
     acorn-walk: "npm:^8.3.4"
     ansi-styles: "npm:^6.2.1"
@@ -1851,7 +1851,7 @@ __metadata:
     common-path-prefix: "npm:^3.0.0"
     concordance: "npm:^5.0.4"
     currently-unhandled: "npm:^0.4.1"
-    debug: "npm:^4.4.0"
+    debug: "npm:^4.4.1"
     emittery: "npm:^1.1.0"
     figures: "npm:^6.1.0"
     globby: "npm:^14.1.0"
@@ -1881,7 +1881,7 @@ __metadata:
       optional: true
   bin:
     ava: entrypoints/cli.mjs
-  checksum: 10c0/10abc34f2d323b74b27fa6cb3ba808603c898459b0807d506be22ced15c32e977c278de119612838718179511df91fed2bfa1767238255829cf0bafe4fd3b721
+  checksum: 10c0/d96a0bfa8758f0c0dcfc9437801e17702535f493a01fab401289ac538bb2b7633afb7b5363392499d9ebce98bc1f425767008a76c4edf2aa225f7e2195aaa54c
   languageName: node
   linkType: hard
 
@@ -2030,7 +2030,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^5.3.0, chalk@npm:^5.4.1":
+"chalk@npm:^5.4.1":
   version: 5.4.1
   resolution: "chalk@npm:5.4.1"
   checksum: 10c0/b23e88132c702f4855ca6d25cb5538b1114343e41472d5263ee8a37cccfccd9c4216d111e1097c6a27830407a1dc81fecdf2a56f2c63033d4dbbd88c10b0dcef
@@ -2591,7 +2591,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.25.0":
+"esbuild@npm:^0.25.5":
   version: 0.25.5
   resolution: "esbuild@npm:0.25.5"
   dependencies:
@@ -3053,7 +3053,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"husky@npm:^9.1.5":
+"husky@npm:^9.1.7":
   version: 9.1.7
   resolution: "husky@npm:9.1.7"
   bin:
@@ -3380,7 +3380,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^16.0.0":
+"lint-staged@npm:^16.1.0":
   version: 16.1.0
   resolution: "lint-staged@npm:16.1.0"
   dependencies:
@@ -3839,7 +3839,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"npm-run-all2@npm:^8.0.0":
+"npm-run-all2@npm:^8.0.4":
   version: 8.0.4
   resolution: "npm-run-all2@npm:8.0.4"
   dependencies:
@@ -3927,18 +3927,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oxlint@npm:^0.18.0":
-  version: 0.18.0
-  resolution: "oxlint@npm:0.18.0"
+"oxlint@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "oxlint@npm:1.0.0"
   dependencies:
-    "@oxlint/darwin-arm64": "npm:0.18.0"
-    "@oxlint/darwin-x64": "npm:0.18.0"
-    "@oxlint/linux-arm64-gnu": "npm:0.18.0"
-    "@oxlint/linux-arm64-musl": "npm:0.18.0"
-    "@oxlint/linux-x64-gnu": "npm:0.18.0"
-    "@oxlint/linux-x64-musl": "npm:0.18.0"
-    "@oxlint/win32-arm64": "npm:0.18.0"
-    "@oxlint/win32-x64": "npm:0.18.0"
+    "@oxlint/darwin-arm64": "npm:1.0.0"
+    "@oxlint/darwin-x64": "npm:1.0.0"
+    "@oxlint/linux-arm64-gnu": "npm:1.0.0"
+    "@oxlint/linux-arm64-musl": "npm:1.0.0"
+    "@oxlint/linux-x64-gnu": "npm:1.0.0"
+    "@oxlint/linux-x64-musl": "npm:1.0.0"
+    "@oxlint/win32-arm64": "npm:1.0.0"
+    "@oxlint/win32-x64": "npm:1.0.0"
   dependenciesMeta:
     "@oxlint/darwin-arm64":
       optional: true
@@ -3959,7 +3959,7 @@ __metadata:
   bin:
     oxc_language_server: bin/oxc_language_server
     oxlint: bin/oxlint
-  checksum: 10c0/e6542e03500816b2ee9b6cbe026fa051c44aa7662c45cbb82709103589e6a3ebb33f98a7e6e1e3357074b78741875fb4b8b9dd24b513c38fa351150d4487b3db
+  checksum: 10c0/f0009299d611d3b5ea0088aa25ebd106e2bcc0f4e51381989804c4fb6489306bf4bbaa6e0f2a26a0081b7b718e13f27dd0ba50337fdf0444aac3b5a9c0ec0693
   languageName: node
   linkType: hard
 
@@ -4108,7 +4108,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.3.3":
+"prettier@npm:^3.5.3":
   version: 3.5.3
   resolution: "prettier@npm:3.5.3"
   bin:
@@ -4486,25 +4486,25 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "snappy@workspace:."
   dependencies:
-    "@napi-rs/cli": "npm:^3.0.0-alpha.62"
+    "@napi-rs/cli": "npm:^3.0.0-alpha.88"
     "@oxc-node/core": "npm:^0.0.28"
     "@taplo/cli": "npm:^0.7.0"
-    "@types/node": "npm:^22.4.2"
-    ava: "npm:^6.1.3"
+    "@types/node": "npm:^24.0.1"
+    ava: "npm:^6.4.0"
     benny: "npm:^3.7.1"
-    chalk: "npm:^5.3.0"
+    chalk: "npm:^5.4.1"
     conventional-changelog-cli: "npm:^5.0.0"
-    esbuild: "npm:^0.25.0"
-    husky: "npm:^9.1.5"
+    esbuild: "npm:^0.25.5"
+    husky: "npm:^9.1.7"
     legacy-snappy: "npm:snappy@6"
-    lint-staged: "npm:^16.0.0"
-    npm-run-all2: "npm:^8.0.0"
-    oxlint: "npm:^0.18.0"
-    prettier: "npm:^3.3.3"
+    lint-staged: "npm:^16.1.0"
+    npm-run-all2: "npm:^8.0.4"
+    oxlint: "npm:^1.0.0"
+    prettier: "npm:^3.5.3"
     pretty-bytes: "npm:^7.0.0"
-    table: "npm:^6.8.2"
-    tinybench: "npm:^4.0.0"
-    typescript: "npm:^5.5.4"
+    table: "npm:^6.9.0"
+    tinybench: "npm:^4.0.1"
+    typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -4708,7 +4708,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"table@npm:^6.8.2":
+"table@npm:^6.9.0":
   version: 6.9.0
   resolution: "table@npm:6.9.0"
   dependencies:
@@ -4785,7 +4785,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinybench@npm:^4.0.0":
+"tinybench@npm:^4.0.1":
   version: 4.0.1
   resolution: "tinybench@npm:4.0.1"
   checksum: 10c0/42ed8abf2eb914cfbff2cede5fa98cca7dcaf135ab5342a3701d2f90ed3d29fc1a2dcc092a91b1dc483d0de1fa69feac3fea64fad2ddef284bba34391bc96405
@@ -4885,7 +4885,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.5.4":
+"typescript@npm:^5.8.3":
   version: 5.8.3
   resolution: "typescript@npm:5.8.3"
   bin:
@@ -4895,7 +4895,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.5.4#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^5.8.3#optional!builtin<compat/typescript>":
   version: 5.8.3
   resolution: "typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"
   bin:
@@ -4914,10 +4914,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~6.21.0":
-  version: 6.21.0
-  resolution: "undici-types@npm:6.21.0"
-  checksum: 10c0/c01ed51829b10aa72fc3ce64b747f8e74ae9b60eafa19a7b46ef624403508a54c526ffab06a14a26b3120d055e1104d7abe7c9017e83ced038ea5cf52f8d5e04
+"undici-types@npm:~7.8.0":
+  version: 7.8.0
+  resolution: "undici-types@npm:7.8.0"
+  checksum: 10c0/9d9d246d1dc32f318d46116efe3cfca5a72d4f16828febc1918d94e58f6ffcf39c158aa28bf5b4fc52f410446bc7858f35151367bd7a49f21746cab6497b709b
   languageName: node
   linkType: hard
 
