@@ -1,3 +1,18 @@
+# [7.3.0](https://github.com/Brooooooklyn/snappy/compare/v7.2.2...v7.3.0) (2025-07-15)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate napi to 3.0.0-alpha ([#198](https://github.com/Brooooooklyn/snappy/issues/198)) ([9f8c9b9](https://github.com/Brooooooklyn/snappy/commit/9f8c9b9acf8bc05c79b07d4db0fb05e699c423a1))
+* **deps:** update rust crate napi-derive to 3.0.0-alpha ([#197](https://github.com/Brooooooklyn/snappy/issues/197)) ([41125e2](https://github.com/Brooooooklyn/snappy/commit/41125e23b0f621ce1ebc0b956b366c660bba151e))
+
+
+### Features
+
+* add more targets ([#265](https://github.com/Brooooooklyn/snappy/issues/265)) ([c0a3244](https://github.com/Brooooooklyn/snappy/commit/c0a3244488975cfe6e41466386d0658982fef5d7))
+
+
+
 ## [7.2.2](https://github.com/Brooooooklyn/snappy/compare/v7.2.1...v7.2.2) (2022-11-13)
 
 ### Bug Fixes
