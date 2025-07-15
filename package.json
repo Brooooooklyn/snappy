@@ -3,6 +3,7 @@
   "version": "7.2.2",
   "description": "Fastest Snappy compression library in Node.js",
   "main": "index.js",
+  "browser": "browser.js",
   "repository": "https://github.com/Brooooooklyn/snappy",
   "license": "MIT",
   "keywords": [
@@ -20,20 +21,16 @@
   ],
   "files": [
     "index.d.ts",
-    "index.js"
+    "index.js",
+    "browser.js"
   ],
   "napi": {
     "binaryName": "snappy",
-    "package": {
-      "name": "@napi-rs/snappy"
-    },
+    "packageName": "@napi-rs/snappy",
     "targets": [
       "x86_64-unknown-linux-gnu",
       "x86_64-apple-darwin",
       "x86_64-pc-windows-msvc",
-      "x86_64-apple-darwin",
-      "x86_64-pc-windows-msvc",
-      "x86_64-unknown-linux-gnu",
       "x86_64-unknown-linux-musl",
       "aarch64-unknown-linux-gnu",
       "i686-pc-windows-msvc",
@@ -43,8 +40,18 @@
       "arm-linux-androideabi",
       "x86_64-unknown-freebsd",
       "aarch64-unknown-linux-musl",
-      "aarch64-pc-windows-msvc"
-    ]
+      "aarch64-pc-windows-msvc",
+      "riscv64gc-unknown-linux-gnu",
+      "s390x-unknown-linux-gnu",
+      "powerpc64le-unknown-linux-gnu",
+      "aarch64-unknown-linux-ohos",
+      "wasm32-wasip1-threads"
+    ],
+    "wasm": {
+      "browser": {
+        "fs": false
+      }
+    }
   },
   "engines": {
     "node": ">= 10"
@@ -69,7 +76,7 @@
     "version": "napi version && conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "devDependencies": {
-    "@napi-rs/cli": "^3.0.0-alpha.88",
+    "@napi-rs/cli": "^3.0.0-alpha.99",
     "@oxc-node/core": "^0.0.29",
     "@taplo/cli": "^0.7.0",
     "@types/node": "^24.0.1",
@@ -126,7 +133,9 @@
   "exports": {
     ".": {
       "import": "./index.js",
-      "require": "./index.js"
+      "require": "./index.js",
+      "types": "./index.d.ts",
+      "browser": "./browser.js"
     }
   }
 }
