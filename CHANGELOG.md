@@ -1,3 +1,7 @@
+## [7.3.1](https://github.com/Brooooooklyn/snappy/compare/v7.3.0...v7.3.1) (2025-08-04)
+
+
+
 # [7.3.0](https://github.com/Brooooooklyn/snappy/compare/v7.2.2...v7.3.0) (2025-07-15)
 
 
