@@ -38,23 +38,23 @@ const b = new Bench({
   now: hrtimeNow,
 })
 
-b.add('snappy', () => {
+b.add('snappy-compress', () => {
   return compress(FIXTURE)
 })
 
-b.add('snappy-v6', () => {
+b.add('snappy-v6-compress', () => {
   return compressV6(FIXTURE)
 })
 
-b.add('gzip', () => {
+b.add('gzip-compress', () => {
   return gzipAsync(FIXTURE)
 })
 
-b.add('deflate', () => {
+b.add('deflate-compress', () => {
   return deflateAsync(FIXTURE)
 })
 
-b.add('brotli', () => {
+b.add('brotli-compress', () => {
   return brotliCompressAsync(FIXTURE)
 })
 
@@ -62,27 +62,31 @@ await b.run()
 
 console.table(b.table())
 
-b.add('snappy', () => {
+const bUncompress = new Bench({
+  now: hrtimeNow,
+})
+
+bUncompress.add('snappy-uncompress', () => {
   return uncompress(SNAPPY_COMPRESSED_FIXTURE)
 })
 
-b.add('snappy-v6', () => {
+bUncompress.add('snappy-v6-uncompress', () => {
   // @ts-expect-error
   return uncompressV6(SNAPPY_COMPRESSED_FIXTURE)
 })
 
-b.add('gzip', () => {
+bUncompress.add('gzip-uncompress', () => {
   return gunzipAsync(GZIP_FIXTURE)
 })
 
-b.add('deflate', () => {
+bUncompress.add('deflate-uncompress', () => {
   return inflateAsync(DEFLATED_FIXTURE)
 })
 
-b.add('brotli', () => {
+bUncompress.add('brotli-uncompress', () => {
   return brotliDecompressAsync(BROTLI_COMPRESSED_FIXTURE)
 })
 
-await b.run()
+await bUncompress.run()
 
-console.table(b.table())
+console.table(bUncompress.table())
