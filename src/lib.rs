@@ -1,9 +1,7 @@
 #![deny(clippy::all)]
 
-#[macro_use]
-extern crate napi_derive;
-
-use napi::bindgen_prelude::*;
+use napi::{bindgen_prelude::*, ScopedTask};
+use napi_derive::napi;
 use snap::raw::{Decoder, Encoder};
 
 #[cfg(not(target_family = "wasm"))]
@@ -36,9 +34,9 @@ pub struct Enc {
 }
 
 #[napi]
-impl Task for Enc {
+impl<'env> ScopedTask<'env> for Enc {
   type Output = Vec<u8>;
-  type JsValue = Buffer;
+  type JsValue = BufferSlice<'env>;
 
   fn compute(&mut self) -> Result<Self::Output> {
     self
@@ -50,18 +48,17 @@ impl Task for Enc {
       .map_err(|e| Error::new(Status::GenericFailure, format!("{e}")))
   }
 
-  fn resolve(&mut self, env: Env, output: Self::Output) -> Result<Self::JsValue> {
+  fn resolve(&mut self, env: &'env Env, output: Self::Output) -> Result<Self::JsValue> {
     if self
       .options
       .as_ref()
       .and_then(|o| o.copy_output_data)
       .unwrap_or(false)
     {
-      BufferSlice::copy_from(&env, output)
+      BufferSlice::copy_from(env, output)
     } else {
-      BufferSlice::from_data(&env, output)
+      BufferSlice::from_data(env, output)
     }
-    .and_then(|s| s.into_buffer(&env))
   }
 }
 
@@ -72,9 +69,9 @@ pub struct Dec {
 }
 
 #[napi]
-impl Task for Dec {
+impl<'env> ScopedTask<'env> for Dec {
   type Output = Vec<u8>;
-  type JsValue = Either<String, Buffer>;
+  type JsValue = Either<String, BufferSlice<'env>>;
 
   fn compute(&mut self) -> Result<Self::Output> {
     self
@@ -86,17 +83,13 @@ impl Task for Dec {
       .map_err(|e| Error::new(Status::GenericFailure, format!("{e}")))
   }
 
-  fn resolve(&mut self, env: Env, output: Self::Output) -> Result<Self::JsValue> {
+  fn resolve(&mut self, env: &'env Env, output: Self::Output) -> Result<Self::JsValue> {
     let opt_ref = self.options.as_ref();
     if opt_ref.and_then(|o| o.as_buffer).unwrap_or(true) {
       if opt_ref.and_then(|o| o.copy_output_data).unwrap_or(false) {
-        BufferSlice::copy_from(&env, output)
-          .and_then(|slice| slice.into_buffer(&env))
-          .map(Either::B)
+        BufferSlice::copy_from(env, output).map(Either::B)
       } else {
-        BufferSlice::from_data(&env, output)
-          .and_then(|slice| slice.into_buffer(&env))
-          .map(Either::B)
+        BufferSlice::from_data(env, output).map(Either::B)
       }
     } else {
       Ok(Either::A(String::from_utf8(output).map_err(|e| {
