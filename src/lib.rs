@@ -4,7 +4,11 @@ use napi::{bindgen_prelude::*, ScopedTask};
 use napi_derive::napi;
 use snap::raw::{Decoder, Encoder};
 
-#[cfg(not(target_family = "wasm"))]
+#[cfg(all(
+  not(target_family = "wasm"),
+  not(target_env = "ohos"),
+  not(target_env = "musl")
+))]
 #[global_allocator]
 static GLOBAL: mimalloc_safe::MiMalloc = mimalloc_safe::MiMalloc;
 
@@ -100,11 +104,11 @@ impl<'env> ScopedTask<'env> for Dec {
 }
 
 #[napi]
-pub fn compress_sync(
+pub fn compress_sync<'env>(
   env: Env,
-  input: Either<String, &[u8]>,
+  input: Either<String, &'env [u8]>,
   options: Option<EncOptions>,
-) -> Result<BufferSlice> {
+) -> Result<BufferSlice<'env>> {
   let mut enc = Encoder::new();
   enc
     .compress_vec(match input {
@@ -141,11 +145,11 @@ pub fn compress(
 }
 
 #[napi]
-pub fn uncompress_sync(
-  env: Env,
-  input: Either<String, &[u8]>,
+pub fn uncompress_sync<'env>(
+  env: &'env Env,
+  input: Either<String, &'env [u8]>,
   options: Option<DecOptions>,
-) -> Result<Either<String, BufferSlice>> {
+) -> Result<Either<String, BufferSlice<'env>>> {
   let mut dec = Decoder::new();
   dec
     .decompress_vec(match input {
@@ -160,9 +164,9 @@ pub fn uncompress_sync(
           .and_then(|o| o.copy_output_data)
           .unwrap_or(false)
         {
-          BufferSlice::copy_from(&env, output).map(Either::B)
+          BufferSlice::copy_from(env, output).map(Either::B)
         } else {
-          BufferSlice::from_data(&env, output).map(Either::B)
+          BufferSlice::from_data(env, output).map(Either::B)
         }
       } else {
         Ok(Either::A(String::from_utf8(output).map_err(|e| {
