@@ -39,9 +39,9 @@ export declare function uncompress(input: string | Uint8Array, options?: { asBuf
 export declare function uncompress(input: string | Uint8Array, options?: DecOptions): Promise<string | Uint8Array | number>;
 
 
-export declare function uncompressSync(input: undefined, options?: DecOptions | undefined | null): Uint8Array
+export declare function uncompressSync(input: undefined, options?: DecOptions | undefined | null): Buffer
 export declare function uncompressSync(input: string | Uint8Array, options: { asBuffer: false }): string;
 export declare function uncompressSync(input: string | Uint8Array, options: { output: Uint8Array }): number;
-export declare function uncompressSync(input: string | Uint8Array, options?: { asBuffer?: true }): Uint8Array;
-export declare function uncompressSync(input: string | Uint8Array, options?: DecOptions): string | Uint8Array | number;
+export declare function uncompressSync(input: string | Uint8Array, options?: { asBuffer?: true }): Buffer;
+export declare function uncompressSync(input: string | Uint8Array, options?: DecOptions): string | Buffer | number;
 
