@@ -16,7 +16,7 @@ import {
 import { Bench, hrtimeNow } from 'tinybench'
 import { compress as legacyCompress, uncompress as legacyUncompress } from 'legacy-snappy'
 
-import { compress, uncompress, compressSync } from '../index.js'
+import { compress, uncompress, compressSync, uncompressSync } from '../index.js'
 import { fileURLToPath } from 'node:url'
 
 const gzipAsync = promisify(gzip)
@@ -42,6 +42,10 @@ b.add('snappy-compress', () => {
   return compress(FIXTURE)
 })
 
+b.add('snappy-compress-sync', () => {
+  return compressSync(FIXTURE)
+})
+
 b.add('snappy-v6-compress', () => {
   return compressV6(FIXTURE)
 })
@@ -65,9 +69,21 @@ console.table(b.table())
 const bUncompress = new Bench({
   now: hrtimeNow,
 })
+const output = new Uint8Array(FIXTURE.length)
 
 bUncompress.add('snappy-uncompress', () => {
   return uncompress(SNAPPY_COMPRESSED_FIXTURE)
+})
+bUncompress.add('snappy-alloc', () => {
+  return uncompress(SNAPPY_COMPRESSED_FIXTURE, { output: output })
+})
+bUncompress.add('snappy-sync', () => {
+  return uncompressSync(SNAPPY_COMPRESSED_FIXTURE)
+})
+const output2 = new Uint8Array(FIXTURE.length)
+
+bUncompress.add('snappy-sync-alloc', () => {
+  return uncompressSync(SNAPPY_COMPRESSED_FIXTURE, { output: output2 })
 })
 
 bUncompress.add('snappy-v6-uncompress', () => {

@@ -16,6 +16,7 @@ export interface DecOptions {
    * see https://www.electronjs.org/blog/v8-memory-cage and https://github.com/electron/electron/issues/35801#issuecomment-1261206333
    */
   copyOutputData?: boolean
+  output?: Uint8Array
 }
 
 export interface EncOptions {
@@ -31,6 +32,16 @@ export interface EncOptions {
   copyOutputData?: boolean
 }
 
-export declare function uncompress(input: string | Uint8Array, options?: DecOptions | undefined | null, signal?: AbortSignal | undefined | null): Promise<string | Buffer>
+export declare function uncompress(input: string | Uint8Array, options?: DecOptions | undefined | null, signal?: AbortSignal | undefined | null): Promise<Uint8Array>
+export declare function uncompress(input: string | Uint8Array, options: { asBuffer: false }): Promise<string>;
+export declare function uncompress(input: string | Uint8Array, options: { output: Uint8Array }): Promise<number>;
+export declare function uncompress(input: string | Uint8Array, options?: { asBuffer?: true }): Promise<Uint8Array>;
+export declare function uncompress(input: string | Uint8Array, options?: DecOptions): Promise<string | Uint8Array | number>;
 
-export declare function uncompressSync(input: string | Uint8Array, options?: DecOptions | undefined | null): string | Buffer
+
+export declare function uncompressSync(input: undefined, options?: DecOptions | undefined | null): Uint8Array
+export declare function uncompressSync(input: string | Uint8Array, options: { asBuffer: false }): string;
+export declare function uncompressSync(input: string | Uint8Array, options: { output: Uint8Array }): number;
+export declare function uncompressSync(input: string | Uint8Array, options?: { asBuffer?: true }): Uint8Array;
+export declare function uncompressSync(input: string | Uint8Array, options?: DecOptions): string | Uint8Array | number;
+

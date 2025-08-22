@@ -20,6 +20,7 @@ pub struct DecOptions {
   /// for compatibility with electron >= 21 \n
   /// see https://www.electronjs.org/blog/v8-memory-cage and https://github.com/electron/electron/issues/35801#issuecomment-1261206333
   pub copy_output_data: Option<bool>,
+  pub output: Option<Uint8Array>,
 }
 
 #[napi(object)]
@@ -74,31 +75,49 @@ pub struct Dec {
 
 #[napi]
 impl<'env> ScopedTask<'env> for Dec {
-  type Output = Vec<u8>;
-  type JsValue = Either<String, BufferSlice<'env>>;
+  type Output = Either<Vec<u8>, u32>;
+  type JsValue = Either3<String, BufferSlice<'env>, u32>;
 
   fn compute(&mut self) -> Result<Self::Output> {
-    self
+    let input_data = match &self.data {
+      Either::A(ref s) => s.as_bytes(),
+      Either::B(b) => b.as_ref(),
+    };
+
+    if let Some(ref mut opts) = self.options {
+      if let Some(ref mut output_buffer) = opts.output {
+        let decompressed_len = self
+          .inner
+          .decompress(input_data, unsafe { output_buffer.as_mut() })
+          .map_err(|err| Error::new(Status::GenericFailure, format!("{err}")))?;
+
+        return Ok(Either::B(decompressed_len as u32));
+      }
+    }
+    return self
       .inner
-      .decompress_vec(match self.data {
-        Either::A(ref s) => s.as_bytes(),
-        Either::B(ref b) => b.as_ref(),
-      })
-      .map_err(|e| Error::new(Status::GenericFailure, format!("{e}")))
+      .decompress_vec(input_data)
+      .map(|out| Either::A(out))
+      .map_err(|e| Error::new(Status::GenericFailure, format!("{e}")));
   }
 
   fn resolve(&mut self, env: &'env Env, output: Self::Output) -> Result<Self::JsValue> {
-    let opt_ref = self.options.as_ref();
-    if opt_ref.and_then(|o| o.as_buffer).unwrap_or(true) {
-      if opt_ref.and_then(|o| o.copy_output_data).unwrap_or(false) {
-        BufferSlice::copy_from(env, output).map(Either::B)
-      } else {
-        BufferSlice::from_data(env, output).map(Either::B)
+    match output {
+      Either::B(length) => return Ok(Either3::C(length)),
+      Either::A(output) => {
+        let opt_ref = self.options.as_ref();
+        if opt_ref.and_then(|o| o.as_buffer).unwrap_or(true) {
+          if opt_ref.and_then(|o| o.copy_output_data).unwrap_or(false) {
+            BufferSlice::copy_from(env, output).map(Either3::B)
+          } else {
+            BufferSlice::from_data(env, output).map(Either3::B)
+          }
+        } else {
+          Ok(Either3::A(String::from_utf8(output).map_err(|e| {
+            Error::new(Status::GenericFailure, format!("{e}"))
+          })?))
+        }
       }
-    } else {
-      Ok(Either::A(String::from_utf8(output).map_err(|e| {
-        Error::new(Status::GenericFailure, format!("{e}"))
-      })?))
     }
   }
 }
@@ -144,39 +163,62 @@ pub fn compress(
   AsyncTask::with_optional_signal(encoder, signal)
 }
 
-#[napi]
+#[napi(ts_return_type = r#"Uint8Array
+export declare function uncompressSync(input: string | Uint8Array, options: { asBuffer: false }): string;
+export declare function uncompressSync(input: string | Uint8Array, options: { output: Uint8Array }): number;
+export declare function uncompressSync(input: string | Uint8Array, options?: { asBuffer?: true }): Uint8Array;
+export declare function uncompressSync(input: string | Uint8Array, options?: DecOptions): string | Uint8Array | number;
+"#)]
 pub fn uncompress_sync<'env>(
   env: &'env Env,
-  input: Either<String, &'env [u8]>,
+  #[napi(ts_arg_type = "undefined")] input: Either<String, &'env [u8]>,
   options: Option<DecOptions>,
-) -> Result<Either<String, BufferSlice<'env>>> {
+) -> Result<Either3<String, BufferSlice<'env>, u32>> {
   let mut dec = Decoder::new();
+  let input_data = match input {
+    Either::A(ref s) => s.as_bytes(),
+    Either::B(b) => b,
+  };
+
+  let as_buffer = options.as_ref().and_then(|o| o.as_buffer).unwrap_or(true);
+  let copy_output_data = options
+    .as_ref()
+    .and_then(|o| o.copy_output_data)
+    .unwrap_or(false);
+
+  if let Some(mut opts) = options {
+    if let Some(ref mut output_buffer) = opts.output {
+      let decompressed_len = dec
+        .decompress(input_data, unsafe { output_buffer.as_mut() })
+        .map_err(|err| Error::new(Status::GenericFailure, format!("{err}")))?;
+
+      return Ok(Either3::C(decompressed_len as u32));
+    }
+  }
   dec
-    .decompress_vec(match input {
-      Either::A(ref s) => s.as_bytes(),
-      Either::B(b) => b,
-    })
+    .decompress_vec(input_data)
     .map_err(|err| Error::new(Status::GenericFailure, format!("{err}")))
     .and_then(|output| {
-      if options.as_ref().and_then(|o| o.as_buffer).unwrap_or(true) {
-        if options
-          .as_ref()
-          .and_then(|o| o.copy_output_data)
-          .unwrap_or(false)
-        {
-          BufferSlice::copy_from(env, output).map(Either::B)
+      if as_buffer {
+        if copy_output_data {
+          BufferSlice::copy_from(env, output).map(Either3::B)
         } else {
-          BufferSlice::from_data(env, output).map(Either::B)
+          BufferSlice::from_data(env, output).map(Either3::B)
         }
       } else {
-        Ok(Either::A(String::from_utf8(output).map_err(|e| {
+        Ok(Either3::A(String::from_utf8(output).map_err(|e| {
           Error::new(Status::GenericFailure, format!("{e}"))
         })?))
       }
     })
 }
 
-#[napi]
+#[napi(ts_return_type = r#"Promise<Uint8Array>
+export declare function uncompress(input: string | Uint8Array, options: { asBuffer: false }): Promise<string>;
+export declare function uncompress(input: string | Uint8Array, options: { output: Uint8Array }): Promise<number>;
+export declare function uncompress(input: string | Uint8Array, options?: { asBuffer?: true }): Promise<Uint8Array>;
+export declare function uncompress(input: string | Uint8Array, options?: DecOptions): Promise<string | Uint8Array | number>;
+"#)]
 pub fn uncompress(
   input: Either<String, Uint8Array>,
   options: Option<DecOptions>,
