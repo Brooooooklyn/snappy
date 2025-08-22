@@ -74,15 +74,15 @@ const output = new Uint8Array(FIXTURE.length)
 bUncompress.add('snappy-uncompress', () => {
   return uncompress(SNAPPY_COMPRESSED_FIXTURE)
 })
-bUncompress.add('snappy-alloc', () => {
+bUncompress.add('snappy-alloc-uncompress', () => {
   return uncompress(SNAPPY_COMPRESSED_FIXTURE, { output: output })
 })
-bUncompress.add('snappy-sync', () => {
+bUncompress.add('snappy-sync-uncompress', () => {
   return uncompressSync(SNAPPY_COMPRESSED_FIXTURE)
 })
 const output2 = new Uint8Array(FIXTURE.length)
 
-bUncompress.add('snappy-sync-alloc', () => {
+bUncompress.add('snappy-sync-alloc-uncompress', () => {
   return uncompressSync(SNAPPY_COMPRESSED_FIXTURE, { output: output2 })
 })
 
