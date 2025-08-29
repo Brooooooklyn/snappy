@@ -136,6 +136,7 @@
       "require": "./index.js",
       "types": "./index.d.ts",
       "browser": "./browser.js"
-    }
+    },
+    "./package.json": "./package.json"
   }
 }
