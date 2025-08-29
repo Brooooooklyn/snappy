@@ -33,6 +33,25 @@ const SNAPPY_COMPRESSED_FIXTURE = Buffer.from(compressSync(FIXTURE))
 const GZIP_FIXTURE = gzipSync(FIXTURE)
 const DEFLATED_FIXTURE = deflateSync(FIXTURE)
 const BROTLI_COMPRESSED_FIXTURE = brotliCompressSync(FIXTURE)
+const MEMORY_POOL = 50_000
+
+const initiateMemoryPool = () => {
+  const pool = new Array(MEMORY_POOL) as Uint8Array[]
+  for (let i = 0; i < MEMORY_POOL; i++) {
+    pool[i] = new Uint8Array(FIXTURE.length)
+  }
+
+  const response = {
+    currentBufferIndex: 0,
+    getAvailableBuffer() {
+      const buffer = pool[response.currentBufferIndex]
+      response.currentBufferIndex++
+      return buffer!
+    },
+  }
+
+  return response
+}
 
 const b = new Bench({
   now: hrtimeNow,
@@ -69,21 +88,21 @@ console.table(b.table())
 const bUncompress = new Bench({
   now: hrtimeNow,
 })
-const output = new Uint8Array(FIXTURE.length)
+const outputPool = initiateMemoryPool() // new Uint8Array(FIXTURE.length)
 
 bUncompress.add('snappy-uncompress', () => {
   return uncompress(SNAPPY_COMPRESSED_FIXTURE)
 })
 bUncompress.add('snappy-alloc-uncompress', () => {
-  return uncompress(SNAPPY_COMPRESSED_FIXTURE, { output: output })
+  return uncompress(SNAPPY_COMPRESSED_FIXTURE, { output: outputPool.getAvailableBuffer() })
 })
 bUncompress.add('snappy-sync-uncompress', () => {
   return uncompressSync(SNAPPY_COMPRESSED_FIXTURE)
 })
-const output2 = new Uint8Array(FIXTURE.length)
+const outputPool2 = initiateMemoryPool()
 
 bUncompress.add('snappy-sync-alloc-uncompress', () => {
-  return uncompressSync(SNAPPY_COMPRESSED_FIXTURE, { output: output2 })
+  return uncompressSync(SNAPPY_COMPRESSED_FIXTURE, { output: outputPool2.getAvailableBuffer() })
 })
 
 bUncompress.add('snappy-v6-uncompress', () => {
