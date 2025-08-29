@@ -94,16 +94,16 @@ impl<'env> ScopedTask<'env> for Dec {
         return Ok(Either::B(decompressed_len as u32));
       }
     }
-    return self
+    self
       .inner
       .decompress_vec(input_data)
-      .map(|out| Either::A(out))
-      .map_err(|e| Error::new(Status::GenericFailure, format!("{e}")));
+      .map(Either::A)
+      .map_err(|e| Error::new(Status::GenericFailure, format!("{e}")))
   }
 
   fn resolve(&mut self, env: &'env Env, output: Self::Output) -> Result<Self::JsValue> {
     match output {
-      Either::B(length) => return Ok(Either3::C(length)),
+      Either::B(length) => Ok(Either3::C(length)),
       Either::A(output) => {
         let opt_ref = self.options.as_ref();
         if opt_ref.and_then(|o| o.as_buffer).unwrap_or(true) {

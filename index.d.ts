@@ -32,11 +32,11 @@ export interface EncOptions {
   copyOutputData?: boolean
 }
 
-export declare function uncompress(input: string | Uint8Array, options?: DecOptions | undefined | null, signal?: AbortSignal | undefined | null): Promise<Uint8Array>
+export declare function uncompress(input: string | Uint8Array, options?: DecOptions | undefined | null, signal?: AbortSignal | undefined | null): Promise<Buffer>
 export declare function uncompress(input: string | Uint8Array, options: { asBuffer: false }): Promise<string>;
 export declare function uncompress(input: string | Uint8Array, options: { output: Uint8Array }): Promise<number>;
-export declare function uncompress(input: string | Uint8Array, options?: { asBuffer?: true }): Promise<Uint8Array>;
-export declare function uncompress(input: string | Uint8Array, options?: DecOptions): Promise<string | Uint8Array | number>;
+export declare function uncompress(input: string | Uint8Array, options?: { asBuffer?: true }): Promise<Buffer>;
+export declare function uncompress(input: string | Uint8Array, options?: DecOptions): Promise<string | Buffer | number>;
 
 
 export declare function uncompressSync(input: undefined, options?: DecOptions | undefined | null): Buffer
