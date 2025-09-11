@@ -1,3 +1,12 @@
+## [7.3.3](https://github.com/Brooooooklyn/snappy/compare/v7.3.2...v7.3.3) (2025-09-11)
+
+
+### Bug Fixes
+
+* allow access to package.json via export ([#284](https://github.com/Brooooooklyn/snappy/issues/284)) ([a2621ec](https://github.com/Brooooooklyn/snappy/commit/a2621ec00590163809c55b8deb853362d6450054))
+
+
+
 ## [7.3.2](https://github.com/Brooooooklyn/snappy/compare/v7.3.1...v7.3.2) (2025-08-16)
 
 
