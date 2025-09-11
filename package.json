@@ -129,13 +129,14 @@
     "type": "github",
     "url": "https://github.com/sponsors/Brooooooklyn"
   },
-  "packageManager": "yarn@4.9.3",
+  "packageManager": "yarn@4.9.4",
   "exports": {
     ".": {
       "import": "./index.js",
       "require": "./index.js",
       "types": "./index.d.ts",
       "browser": "./browser.js"
-    }
+    },
+    "./package.json": "./package.json"
   }
 }
