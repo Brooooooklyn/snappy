@@ -84,7 +84,7 @@
     "ava": "^6.4.1",
     "chalk": "^5.5.0",
     "conventional-changelog-cli": "^5.0.0",
-    "esbuild": "^0.25.9",
+    "esbuild": "^0.26.0",
     "husky": "^9.1.7",
     "legacy-snappy": "npm:snappy@6",
     "lint-staged": "^16.1.5",
