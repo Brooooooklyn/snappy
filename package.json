@@ -81,7 +81,7 @@
     "@oxc-node/core": "^0.0.35",
     "@taplo/cli": "^0.7.0",
     "@types/node": "^24.3.0",
-    "ava": "^6.4.1",
+    "ava": "^7.0.0",
     "chalk": "^5.5.0",
     "conventional-changelog-cli": "^5.0.0",
     "esbuild": "^0.27.0",
