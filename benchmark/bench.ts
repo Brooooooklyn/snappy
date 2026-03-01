@@ -16,7 +16,7 @@ import {
 import { Bench, hrtimeNow } from 'tinybench'
 import { compress as legacyCompress, uncompress as legacyUncompress } from 'legacy-snappy'
 
-import { compress, uncompress, compressSync } from '../index.js'
+import { compress, uncompress, compressSync, uncompressSync } from '../index.js'
 import { fileURLToPath } from 'node:url'
 
 const gzipAsync = promisify(gzip)
@@ -33,6 +33,25 @@ const SNAPPY_COMPRESSED_FIXTURE = Buffer.from(compressSync(FIXTURE))
 const GZIP_FIXTURE = gzipSync(FIXTURE)
 const DEFLATED_FIXTURE = deflateSync(FIXTURE)
 const BROTLI_COMPRESSED_FIXTURE = brotliCompressSync(FIXTURE)
+const MEMORY_POOL = 50_000
+
+const initiateMemoryPool = () => {
+  const pool = new Array(MEMORY_POOL) as Uint8Array[]
+  for (let i = 0; i < MEMORY_POOL; i++) {
+    pool[i] = new Uint8Array(FIXTURE.length)
+  }
+
+  const response = {
+    currentBufferIndex: 0,
+    getAvailableBuffer() {
+      const buffer = pool[response.currentBufferIndex]
+      response.currentBufferIndex++
+      return buffer!
+    },
+  }
+
+  return response
+}
 
 const b = new Bench({
   now: hrtimeNow,
@@ -40,6 +59,10 @@ const b = new Bench({
 
 b.add('snappy-compress', () => {
   return compress(FIXTURE)
+})
+
+b.add('snappy-compress-sync', () => {
+  return compressSync(FIXTURE)
 })
 
 b.add('snappy-v6-compress', () => {
@@ -65,9 +88,21 @@ console.table(b.table())
 const bUncompress = new Bench({
   now: hrtimeNow,
 })
+const outputPool = initiateMemoryPool() // new Uint8Array(FIXTURE.length)
 
 bUncompress.add('snappy-uncompress', () => {
   return uncompress(SNAPPY_COMPRESSED_FIXTURE)
+})
+bUncompress.add('snappy-alloc-uncompress', () => {
+  return uncompress(SNAPPY_COMPRESSED_FIXTURE, { output: outputPool.getAvailableBuffer() })
+})
+bUncompress.add('snappy-sync-uncompress', () => {
+  return uncompressSync(SNAPPY_COMPRESSED_FIXTURE)
+})
+const outputPool2 = initiateMemoryPool()
+
+bUncompress.add('snappy-sync-alloc-uncompress', () => {
+  return uncompressSync(SNAPPY_COMPRESSED_FIXTURE, { output: outputPool2.getAvailableBuffer() })
 })
 
 bUncompress.add('snappy-v6-uncompress', () => {
