@@ -107,9 +107,9 @@
     ]
   },
   "ava": {
-    "extensions": {
-      "ts": "module"
-    },
+    "extensions": [
+      "ts"
+    ],
     "nodeArguments": [
       "--import",
       "@oxc-node/core/register"
