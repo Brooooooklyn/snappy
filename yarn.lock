@@ -116,12 +116,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emnapi/runtime@npm:2.0.0-alpha.3":
-  version: 2.0.0-alpha.3
-  resolution: "@emnapi/runtime@npm:2.0.0-alpha.3"
+"@emnapi/runtime@npm:2.0.0-alpha.4":
+  version: 2.0.0-alpha.4
+  resolution: "@emnapi/runtime@npm:2.0.0-alpha.4"
   dependencies:
     tslib: "npm:^2.4.0"
-  checksum: 10c0/c8f6e0ad2f9c0ced8bc156a7ec3ab5fbbd2d3b7147b6a37537f6892131844b969d3aa450749807fc238160b5db61d6160b8066abfce4b2c40acfb1941bb31dd1
+  checksum: 10c0/94276f55a686b56678f15edb6bdd6f960c276a3b712f4e3cf89bc54ab66deef541060297d7110838c876d52c21d0b8931ec60d7ee11a2280734cf3821f2d6490
   languageName: node
   linkType: hard
 
@@ -3194,7 +3194,7 @@ __metadata:
   resolution: "snappy@workspace:."
   dependencies:
     "@emnapi/core": "npm:2.0.0-alpha.4"
-    "@emnapi/runtime": "npm:2.0.0-alpha.3"
+    "@emnapi/runtime": "npm:2.0.0-alpha.4"
     "@napi-rs/cli": "npm:^3.8.5"
     "@napi-rs/wasm-runtime": "npm:^1.2.2"
     "@oxc-node/core": "npm:^0.1.0"
