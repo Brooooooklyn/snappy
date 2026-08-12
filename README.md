@@ -45,25 +45,25 @@ yarn add snappy
 
 ### Targets
 
-| Rust triple                     | Platform             | CI                              |
-| ------------------------------- | -------------------- | ------------------------------- |
-| `x86_64-pc-windows-msvc`        | Windows x64          | tested — node 22, 24            |
-| `aarch64-pc-windows-msvc`       | Windows arm64        | tested — node 22, 24            |
-| `i686-pc-windows-msvc`          | Windows x32          | built, not tested               |
-| `x86_64-apple-darwin`           | macOS x64            | tested — node 22, 24            |
-| `aarch64-apple-darwin`          | macOS arm64          | tested — node 22, 24            |
-| `x86_64-unknown-linux-gnu`      | Linux x64 gnu        | tested — node 22, 24            |
-| `x86_64-unknown-linux-musl`     | Linux x64 musl       | tested — node 22, 24            |
-| `aarch64-unknown-linux-gnu`     | Linux arm64 gnu      | tested — node 22, 24            |
-| `aarch64-unknown-linux-musl`    | Linux arm64 musl     | tested — node 22, 24            |
-| `armv7-unknown-linux-gnueabihf` | Linux armv7 gnu      | tested — node 22 only           |
-| `s390x-unknown-linux-gnu`       | Linux s390x          | tested — node 22, 24            |
-| `x86_64-unknown-freebsd`        | FreeBSD x64          | built, not tested               |
-| `powerpc64le-unknown-linux-gnu` | Linux ppc64le        | built, not tested               |
-| `riscv64gc-unknown-linux-gnu`   | Linux riscv64        | built, not tested               |
-| `aarch64-linux-android`         | Android arm64        | built, not tested               |
-| `arm-linux-androideabi`         | Android armv7        | built, not tested               |
-| `aarch64-unknown-linux-ohos`    | OpenHarmony arm64    | built, not tested               |
+| Rust triple                     | Platform             | CI                                      |
+| ------------------------------- | -------------------- | --------------------------------------- |
+| `x86_64-pc-windows-msvc`        | Windows x64          | tested — node 22, 24                    |
+| `aarch64-pc-windows-msvc`       | Windows arm64        | tested — node 22, 24                    |
+| `i686-pc-windows-msvc`          | Windows x32          | built, not tested                       |
+| `x86_64-apple-darwin`           | macOS x64            | tested — node 22, 24                    |
+| `aarch64-apple-darwin`          | macOS arm64          | tested — node 22, 24                    |
+| `x86_64-unknown-linux-gnu`      | Linux x64 gnu        | tested — node 22, 24                    |
+| `x86_64-unknown-linux-musl`     | Linux x64 musl       | tested — node 22, 24                    |
+| `aarch64-unknown-linux-gnu`     | Linux arm64 gnu      | tested — node 22, 24                    |
+| `aarch64-unknown-linux-musl`    | Linux arm64 musl     | tested — node 22, 24                    |
+| `armv7-unknown-linux-gnueabihf` | Linux armv7 gnu      | tested — node 22 only                   |
+| `s390x-unknown-linux-gnu`       | Linux s390x          | tested — node 22, 24                    |
+| `x86_64-unknown-freebsd`        | FreeBSD x64          | built, not tested                       |
+| `powerpc64le-unknown-linux-gnu` | Linux ppc64le        | built, not tested                       |
+| `riscv64gc-unknown-linux-gnu`   | Linux riscv64        | built, not tested                       |
+| `aarch64-linux-android`         | Android arm64        | built, not tested                       |
+| `arm-linux-androideabi`         | Android armv7        | built, not tested                       |
+| `aarch64-unknown-linux-ohos`    | OpenHarmony arm64    | built, not tested                       |
 | `wasm32-wasip1-threads`         | wasm32-wasi, browser | tested — node 24 (`NAPI_RS_FORCE_WASI`) |
 
 Eighteen targets: eleven CI-tested, seven built but not exercised.
@@ -81,12 +81,61 @@ served with `Cross-Origin-Opener-Policy: same-origin` and
 
 ## API
 
+### One-shot (raw Snappy block format)
+
 ```ts
 export function compressSync(input: Buffer | string | ArrayBuffer | Uint8Array): Buffer
 export function compress(input: Buffer | string | ArrayBuffer | Uint8Array): Promise<Buffer>
 export function uncompressSync(compressed: Buffer): Buffer
 export function uncompress(compressed: Buffer): Promise<Buffer>
 ```
+
+### Streaming (framed Snappy format)
+
+Streaming uses the [Snappy frame format](https://github.com/google/snappy/blob/master/framing_format.txt)
+(file extension `.sz`). This is **not** the same wire format as the one-shot APIs
+above — framed output cannot be passed to `uncompress()`, and raw blocks cannot
+be passed to the stream decompressors.
+
+#### Incremental classes
+
+```js
+import { Compressor, Decompressor } from 'snappy'
+
+const compressor = new Compressor()
+const parts = [compressor.update('Hello '), compressor.update('snappy 🚀'), await compressor.finish()]
+const compressed = Buffer.concat(parts)
+
+const decompressor = new Decompressor()
+const restored = Buffer.concat([decompressor.update(compressed), await decompressor.finish()])
+console.log(restored.toString('utf8')) // Hello snappy 🚀
+```
+
+The valid stream is the concatenation of every `update()` output plus the `finish()` tail.
+
+#### Web Streams
+
+```js
+import { compressStream, uncompressStream } from 'snappy'
+
+const restored = uncompressStream(compressStream(source)) // ReadableStream<Uint8Array>
+```
+
+`input` must be a WHATWG `ReadableStream`; wrap a Node `Readable` with `Readable.toWeb()`.
+
+On wasm / browser builds the native transforms are unavailable; a buffered class-API
+polyfill is used automatically.
+
+#### Node Duplex factories
+
+```js
+import { createReadStream, createWriteStream } from 'node:fs'
+import { createCompressStream, createUncompressStream } from 'snappy'
+
+createReadStream('input.txt').pipe(createCompressStream()).pipe(createWriteStream('input.txt.sz'))
+```
+
+Requires a modern Node.js with Web Streams and `Duplex.fromWeb` (effectively Node 18+).
 
 ## Performance
 

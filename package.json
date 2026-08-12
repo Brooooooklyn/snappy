@@ -2,8 +2,12 @@
   "name": "snappy",
   "version": "7.3.3",
   "description": "Fastest Snappy compression library in Node.js",
-  "main": "index.js",
-  "browser": "browser.js",
+  "main": "main.js",
+  "types": "main.d.ts",
+  "browser": {
+    "main.js": "./browser-entry.js",
+    "index.js": "./browser-entry.js"
+  },
   "repository": "https://github.com/Brooooooklyn/snappy",
   "license": "MIT",
   "keywords": [
@@ -11,6 +15,7 @@
     "snap",
     "compression",
     "compress",
+    "stream",
     "napi-rs",
     "NAPI",
     "N-API",
@@ -22,7 +27,13 @@
   "files": [
     "index.d.ts",
     "index.js",
-    "browser.js"
+    "main.js",
+    "main.d.ts",
+    "browser.js",
+    "browser-entry.js",
+    "browser-entry.d.ts",
+    "stream-polyfill.js",
+    "stream-polyfill.mjs"
   ],
   "napi": {
     "binaryName": "snappy",
@@ -136,10 +147,13 @@
   "packageManager": "yarn@4.18.0",
   "exports": {
     ".": {
-      "import": "./index.js",
-      "require": "./index.js",
-      "types": "./index.d.ts",
-      "browser": "./browser.js"
+      "browser": {
+        "types": "./browser-entry.d.ts",
+        "default": "./browser-entry.js"
+      },
+      "types": "./main.d.ts",
+      "import": "./main.js",
+      "require": "./main.js"
     },
     "./package.json": "./package.json"
   }

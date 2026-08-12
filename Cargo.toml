@@ -8,9 +8,17 @@ version = "0.1.0"
 crate-type = ["cdylib"]
 
 [dependencies]
-napi        = { version = "3.0.0", features = ["napi5", "serde-json"] }
-napi-derive = { version = "3.0.0" }
+napi        = { version = "3", features = ["napi5", "serde-json"] }
+napi-derive = "3"
 snap        = "1"
+
+# Web Streams transforms (`src/stream_web.rs`) need tokio via napi's `web_stream`
+# feature. Enable it ONLY for non-wasm targets so the wasm build keeps plain
+# `napi` (no tokio) and drops the streaming module. `web_stream` only pulls
+# `napi4`, but napi's ReadableStream finalizer calls `napi_add_finalizer`
+# (Node-API 5), so `napi5` is required alongside it.
+[target.'cfg(not(target_family = "wasm"))'.dependencies]
+napi = { version = "3", features = ["web_stream", "napi5"] }
 
 [target.'cfg(all(not(target_os = "linux"), not(target_family = "wasm")))'.dependencies]
 mimalloc-safe = { version = "0.1", features = ["skip_collect_on_exit"] }
