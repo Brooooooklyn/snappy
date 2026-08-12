@@ -1,12 +1,6 @@
 import test from 'ava'
 
-import {
-  chunkByByte,
-  chunkBySize,
-  driveClassCompress,
-  driveClassUncompress,
-  loadBinding,
-} from './helpers'
+import { chunkByByte, chunkBySize, driveClassCompress, driveClassUncompress, loadBinding } from './helpers'
 
 const INPUT = Buffer.from('Hello 🚀'.repeat(500), 'utf8')
 

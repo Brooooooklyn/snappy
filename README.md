@@ -45,25 +45,25 @@ yarn add snappy
 
 ### Targets
 
-| Rust triple                     | Platform             | CI                              |
-| ------------------------------- | -------------------- | ------------------------------- |
-| `x86_64-pc-windows-msvc`        | Windows x64          | tested — node 22, 24            |
-| `aarch64-pc-windows-msvc`       | Windows arm64        | tested — node 22, 24            |
-| `i686-pc-windows-msvc`          | Windows x32          | built, not tested               |
-| `x86_64-apple-darwin`           | macOS x64            | tested — node 22, 24            |
-| `aarch64-apple-darwin`          | macOS arm64          | tested — node 22, 24            |
-| `x86_64-unknown-linux-gnu`      | Linux x64 gnu        | tested — node 22, 24            |
-| `x86_64-unknown-linux-musl`     | Linux x64 musl       | tested — node 22, 24            |
-| `aarch64-unknown-linux-gnu`     | Linux arm64 gnu      | tested — node 22, 24            |
-| `aarch64-unknown-linux-musl`    | Linux arm64 musl     | tested — node 22, 24            |
-| `armv7-unknown-linux-gnueabihf` | Linux armv7 gnu      | tested — node 22 only           |
-| `s390x-unknown-linux-gnu`       | Linux s390x          | tested — node 22, 24            |
-| `x86_64-unknown-freebsd`        | FreeBSD x64          | built, not tested               |
-| `powerpc64le-unknown-linux-gnu` | Linux ppc64le        | built, not tested               |
-| `riscv64gc-unknown-linux-gnu`   | Linux riscv64        | built, not tested               |
-| `aarch64-linux-android`         | Android arm64        | built, not tested               |
-| `arm-linux-androideabi`         | Android armv7        | built, not tested               |
-| `aarch64-unknown-linux-ohos`    | OpenHarmony arm64    | built, not tested               |
+| Rust triple                     | Platform             | CI                                      |
+| ------------------------------- | -------------------- | --------------------------------------- |
+| `x86_64-pc-windows-msvc`        | Windows x64          | tested — node 22, 24                    |
+| `aarch64-pc-windows-msvc`       | Windows arm64        | tested — node 22, 24                    |
+| `i686-pc-windows-msvc`          | Windows x32          | built, not tested                       |
+| `x86_64-apple-darwin`           | macOS x64            | tested — node 22, 24                    |
+| `aarch64-apple-darwin`          | macOS arm64          | tested — node 22, 24                    |
+| `x86_64-unknown-linux-gnu`      | Linux x64 gnu        | tested — node 22, 24                    |
+| `x86_64-unknown-linux-musl`     | Linux x64 musl       | tested — node 22, 24                    |
+| `aarch64-unknown-linux-gnu`     | Linux arm64 gnu      | tested — node 22, 24                    |
+| `aarch64-unknown-linux-musl`    | Linux arm64 musl     | tested — node 22, 24                    |
+| `armv7-unknown-linux-gnueabihf` | Linux armv7 gnu      | tested — node 22 only                   |
+| `s390x-unknown-linux-gnu`       | Linux s390x          | tested — node 22, 24                    |
+| `x86_64-unknown-freebsd`        | FreeBSD x64          | built, not tested                       |
+| `powerpc64le-unknown-linux-gnu` | Linux ppc64le        | built, not tested                       |
+| `riscv64gc-unknown-linux-gnu`   | Linux riscv64        | built, not tested                       |
+| `aarch64-linux-android`         | Android arm64        | built, not tested                       |
+| `arm-linux-androideabi`         | Android armv7        | built, not tested                       |
+| `aarch64-unknown-linux-ohos`    | OpenHarmony arm64    | built, not tested                       |
 | `wasm32-wasip1-threads`         | wasm32-wasi, browser | tested — node 24 (`NAPI_RS_FORCE_WASI`) |
 
 Eighteen targets: eleven CI-tested, seven built but not exercised.
@@ -132,9 +132,7 @@ polyfill is used automatically.
 import { createReadStream, createWriteStream } from 'node:fs'
 import { createCompressStream, createUncompressStream } from 'snappy'
 
-createReadStream('input.txt')
-  .pipe(createCompressStream())
-  .pipe(createWriteStream('input.txt.sz'))
+createReadStream('input.txt').pipe(createCompressStream()).pipe(createWriteStream('input.txt.sz'))
 ```
 
 Requires a modern Node.js with Web Streams and `Duplex.fromWeb` (effectively Node 18+).

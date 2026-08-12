@@ -88,12 +88,7 @@ export function singleChunkStream(produce) {
  * @param {Function} spec.Compressor
  * @param {Function} spec.Decompressor
  */
-export function createStreamApi({
-  nativeCompressStream,
-  nativeUncompressStream,
-  Compressor,
-  Decompressor,
-}) {
+export function createStreamApi({ nativeCompressStream, nativeUncompressStream, Compressor, Decompressor }) {
   const compressStream =
     typeof nativeCompressStream === 'function'
       ? nativeCompressStream

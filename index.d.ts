@@ -47,7 +47,11 @@ export declare class Decompressor {
   finish(): Promise<Buffer>
 }
 
-export declare function compress(input: string | Uint8Array, options?: EncOptions | undefined | null, signal?: AbortSignal | undefined | null): Promise<Buffer>
+export declare function compress(
+  input: string | Uint8Array,
+  options?: EncOptions | undefined | null,
+  signal?: AbortSignal | undefined | null,
+): Promise<Buffer>
 
 /**
  * Compress a `ReadableStream<Uint8Array>` into a framed Snappy byte stream.
@@ -81,7 +85,11 @@ export interface EncOptions {
   copyOutputData?: boolean
 }
 
-export declare function uncompress(input: string | Uint8Array, options?: DecOptions | undefined | null, signal?: AbortSignal | undefined | null): Promise<string | Buffer>
+export declare function uncompress(
+  input: string | Uint8Array,
+  options?: DecOptions | undefined | null,
+  signal?: AbortSignal | undefined | null,
+): Promise<string | Buffer>
 
 /**
  * Decompress a framed Snappy `ReadableStream<Uint8Array>` into plaintext.
@@ -92,4 +100,7 @@ export declare function uncompress(input: string | Uint8Array, options?: DecOpti
  */
 export declare function uncompressStream(input: ReadableStream<Uint8Array>): ReadableStream<Buffer>
 
-export declare function uncompressSync(input: string | Uint8Array, options?: DecOptions | undefined | null): string | Buffer
+export declare function uncompressSync(
+  input: string | Uint8Array,
+  options?: DecOptions | undefined | null,
+): string | Buffer

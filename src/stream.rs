@@ -107,6 +107,12 @@ pub struct Compressor {
   inner: Option<FrameEncoder<SharedSink>>,
 }
 
+impl Default for Compressor {
+  fn default() -> Self {
+    Self::new()
+  }
+}
+
 #[napi]
 impl Compressor {
   /// Create a streaming framed-Snappy compressor.

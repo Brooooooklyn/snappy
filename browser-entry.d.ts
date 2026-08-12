@@ -5,10 +5,7 @@ export declare function compress(
   signal?: AbortSignal | undefined | null,
 ): Promise<Buffer>
 
-export declare function compressSync(
-  input: string | Uint8Array,
-  options?: EncOptions | undefined | null,
-): Buffer
+export declare function compressSync(input: string | Uint8Array, options?: EncOptions | undefined | null): Buffer
 
 export declare function uncompress(
   input: string | Uint8Array,

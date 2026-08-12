@@ -1,13 +1,6 @@
 import test from 'ava'
 
-import {
-  bufferToStream,
-  chunkBySize,
-  collectWebStream,
-  driveClassCompress,
-  IS_WASI,
-  loadBinding,
-} from './helpers'
+import { bufferToStream, chunkBySize, collectWebStream, driveClassCompress, IS_WASI, loadBinding } from './helpers'
 
 const INPUT = Buffer.from('Web stream 🚀 snappy framed '.repeat(2048), 'utf8')
 
