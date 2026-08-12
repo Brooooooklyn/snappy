@@ -24,7 +24,10 @@ napi = { version = "3", features = ["web_stream", "napi5"] }
 mimalloc-safe = { version = "0.1", features = ["skip_collect_on_exit"] }
 
 [target.'cfg(all(target_os = "linux", not(target_env = "ohos"), not(target_env = "musl")))'.dependencies]
-mimalloc-safe = { version = "0.1", features = ["local_dynamic_tls", "skip_collect_on_exit"] }
+mimalloc-safe = { version = "0.1", features = [
+  "local_dynamic_tls",
+  "skip_collect_on_exit",
+] }
 
 [build-dependencies]
 napi-build = "2"
