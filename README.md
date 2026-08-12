@@ -22,28 +22,62 @@ yarn add snappy
 
 ## Support matrix
 
-|                   | node12 | node14 | node16 | node18 | node20 | node22 |
-| ----------------- | ------ | ------ | ------ | ------ | ------ | ------ |
-| Windows x64       | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| Windows x32       | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| Windows arm64     | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| macOS x64         | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| macOS arm64       | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| Linux x64 gnu     | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| Linux x64 musl    | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| Linux arm gnu     | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| Linux arm64 gnu   | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| Linux arm64 musl  | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| Linux riscv64     | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| Linux s390x       | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| Linux powerpc64le | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| OpenHarmony arm64 | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| Android arm64     | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| Android armv7     | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| Android x86       | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| Android x64       | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| FreeBSD x64       | ✓      | ✓      | ✓      | ✓      | ✓      | ✓      |
-| WebAssembly       |        |        |        | ✓      | ✓      | ✓      |
+<!-- Rendered live by the napi.rs support-matrix badge service — not committed SVGs.
+     The <img> src is a PNG on purpose: npm proxies <img src> through camo, which
+     mangles remote SVG but passes raster untouched, so the light PNG renders on
+     npm / npmx / editors / crates. GitHub keeps <picture>, so dark-OS readers get
+     the dark PNG via <source>. Commas in the URL are %2C-encoded so <source srcset>
+     does not mis-split them. The full matrix is reproduced as text below for search
+     and screen readers. To change the card, edit the query (see /support-matrix on
+     napi.rs) — no image to re-commit. -->
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://napi.rs/support-matrix.png?engines=%3E%3D%2010&nodeTested=22%2C24&tested=x86_64-pc-windows-msvc%2Caarch64-pc-windows-msvc%2Cx86_64-apple-darwin%2Caarch64-apple-darwin%2Cx86_64-unknown-linux-gnu%2Cx86_64-unknown-linux-musl%2Caarch64-unknown-linux-gnu%2Caarch64-unknown-linux-musl%2Carmv7-unknown-linux-gnueabihf%2Cs390x-unknown-linux-gnu%2Cwasm32-wasip1-threads&untested=i686-pc-windows-msvc%2Cx86_64-unknown-freebsd%2Criscv64gc-unknown-linux-gnu%2Cpowerpc64le-unknown-linux-gnu%2Caarch64-linux-android%2Carm-linux-androideabi%2Caarch64-unknown-linux-ohos&theme=dark">
+  <img alt="snappy support matrix. Node.js &gt;= 10; CI tests Node 22 and 24. 18 prebuilt targets across Windows, macOS, Linux, Android, FreeBSD, OpenHarmony and wasm32-wasi: 11 CI-tested, 7 built but untested." src="https://napi.rs/support-matrix.png?engines=%3E%3D%2010&nodeTested=22%2C24&tested=x86_64-pc-windows-msvc%2Caarch64-pc-windows-msvc%2Cx86_64-apple-darwin%2Caarch64-apple-darwin%2Cx86_64-unknown-linux-gnu%2Cx86_64-unknown-linux-musl%2Caarch64-unknown-linux-gnu%2Caarch64-unknown-linux-musl%2Carmv7-unknown-linux-gnueabihf%2Cs390x-unknown-linux-gnu%2Cwasm32-wasip1-threads&untested=i686-pc-windows-msvc%2Cx86_64-unknown-freebsd%2Criscv64gc-unknown-linux-gnu%2Cpowerpc64le-unknown-linux-gnu%2Caarch64-linux-android%2Carm-linux-androideabi%2Caarch64-unknown-linux-ohos">
+</picture>
+
+<details>
+<summary>Full matrix as text</summary>
+
+### Node.js
+
+`engines.node` is `>= 10`. CI tests **Node 22** and **Node 24**.
+
+### Targets
+
+| Rust triple                     | Platform             | CI                              |
+| ------------------------------- | -------------------- | ------------------------------- |
+| `x86_64-pc-windows-msvc`        | Windows x64          | tested — node 22, 24            |
+| `aarch64-pc-windows-msvc`       | Windows arm64        | tested — node 22, 24            |
+| `i686-pc-windows-msvc`          | Windows x32          | built, not tested               |
+| `x86_64-apple-darwin`           | macOS x64            | tested — node 22, 24            |
+| `aarch64-apple-darwin`          | macOS arm64          | tested — node 22, 24            |
+| `x86_64-unknown-linux-gnu`      | Linux x64 gnu        | tested — node 22, 24            |
+| `x86_64-unknown-linux-musl`     | Linux x64 musl       | tested — node 22, 24            |
+| `aarch64-unknown-linux-gnu`     | Linux arm64 gnu      | tested — node 22, 24            |
+| `aarch64-unknown-linux-musl`    | Linux arm64 musl     | tested — node 22, 24            |
+| `armv7-unknown-linux-gnueabihf` | Linux armv7 gnu      | tested — node 22 only           |
+| `s390x-unknown-linux-gnu`       | Linux s390x          | tested — node 22, 24            |
+| `x86_64-unknown-freebsd`        | FreeBSD x64          | built, not tested               |
+| `powerpc64le-unknown-linux-gnu` | Linux ppc64le        | built, not tested               |
+| `riscv64gc-unknown-linux-gnu`   | Linux riscv64        | built, not tested               |
+| `aarch64-linux-android`         | Android arm64        | built, not tested               |
+| `arm-linux-androideabi`         | Android armv7        | built, not tested               |
+| `aarch64-unknown-linux-ohos`    | OpenHarmony arm64    | built, not tested               |
+| `wasm32-wasip1-threads`         | wasm32-wasi, browser | tested — node 24 (`NAPI_RS_FORCE_WASI`) |
+
+Eighteen targets: eleven CI-tested, seven built but not exercised.
+
+### Browser
+
+Bundlers resolve the wasm package through the `browser` export condition. The wasm
+build allocates shared memory and spawns worker threads, so `SharedArrayBuffer` must be
+available — the page has to be
+[cross-origin isolated](https://developer.mozilla.org/docs/Web/API/Window/crossOriginIsolated),
+served with `Cross-Origin-Opener-Policy: same-origin` and
+`Cross-Origin-Embedder-Policy: require-corp`.
+
+</details>
 
 ## API
 
