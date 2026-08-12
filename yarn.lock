@@ -79,13 +79,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emnapi/core@npm:2.0.0-alpha.3":
-  version: 2.0.0-alpha.3
-  resolution: "@emnapi/core@npm:2.0.0-alpha.3"
+"@emnapi/core@npm:2.0.0-alpha.4":
+  version: 2.0.0-alpha.4
+  resolution: "@emnapi/core@npm:2.0.0-alpha.4"
   dependencies:
     "@emnapi/wasi-threads": "npm:2.0.1"
     tslib: "npm:^2.4.0"
-  checksum: 10c0/dfc26f53eb40dab0e316206cabe01e6e98d21ef8a0b820f81ce7e0fa7b4307c94f2a9599c11e6c601ad7bd77e8efb9b7cb9f86dbc3b6237f799405e0cb60c587
+  checksum: 10c0/91633cf0dfe5bfc7cbfdb83aca4501be07089d2547ec568d08b7142293c9293c1d809b487fd1734aaf5531774f5e56894d93b3f4f51c5d6dc609f6c70cb363c2
   languageName: node
   linkType: hard
 
@@ -3193,7 +3193,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "snappy@workspace:."
   dependencies:
-    "@emnapi/core": "npm:2.0.0-alpha.3"
+    "@emnapi/core": "npm:2.0.0-alpha.4"
     "@emnapi/runtime": "npm:2.0.0-alpha.3"
     "@napi-rs/cli": "npm:^3.8.5"
     "@napi-rs/wasm-runtime": "npm:^1.2.2"
