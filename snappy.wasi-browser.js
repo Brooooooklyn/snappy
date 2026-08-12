@@ -7,6 +7,8 @@ import {
 } from '@napi-rs/wasm-runtime'
 import { createContext as __emnapiCreateContext } from '@emnapi/runtime'
 
+
+
 const __wasi = new __WASI({
   version: 'preview1',
 })
@@ -31,7 +33,10 @@ const __sharedMemory = new WebAssembly.Memory({
   shared: true,
 })
 const __asyncWorkPoolSize = 4
-const __workerPoolSize = Math.max(2, globalThis.navigator?.hardwareConcurrency ?? 4)
+const __workerPoolSize = Math.max(
+  2,
+  globalThis.navigator?.hardwareConcurrency ?? 4,
+)
 
 let __emnapiContext
 
@@ -46,15 +51,17 @@ let __emnapiWasmEnvCleanupDrained = false
 let __emnapiWasmEnvCleanupDrainPromise
 let __wasiDisposed = false
 let __wasiDisposePromise
-let __completeWasiDisposal = function () {}
+let __completeWasiDisposal = function() {}
 // Overridden by loader flavors that have a last-resort reclaim for a rollback
 // that stopped short of destroying the context. See
 // `__rollbackWasiInitialization`.
-let __retainWasiRollbackForRetry = function () {}
+let __retainWasiRollbackForRetry = function() {}
 
 function __isThenable(value) {
   return (
-    value !== null && (typeof value === 'object' || typeof value === 'function') && typeof value.then === 'function'
+    value !== null &&
+    (typeof value === 'object' || typeof value === 'function') &&
+    typeof value.then === 'function'
   )
 }
 
@@ -75,9 +82,15 @@ function __attachCleanupErrors(error, cleanupErrors) {
   if (cleanupErrors.length === 0) {
     return error
   }
-  const cleanupError = __createCleanupError(cleanupErrors, 'WASI binding cleanup failed')
+  const cleanupError = __createCleanupError(
+    cleanupErrors,
+    'WASI binding cleanup failed',
+  )
   try {
-    if (error && (typeof error === 'object' || typeof error === 'function')) {
+    if (
+      error &&
+      (typeof error === 'object' || typeof error === 'function')
+    ) {
       if (error.cause === undefined) {
         error.cause = cleanupError
         if (error.cause === cleanupError) {
@@ -96,7 +109,10 @@ function __attachCleanupErrors(error, cleanupErrors) {
       }
     }
   } catch {}
-  const aggregate = __createCleanupError([error, cleanupError], 'WASI binding initialization and cleanup failed')
+  const aggregate = __createCleanupError(
+    [error, cleanupError],
+    'WASI binding initialization and cleanup failed',
+  )
   try {
     aggregate.cause = error
   } catch {}
@@ -207,7 +223,9 @@ function __drainWasmEnvCleanup() {
       return
     }
   }
-  const limit = observable ? __WASM_ENV_CLEANUP_DRAIN_TURNS : __WASM_ENV_CLEANUP_BLIND_DRAIN_TURNS
+  const limit = observable
+    ? __WASM_ENV_CLEANUP_DRAIN_TURNS
+    : __WASM_ENV_CLEANUP_BLIND_DRAIN_TURNS
   const drainPromise = (async () => {
     let queued = 0
     for (let turn = 0; turn < limit; turn++) {
@@ -330,7 +348,10 @@ function __terminateWasiWorkers() {
 
   const finish = () => {
     if (cleanupErrors.length > 0) {
-      throw __createCleanupError(cleanupErrors, 'Failed to terminate WASI workers')
+      throw __createCleanupError(
+        cleanupErrors,
+        'Failed to terminate WASI workers',
+      )
     }
   }
   return pending.length > 0 ? Promise.all(pending).then(finish) : finish()
@@ -536,7 +557,7 @@ let __napiModule
 try {
   __emnapiContext = __emnapiCreateContext({ autoDestroy: false })
   __emnapiContext.suppressDestroy()
-
+  
   ;({
     instance: __napiInstance,
     module: __wasiModule,
@@ -552,6 +573,7 @@ try {
         type: 'module',
       })
       __wasiWorkers.add(worker)
+
 
       return worker
     },

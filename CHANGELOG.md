@@ -1,3 +1,9 @@
+# [7.4.0](https://github.com/Brooooooklyn/snappy/compare/v7.3.3...v7.4.0) (2026-08-12)
+
+
+### Features
+
+* add framed Snappy streaming APIs ([#351](https://github.com/Brooooooklyn/snappy/issues/351)) ([9d1dcdc](https://github.com/Brooooooklyn/snappy/commit/9d1dcdc3b36274adc5fe4f474ebe3952d464be2c))
 ## [7.3.3](https://github.com/Brooooooklyn/snappy/compare/v7.3.2...v7.3.3) (2025-09-11)
 
 ### Bug Fixes
