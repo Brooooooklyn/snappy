@@ -700,7 +700,11 @@ if (!nativeBinding) {
 }
 
 module.exports = nativeBinding
+module.exports.Compressor = nativeBinding.Compressor
+module.exports.Decompressor = nativeBinding.Decompressor
 module.exports.compress = nativeBinding.compress
+module.exports.compressStream = nativeBinding.compressStream
 module.exports.compressSync = nativeBinding.compressSync
 module.exports.uncompress = nativeBinding.uncompress
+module.exports.uncompressStream = nativeBinding.uncompressStream
 module.exports.uncompressSync = nativeBinding.uncompressSync

@@ -1,5 +1,16 @@
 #![deny(clippy::all)]
 
+// `pub` so the `#[napi]` items are part of the crate's reachable API; otherwise a
+// `cargo test` build (where the generated napi registration is not counted as a
+// use) flags them as dead code under `-D warnings`.
+pub mod stream;
+
+// Web Streams transforms use tokio (napi's `web_stream` feature), which the wasm
+// build has no runtime for; it is cfg'd out there and the JS wrapper falls back
+// to a buffered polyfill over the tokio-free class API.
+#[cfg(not(target_family = "wasm"))]
+pub mod stream_web;
+
 use napi::{bindgen_prelude::*, ScopedTask};
 use napi_derive::napi;
 use snap::raw::{Decoder, Encoder};

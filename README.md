@@ -81,12 +81,63 @@ served with `Cross-Origin-Opener-Policy: same-origin` and
 
 ## API
 
+### One-shot (raw Snappy block format)
+
 ```ts
 export function compressSync(input: Buffer | string | ArrayBuffer | Uint8Array): Buffer
 export function compress(input: Buffer | string | ArrayBuffer | Uint8Array): Promise<Buffer>
 export function uncompressSync(compressed: Buffer): Buffer
 export function uncompress(compressed: Buffer): Promise<Buffer>
 ```
+
+### Streaming (framed Snappy format)
+
+Streaming uses the [Snappy frame format](https://github.com/google/snappy/blob/master/framing_format.txt)
+(file extension `.sz`). This is **not** the same wire format as the one-shot APIs
+above — framed output cannot be passed to `uncompress()`, and raw blocks cannot
+be passed to the stream decompressors.
+
+#### Incremental classes
+
+```js
+import { Compressor, Decompressor } from 'snappy'
+
+const compressor = new Compressor()
+const parts = [compressor.update('Hello '), compressor.update('snappy 🚀'), await compressor.finish()]
+const compressed = Buffer.concat(parts)
+
+const decompressor = new Decompressor()
+const restored = Buffer.concat([decompressor.update(compressed), await decompressor.finish()])
+console.log(restored.toString('utf8')) // Hello snappy 🚀
+```
+
+The valid stream is the concatenation of every `update()` output plus the `finish()` tail.
+
+#### Web Streams
+
+```js
+import { compressStream, uncompressStream } from 'snappy'
+
+const restored = uncompressStream(compressStream(source)) // ReadableStream<Uint8Array>
+```
+
+`input` must be a WHATWG `ReadableStream`; wrap a Node `Readable` with `Readable.toWeb()`.
+
+On wasm / browser builds the native transforms are unavailable; a buffered class-API
+polyfill is used automatically.
+
+#### Node Duplex factories
+
+```js
+import { createReadStream, createWriteStream } from 'node:fs'
+import { createCompressStream, createUncompressStream } from 'snappy'
+
+createReadStream('input.txt')
+  .pipe(createCompressStream())
+  .pipe(createWriteStream('input.txt.sz'))
+```
+
+Requires a modern Node.js with Web Streams and `Duplex.fromWeb` (effectively Node 18+).
 
 ## Performance
 
