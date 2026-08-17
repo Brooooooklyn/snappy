@@ -1,3 +1,9 @@
+## [7.4.1](https://github.com/Brooooooklyn/snappy/compare/v7.4.0...v7.4.1) (2026-08-17)
+
+
+### Bug Fixes
+
+* keep native index.js when publishing ([#353](https://github.com/Brooooooklyn/snappy/issues/353)) ([3cf1d66](https://github.com/Brooooooklyn/snappy/commit/3cf1d66f9ff775431d1faf4914c590370f277a1e)), closes [#352](https://github.com/Brooooooklyn/snappy/issues/352)
 # [7.4.0](https://github.com/Brooooooklyn/snappy/compare/v7.3.3...v7.4.0) (2026-08-12)
 
 
