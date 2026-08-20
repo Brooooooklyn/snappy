@@ -1,3 +1,9 @@
+## [7.4.2](https://github.com/Brooooooklyn/snappy/compare/v7.4.1...v7.4.2) (2026-08-20)
+
+
+### Bug Fixes
+
+* restore index.js deleted by napi artifacts during publish ([#355](https://github.com/Brooooooklyn/snappy/issues/355)) ([7fca09b](https://github.com/Brooooooklyn/snappy/commit/7fca09b35703f093e5d213429e6b1c9d60aab596))
 ## [7.4.1](https://github.com/Brooooooklyn/snappy/compare/v7.4.0...v7.4.1) (2026-08-17)
 
 
