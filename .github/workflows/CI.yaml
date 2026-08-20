@@ -426,9 +426,25 @@ jobs:
           path: artifacts
       - name: Move artifacts
         run: yarn artifacts
+      # `napi artifacts` deletes the committed index.js: the wasi loader metadata in
+      # snappy.wasi.cjs lists it as a managed root entry, and since package.json's
+      # main is main.js, artifacts treats index.js as stale. Restore it from git.
+      - name: Restore index.js
+        run: git checkout -- index.js
       - name: List packages
         run: ls -R ./npm
         shell: bash
+      # npm pack silently skips missing entries of the `files` array; fail loudly instead
+      - name: Verify package files exist
+        run: |
+          node -e "
+            const fs = require('fs')
+            const missing = require('./package.json').files.filter((f) => !fs.existsSync(f))
+            if (missing.length) {
+              console.error('Files declared in package.json but missing on disk: ' + missing.join(', '))
+              process.exit(1)
+            }
+          "
       - name: Publish
         run: |
           if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$";
