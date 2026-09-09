@@ -79,7 +79,12 @@ function sharedBody(file: string): string {
   if (start === -1 || end === -1) {
     throw new Error(`${file} is missing its shared markers`)
   }
-  return source.slice(start + SHARED_START.length, end).trim()
+  // `.gitattributes` pins `*.js` to LF but leaves `*.mjs` on `text=auto`, so a
+  // Windows checkout gives the twins different line endings. Compare content.
+  return source
+    .slice(start + SHARED_START.length, end)
+    .replace(/\r\n/g, '\n')
+    .trim()
 }
 
 /**
