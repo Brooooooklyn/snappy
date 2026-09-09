@@ -11,8 +11,8 @@
 'use strict'
 
 const binding = require('./index.js')
-const { honestStreams } = require('./stream-polyfill.mjs')
-const { createNodeStreamFactories } = require('./stream-polyfill.js')
+const { honestStreams } = require('./stream-polyfill.js')
+const { createNodeStreamFactories } = require('./node-stream.js')
 
 const { compressStream, uncompressStream } = honestStreams(binding)
 const { createCompressStream, createUncompressStream } = createNodeStreamFactories({
