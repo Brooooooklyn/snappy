@@ -33,6 +33,7 @@
     "browser-entry.js",
     "browser-entry.d.ts",
     "stream-polyfill.js",
+    "stream-polyfill.mjs",
     "node-stream.js"
   ],
   "napi": {

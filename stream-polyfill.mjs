@@ -1,22 +1,18 @@
 // Shared, browser-safe Web Streams helpers + native-or-polyfill wiring.
 //
-// CommonJS on purpose. `main.js` is CommonJS and loads this synchronously, so an
-// ES module here would throw `ERR_REQUIRE_ESM` on Node < 20.19 / 22.0-22.11, and
-// under ts-node and Jest on any Node. See
+// The ES module twin of `stream-polyfill.js`, imported by `browser-entry.js`.
+// Plain Rollup cannot read named exports out of CommonJS, so the browser path
+// needs real `export` statements. `main.js` is CommonJS and cannot require an ES
+// module, so it loads the twin instead. See
 // https://github.com/Brooooooklyn/snappy/issues/357.
 //
-// `stream-polyfill.mjs` is the ES module twin of this file, imported by
-// `browser-entry.js`. Plain Rollup cannot read named exports out of CommonJS, so
-// the browser path needs real `export` statements, not a re-export shim. The two
-// files therefore carry the same body between the shared markers, and
-// `__test__/cjs-entry.spec.ts` fails if they drift apart.
+// The two files carry the same body between the shared markers, apart from the
+// `export` keyword. `__test__/cjs-entry.spec.ts` fails if they drift apart.
 //
 // On a native build the Rust `compressStream` / `uncompressStream` transforms
 // exist on the binding and are used directly. On the wasm build those tokio-
 // backed fns are compiled out, so we fall back to a buffered polyfill over the
 // (tokio-free) streaming class API.
-
-'use strict'
 
 /* --- shared start: keep byte-identical with the twin file, see cjs-entry.spec.ts --- */
 
@@ -47,7 +43,7 @@ function concatChunks(chunks) {
 /**
  * Drain a Web `ReadableStream<Uint8Array>` fully into a single `Uint8Array`.
  */
-async function bufferAll(input) {
+export async function bufferAll(input) {
   const reader = input.getReader()
   const chunks = []
   try {
@@ -72,7 +68,7 @@ async function bufferAll(input) {
  * Wrap an async `() => Promise<Uint8Array>` producer as a single-chunk
  * `ReadableStream`.
  */
-function singleChunkStream(produce) {
+export function singleChunkStream(produce) {
   let emitted = false
   return new ReadableStream({
     async pull(controller) {
@@ -103,7 +99,7 @@ function singleChunkStream(produce) {
  * @param {Function} spec.Compressor
  * @param {Function} spec.Decompressor
  */
-function createStreamApi({ nativeCompressStream, nativeUncompressStream, Compressor, Decompressor }) {
+export function createStreamApi({ nativeCompressStream, nativeUncompressStream, Compressor, Decompressor }) {
   const compressStream =
     typeof nativeCompressStream === 'function'
       ? nativeCompressStream
@@ -135,7 +131,7 @@ function createStreamApi({ nativeCompressStream, nativeUncompressStream, Compres
  *
  * @param {Record<string, unknown>} binding
  */
-function honestStreams(binding) {
+export function honestStreams(binding) {
   if (typeof binding.compressStream === 'function' && typeof binding.uncompressStream === 'function') {
     return {
       compressStream: binding.compressStream,
@@ -151,10 +147,3 @@ function honestStreams(binding) {
 }
 
 /* --- shared end --- */
-
-module.exports = {
-  bufferAll,
-  singleChunkStream,
-  createStreamApi,
-  honestStreams,
-}

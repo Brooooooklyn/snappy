@@ -1,6 +1,8 @@
 import { execFileSync, spawnSync } from 'node:child_process'
-import { readFileSync } from 'node:fs'
+import { copyFileSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import test from 'ava'
@@ -15,7 +17,7 @@ const CJS_ENTRY_FILES = ['main.js', 'stream-polyfill.js', 'node-stream.js']
 /**
  * `main.js` is CommonJS, so anything it `require()`s must be CommonJS too.
  * Requiring an ES module works only on Node >= 20.19 / >= 22.12, and still
- * fails under `--no-require-module`, ts-node and Jest.
+ * fails under `--no-experimental-require-module`, ts-node and Jest.
  * Regression guard for https://github.com/Brooooooklyn/snappy/issues/357.
  */
 test('CommonJS entry never requires an ES module', (t) => {
@@ -26,19 +28,69 @@ test('CommonJS entry never requires an ES module', (t) => {
   }
 })
 
-/** Node accepts `--no-require-module` only where `require(esm)` exists at all. */
-const supportsNoRequireModule =
-  spawnSync(process.execPath, ['--no-require-module', '-e', ''], { encoding: 'utf8' }).status === 0
+/**
+ * `--no-require-module` only exists from Node 24.21; `--no-experimental-require-module`
+ * is the alias Node has accepted ever since `require(esm)` landed. Anything older
+ * has no `require(esm)` to switch off, so the probe is meaningless there.
+ */
+const REQUIRE_ESM_OFF = '--no-experimental-require-module'
+const supportsFlag = spawnSync(process.execPath, [REQUIRE_ESM_OFF, '-e', ''], { encoding: 'utf8' }).status === 0
+const withRequireEsmOff = supportsFlag ? test : test.skip
 
-const withFlagOff = supportsNoRequireModule ? test : test.skip
+/**
+ * Load the JS wrapper graph with `require(esm)` switched off, against a stub
+ * binding. The stub keeps the probe on our own modules: the native and wasm
+ * loaders drag in `@napi-rs/wasm-runtime`, which has its own `require(esm)` edge
+ * that this test is not about.
+ */
+withRequireEsmOff('the CommonJS entry graph loads with require(esm) disabled', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'snappy-cjs-entry-'))
+  try {
+    for (const file of CJS_ENTRY_FILES) {
+      copyFileSync(join(root, file), join(dir, file))
+    }
+    writeFileSync(
+      join(dir, 'index.js'),
+      `'use strict'\nconst stub = () => {}\nmodule.exports = {\n` +
+        ['compress', 'compressSync', 'uncompress', 'uncompressSync', 'Compressor', 'Decompressor']
+          .map((name) => `  ${name}: stub,\n`)
+          .join('') +
+        `}\n`,
+    )
+    writeFileSync(join(dir, 'probe.cjs'), `console.log(Object.keys(require('./main.js')).sort().join(','))\n`)
 
-withFlagOff('the package entry loads with require(esm) disabled', (t) => {
-  const stdout = execFileSync(
-    process.execPath,
-    ['--no-require-module', '-e', 'console.log(typeof require(process.argv[1]).compressSync)', root],
-    { encoding: 'utf8' },
-  )
-  t.is(stdout.trim(), 'function')
+    const stdout = execFileSync(process.execPath, [REQUIRE_ESM_OFF, join(dir, 'probe.cjs')], { encoding: 'utf8' })
+    t.is(
+      stdout.trim(),
+      'Compressor,Decompressor,compress,compressStream,compressSync,createCompressStream,createUncompressStream,uncompress,uncompressStream,uncompressSync',
+    )
+  } finally {
+    rmSync(dir, { recursive: true, force: true })
+  }
+})
+
+const SHARED_START = '/* --- shared start: keep byte-identical with the twin file, see cjs-entry.spec.ts --- */'
+const SHARED_END = '/* --- shared end --- */'
+
+function sharedBody(file: string): string {
+  const source = readFileSync(new URL(file, rootUrl), 'utf8')
+  const start = source.indexOf(SHARED_START)
+  const end = source.indexOf(SHARED_END)
+  if (start === -1 || end === -1) {
+    throw new Error(`${file} is missing its shared markers`)
+  }
+  return source.slice(start + SHARED_START.length, end).trim()
+}
+
+/**
+ * `stream-polyfill.js` (CommonJS, for `main.js`) and `stream-polyfill.mjs`
+ * (ES module, for `browser-entry.js`) hold the same logic. Plain Rollup cannot
+ * read named exports out of CommonJS, so the browser path needs real `export`
+ * statements and a re-export shim will not do. Fail loudly when they drift.
+ */
+test('the CommonJS and ES module polyfills stay in sync', (t) => {
+  const esm = sharedBody('stream-polyfill.mjs').replace(/^export /gm, '')
+  t.is(esm, sharedBody('stream-polyfill.js'))
 })
 
 test('the package entry exposes the documented surface', (t) => {

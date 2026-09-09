@@ -7,7 +7,7 @@
 // APIs. Node Duplex factories are intentionally omitted (browser has no node:stream).
 
 import * as binding from '@napi-rs/snappy-wasm32-wasi'
-import { honestStreams } from './stream-polyfill.js'
+import { honestStreams } from './stream-polyfill.mjs'
 
 const { compressStream, uncompressStream } = honestStreams(binding)
 
