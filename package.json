@@ -93,7 +93,7 @@
     "@emnapi/runtime": "^2.0.0-alpha.4",
     "@napi-rs/cli": "^3.8.6",
     "@napi-rs/wasm-runtime": "^1.2.3",
-    "@oxc-node/core": "^0.1.0",
+    "@oxc-node/core": "^1.0.0",
     "@taplo/cli": "^0.7.0",
     "@types/node": "^26.2.0",
     "ava": "^8.0.1",
