@@ -2,7 +2,6 @@
 
 ![https://github.com/Brooooooklyn/snappy/actions](https://github.com/Brooooooklyn/snappy/workflows/CI/badge.svg)
 ![](https://img.shields.io/npm/dm/snappy.svg?sanitize=true)
-[![Install size](https://packagephobia.com/badge?p=snappy)](https://packagephobia.com/result?p=snappy)
 
 **!!! For `snappy@6.x` and below, please go to [`node-snappy`](https://github.com/kesla/node-snappy).**
 

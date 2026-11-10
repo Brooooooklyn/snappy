@@ -5,8 +5,8 @@
   "main": "main.js",
   "types": "main.d.ts",
   "browser": {
-    "main.js": "./browser-entry.js",
-    "index.js": "./browser-entry.js"
+    "index.js": "./browser-entry.js",
+    "main.js": "./browser-entry.js"
   },
   "repository": "https://github.com/Brooooooklyn/snappy",
   "license": "MIT",
