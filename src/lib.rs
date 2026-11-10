@@ -15,14 +15,6 @@ use napi::{bindgen_prelude::*, ScopedTask};
 use napi_derive::napi;
 use snap::raw::{Decoder, Encoder};
 
-#[cfg(all(
-  not(target_family = "wasm"),
-  not(target_env = "ohos"),
-  not(target_env = "musl")
-))]
-#[global_allocator]
-static GLOBAL: mimalloc_safe::MiMalloc = mimalloc_safe::MiMalloc;
-
 #[napi(object)]
 pub struct DecOptions {
   pub as_buffer: Option<bool>,
