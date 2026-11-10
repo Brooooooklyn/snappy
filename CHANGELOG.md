@@ -1,3 +1,9 @@
+## [7.4.4](https://github.com/Brooooooklyn/snappy/compare/v7.4.3...v7.4.4) (2026-11-10)
+
+
+### Bug Fixes
+
+* remove mimalloc ([#367](https://github.com/Brooooooklyn/snappy/issues/367)) ([9d1651c](https://github.com/Brooooooklyn/snappy/commit/9d1651c2701c5fa418ed0622a1c97859cfbe32e9))
 ## [7.4.3](https://github.com/Brooooooklyn/snappy/compare/v7.4.2...v7.4.3) (2026-09-09)
 
 

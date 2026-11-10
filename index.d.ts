@@ -58,6 +58,15 @@ export declare class Decompressor {
 
 export declare function compress(input: string | Uint8Array, options?: EncOptions | undefined | null, signal?: AbortSignal | undefined | null): Promise<Buffer>
 
+/**
+ * Compress a `ReadableStream<Uint8Array>` into a framed Snappy byte stream.
+ *
+ * `input` must be a WHATWG `ReadableStream`; wrap a Node `Readable` with
+ * `Readable.toWeb()`, or use `createCompressStream()` for a ready-to-pipe
+ * Node `Duplex`. Output is **framed** Snappy (not the raw one-shot format).
+ */
+export declare function compressStream(input: ReadableStream<Uint8Array>): ReadableStream<Buffer>
+
 export declare function compressSync(input: string | Uint8Array, options?: EncOptions | undefined | null): Buffer
 
 export interface DecOptions {
@@ -82,5 +91,14 @@ export interface EncOptions {
 }
 
 export declare function uncompress(input: string | Uint8Array, options?: DecOptions | undefined | null, signal?: AbortSignal | undefined | null): Promise<string | Buffer>
+
+/**
+ * Decompress a framed Snappy `ReadableStream<Uint8Array>` into plaintext.
+ *
+ * `input` must be a WHATWG `ReadableStream`; wrap a Node `Readable` with
+ * `Readable.toWeb()`, or use `createUncompressStream()` for a ready-to-pipe
+ * Node `Duplex`. Input must be **framed** Snappy (not one-shot raw blocks).
+ */
+export declare function uncompressStream(input: ReadableStream<Uint8Array>): ReadableStream<Buffer>
 
 export declare function uncompressSync(input: string | Uint8Array, options?: DecOptions | undefined | null): string | Buffer
